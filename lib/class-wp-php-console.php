@@ -37,50 +37,19 @@ class WP_PHP_Console {
 	 */
 	protected $version;
 
-
-	private $options;
-
 	/**
-	 * Define the core functionality of the plugin.
-	 *
-	 * Set the plugin name and the plugin version that can be used throughout the plugin.
-	 * Load the dependencies, define the locale, and set the hooks for the Dashboard and
-	 * the public-facing side of the site.
+	 * Construct.
 	 *
 	 * @since    1.0.0
 	 */
 	public function __construct() {
 
 		$this->plugin_name = 'wp-php-console';
-		$this->version = '1.0.0';
-
-		register_activation_hook( __FILE__, 'activate' );
+		$this->version = '1.1.0';
 
 		add_action( 'plugins_loaded',   array( $this, 'set_locale' ) );
 		add_action( 'admin_menu',       array( $this, 'register_settings_page' ) );
-		add_action( 'admin_init',       array( $this, 'register_settings' ) );
-		add_action( 'plugins_loaded',   array( $this, 'init' ) );
-	}
-
-	/**
-	 * The name of the plugin used to uniquely identify it within the context of
-	 * WordPress and to define internationalization functionality.
-	 *
-	 * @since     1.0.0
-	 * @return    string    The name of the plugin.
-	 */
-	public function get_plugin_name() {
-		return $this->plugin_name;
-	}
-
-	/**
-	 * Retrieve the version number of the plugin.
-	 *
-	 * @since     1.0.0
-	 * @return    string    The version number of the plugin.
-	 */
-	public function get_version() {
-		return $this->version;
+		add_action( 'wp_loaded',   array( $this, 'init' ) );
 	}
 
 	/**
@@ -90,20 +59,11 @@ class WP_PHP_Console {
 	 */
 	public function set_locale() {
 		load_plugin_textdomain(
-			$this->get_plugin_name(),
+			$this->plugin_name,
 			false,
 			dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
-
-	/**
-	 * Fired upon plugin activation.
-	 *
-	 * @since   1.0.0
-	 */
-	public function activate() {
-
-	}
-
+	
 	/**
 	 * Plugin Settings menu.
 	 *
@@ -112,10 +72,10 @@ class WP_PHP_Console {
 	public function register_settings_page() {
 
 		add_options_page(
-			__( 'WP PHP Console', $this->get_plugin_name() ),
-			__( 'PHP Console', $this->get_plugin_name() ),
+			__( 'WP PHP Console', $this->plugin_name ),
+			__( 'PHP Console', $this->plugin_name ),
 			'manage_options',
-			$this->get_plugin_name(),
+			$this->plugin_name,
 			array( $this, 'settings_page' )
 		);
 
@@ -137,32 +97,32 @@ class WP_PHP_Console {
 
 		add_settings_section(
 			'wp_php_console',
-			__( 'Settings', $this->get_plugin_name() ),
+			__( 'Settings', $this->plugin_name ),
 			array( $this, 'settings_info' ),
-			$this->get_plugin_name()
+			$this->plugin_name
 		);
 
 		add_settings_field(
 			'password',
-			__( 'Password', $this->get_plugin_name() ),
+			__( 'Password', $this->plugin_name ),
 			array( $this, 'password_field' ),
-			$this->get_plugin_name(),
+			$this->plugin_name,
 			'wp_php_console'
 		);
 
 		add_settings_field(
 			'ssl',
-			__( 'Allow only on SSL', $this->get_plugin_name() ),
+			__( 'Allow only on SSL', $this->plugin_name ),
 			array( $this, 'ssl_field' ),
-			$this->get_plugin_name(),
+			$this->plugin_name,
 			'wp_php_console'
 		);
 
 		add_settings_field(
 			'ip',
-			__( 'Allowed IP Masks', $this->get_plugin_name() ),
+			__( 'Allowed IP Masks', $this->plugin_name ),
 			array( $this, 'ip_field' ),
-			$this->get_plugin_name(),
+			$this->plugin_name,
 			'wp_php_console'
 		);
 
@@ -177,11 +137,11 @@ class WP_PHP_Console {
 
 		printf (
 			'<input type="password" id="wp-php-console-password" name="wp_php_console[password]" value="%s" />',
-			isset( $this->options['password'] ) ? esc_attr( $this->options['password']) : ''
+			isset( $this->options['password'] ) ? esc_attr( $this->options['password'] ) : ''
 		);
-		echo '<label for="wp-php-console-ip">' . __( 'Required', $this->get_plugin_name() ) . '</label>';
+		echo '<label for="wp-php-console-ip">' . __( 'Required', $this->plugin_name ) . '</label>';
 		echo '<br />';
-		echo '<small class="description">' . __( 'The password for eval terminal. If empty, the plugin will not work.', $this->get_plugin_name() ) . '</small>';
+		echo '<small class="description">' . __( 'The password for eval terminal. If empty, the plugin will not work.', $this->plugin_name ) . '</small>';
 	}
 
 	/**
@@ -197,9 +157,9 @@ class WP_PHP_Console {
 			'<input type="checkbox" id="wp-php-console-ssl" name="wp_php_console[ssl]" value="1" %s /> ',
 			$ssl ? 'checked="checked"' : ''
 		);
-		echo '<label for="wp-php-console-ssl">' . __( 'Yes (optional)', $this->get_plugin_name() ) . '</label>';
+		echo '<label for="wp-php-console-ssl">' . __( 'Yes (optional)', $this->plugin_name ) . '</label>';
 		echo '<br />';
-		echo '<small class="description">' . __( 'Choose if you want the eval terminal to work only on a SSL connection.', $this->get_plugin_name() ) . '</small>';
+		echo '<small class="description">' . __( 'Choose if you want the eval terminal to work only on a SSL connection.', $this->plugin_name ) . '</small>';
 	}
 
 	/**
@@ -213,9 +173,9 @@ class WP_PHP_Console {
 			'<input type="text" class="regular-text" id="wp-php-console-ip" name="wp_php_console[ip]" value="%s" /> ',
 			isset( $this->options['ip'] ) ? esc_attr( $this->options['ip']) : ''
 		);
-		echo '<label for="wp-php-console-ip">' . __( 'IP addresses (optional)', $this->get_plugin_name() ) . '</label>';
+		echo '<label for="wp-php-console-ip">' . __( 'IP addresses (optional)', $this->plugin_name ) . '</label>';
 		echo '<br />';
-		echo '<small class="description">' . __( 'You may specify an IP address (e.g. 192.169.1.50), a range of addresses (192.168.*.*) or multiple addresses, comma separated (192.168.10.25,192.168.10.28) to grant access to eval terminal.', $this->get_plugin_name() ) . '</small>';
+		echo '<small class="description">' . __( 'You may specify an IP address (e.g. 192.169.1.50), a range of addresses (192.168.*.*) or multiple addresses, comma separated (192.168.10.25,192.168.10.28) to grant access to eval terminal.', $this->plugin_name ) . '</small>';
 	}
 
 	/**
@@ -253,31 +213,39 @@ class WP_PHP_Console {
 		$this->options = get_option( 'wp_php_console' );
 		?>
 		<div class="wrap">
-			<h2><?php _e( 'WP PHP Console', $this->get_plugin_name() ); ?></h2>
+			<h2><?php _e( 'WP PHP Console', $this->plugin_name ); ?></h2>
 			<hr />
 			<form method="post" action="options.php">
 				<?php
 				settings_fields( 'wp_php_console' );
-				do_settings_sections( $this->get_plugin_name() );
+				do_settings_sections( $this->plugin_name );
 				submit_button();
 				?>
 			</form>
 		</div>
+		<hr />
+		<p><?php _e( 'Like this plugin? Was it useful to you? Please consider a donation to support open source software development.', $this->plugin_name ); ?></p>
+		<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+			<input type="hidden" name="cmd" value="_s-xclick">
+			<input type="hidden" name="hosted_button_id" value="GSTFUY3LMCA5W">
+			<input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
+			<img alt="" border="0" src="https://www.paypalobjects.com/it_IT/i/scr/pixel.gif" width="1" height="1">
+		</form>
 		<?php
 
 	}
 
 	public function settings_info() {
 
-	?>
-	<p><?php _e( 'This plugin embeds PHP Console in your WordPress installation. Instructions:', $this->get_plugin_name() ); ?></p>
-	<ol>
-		<li><?php printf( __( 'Make sure you have downloaded and installed %s.', $this->get_plugin_name() ), '<a target="_blank" href="https://chrome.google.com/webstore/detail/php-console/nfhmhhlpfleoednkpnnnkolmclajemef">PHP Console extension for Google Chrome</a>' ); ?></li>
-		<li><?php _e( 'Set a password for the eval terminal in the options below and hit `save changes`.', $this->get_plugin_name() ); ?></li>
-		<li><?php _e( 'Reload any page of your installation and click on the key icon in your Chrome browser address bar, enter your password and access the terminal.', $this->get_plugin_name() ); ?></li>
-		<li><?php _e( 'From the eval terminal you can execute any PHP or WordPress specific function, including functions from your plugins and active theme.', $this->get_plugin_name() ); ?></li>
-	</ol>
-	<?php
+		?>
+		<p><?php printf( _x( 'This plugin allows you to use %s within your WordPress installation for testing, debugging and development purposes.<br/>Usage instructions:', 'PHP Console', $this->plugin_name ), '<a href="https://github.com/barbushin/php-console" target="_blank">PHP Console</a>' ); ?></p>
+		<ol>
+			<li><?php printf( __( 'Make sure you have downloaded and installed %s.', $this->plugin_name ), '<a target="_blank" href="https://chrome.google.com/webstore/detail/php-console/nfhmhhlpfleoednkpnnnkolmclajemef">PHP Console extension for Google Chrome</a>' ); ?></li>
+			<li><?php _e( 'Set a password for the eval terminal in the options below and hit `save changes`.', $this->plugin_name ); ?></li>
+			<li><?php _e( 'Reload any page of your installation and click on the key icon in your Chrome browser address bar, enter your password and access the terminal.', $this->plugin_name ); ?></li>
+			<li><?php _e( 'From the eval terminal you can execute any PHP or WordPress specific function, including functions from your plugins and active theme.', $this->plugin_name ); ?></li>
+		</ol>
+		<?php
 
 	}
 

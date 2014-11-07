@@ -1,10 +1,10 @@
 === WP PHP Console ===
 Contributors: nekojira
-Donate link: https://github.com/nekojira/
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GSTFUY3LMCA5W
 Tags: development, debug, debugging
 Requires at least: 3.0.1
 Tested up to: 4.0
-Stable tag: 1.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -50,11 +50,17 @@ No it doesn't, unless PHP Console is ported as a Firefox add-on for example.
 
 == Changelog ==
 
-= 1.0 =
+= 1.1.0 =
+* Added donation link/button.
+* PHP Console server is now instantiated later, allowing to catch all your theme functions too.
+* Included PHP Console server library as git submodule rather than a composer dependency.
+
+= 1.0.0 =
+* Added three options to set a custom password, enable on SSL only, authorized IP ranges.
 * First public release.
 
 
 == Upgrade Notice ==
 
-= 1.0 =
-First public release. Any issue encountered could depend also from your server or PHP configuration.
+= 1.0.0 =
+First public release.
