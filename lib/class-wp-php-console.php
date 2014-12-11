@@ -3,7 +3,7 @@
 /**
  * WP PHP Console Plugin Core Class
  *
- * @link       https://github.com/wp-php-console
+ * @link       https://github.com/nekojira/wp-php-console
  * @since      1.0.0
  *
  * @package    WP_PHP_Console
@@ -38,6 +38,14 @@ class WP_PHP_Console {
 	protected $version;
 
 	/**
+	 * Options.
+	 *
+	 * @since    1.0.0
+	 * @access   protected
+	 */
+	protected $options;
+
+	/**
 	 * Construct.
 	 *
 	 * @since    1.0.0
@@ -46,6 +54,7 @@ class WP_PHP_Console {
 
 		$this->plugin_name = 'wp-php-console';
 		$this->version = '1.1.0';
+		$this->options = get_option( 'wp-php-console' );
 
 		add_action( 'plugins_loaded',   array( $this, 'set_locale' ) );
 		add_action( 'admin_menu',       array( $this, 'register_settings_page' ) );
@@ -256,6 +265,9 @@ class WP_PHP_Console {
 	 */
 	public function init() {
 
+		if ( ! class_exists( 'PhpConsole\Connector' ) )
+			return;
+
 		$options = get_option( 'wp_php_console' );
 
 		$password = isset( $options['password'] ) ? $options['password'] : '';
@@ -269,12 +281,12 @@ class WP_PHP_Console {
 		if ( PhpConsole\Handler::getInstance()->isStarted() != true )
 			$handler->start();
 
-		$enableSslOnlyMode = isset( $options['ssl'] ) ? $options['ssl'] : '';
+		$enableSslOnlyMode = isset( $options['ssl'] ) ? ( ! empty( $options['ssl'] ) ? $options['ssl'] : '' ) : '';
 		if ( $enableSslOnlyMode == true )
 			$connector->enableSslOnlyMode();
 
-		$allowedIpMasks = isset( $options['ip'] ) ? explode( ',', $options['ip'] ) : '';
-		if ( $allowedIpMasks )
+		$allowedIpMasks = isset( $options['ip'] ) ? ( ! empty( $options['ip'] ) ? implode( ',', $options['ip'] ) : '' ) : '';
+		if ( ! is_array( $allowedIpMasks ) && ! empty( $allowedIpMasks ) )
 			$connector->setAllowedIpMasks( (array) $allowedIpMasks );
 
 		$evalProvider = $connector->getEvalDispatcher()->getEvalProvider();

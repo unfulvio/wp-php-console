@@ -1,3 +1,6 @@
+### 1.2.0 (11 dec 2014)
+* Updated dependencies and got rid of git submodules.
+
 ### 1.1.0 (07 nov 2014)
 * Added donation link/button.
 * PHP Console server is now instantiated later, allowing to catch all your theme functions too.

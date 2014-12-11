@@ -1,3 +1,0 @@
-[submodule "lib/php-console"]
-	path = lib/php-console
-	url = git://github.com/barbushin/php-console
