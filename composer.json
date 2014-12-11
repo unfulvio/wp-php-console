@@ -1,5 +1,5 @@
 {
-	"name": "wp-php-console",
+	"name": "nekojira/wp-php-console",
 	"description": "A WordPress implementation of PHP Console.",
 	"version": "1.2.0",
 	"keywords": [
