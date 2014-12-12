@@ -1,3 +1,6 @@
+### 1.2.1 (12 dec 2014)
+* Fixed allowed IPs bug.
+
 ### 1.2.0 (11 dec 2014)
 * Updated dependencies and got rid of git submodules.
 

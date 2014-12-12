@@ -285,7 +285,7 @@ class WP_PHP_Console {
 		if ( $enableSslOnlyMode == true )
 			$connector->enableSslOnlyMode();
 
-		$allowedIpMasks = isset( $options['ip'] ) ? ( ! empty( $options['ip'] ) ? implode( ',', $options['ip'] ) : '' ) : '';
+		$allowedIpMasks = isset( $options['ip'] ) ? ( ! empty( $options['ip'] ) ? explode( ',', $options['ip'] ) : '' ) : '';
 		if ( ! is_array( $allowedIpMasks ) && ! empty( $allowedIpMasks ) )
 			$connector->setAllowedIpMasks( (array) $allowedIpMasks );
 
