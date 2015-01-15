@@ -1,3 +1,6 @@
+### 1.2.1 (15 jan 2015)
+* Submission to WordPress.org plugins repository.
+
 ### 1.2.1 (12 dec 2014)
 * Fixed allowed IPs bug.
 

@@ -9,7 +9,7 @@
  * Plugin Name:       WP PHP Console
  * Plugin URI:        https://github.com/nekojira/wp-php-console/
  * Description:       An implementation of PHP Console for WordPress. Easily debug and trace PHP errors and warnings from your Chrome dev tools console using a Google Chrome extension.
- * Version:           1.2.1
+ * Version:           1.2.2
  * Author:            nekojira
  * Author URI:        https://github.com/nekojira/
  * License:           GPL-2.0+

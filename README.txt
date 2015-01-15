@@ -2,9 +2,9 @@
 Contributors: nekojira
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GSTFUY3LMCA5W
 Tags: development, debug, debugging
-Requires at least: 3.0.1
-Tested up to: 4.0
-Stable tag: 1.2.1
+Requires at least: 3.6.0
+Tested up to: 4.1
+Stable tag: 1.2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -44,11 +44,13 @@ No it doesn't, unless PHP Console is ported as a Firefox add-on for example.
 
 == Screenshots ==
 
-1. The plugin's options page.
-2. WordPress functions exposed in PHP Console.
-3. You can run any PHP code too.
+None yet.
 
 == Changelog ==
+
+= 1.2.2 =
+* Bugfixes
+* Submission to WordPress.org plugins repo
 
 = 1.2.0 =
 * Updated dependencies
