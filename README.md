@@ -6,7 +6,7 @@ This is an implementation of **[PHP Console](https://github.com/barbushin/php-co
 
 This implementation for WordPress allows you to test any WordPress specific function or class (including those introduced by your active theme and plugins!) from PHP Console terminal and inspect results, catch error and warnings with stack trace straight from Chrome Dev Tools console. 
 
-[![Download from WordPress.org](https://github.com/nekojira/wp-php-console/assets/wordpress-download-btn.png)](https://wordpress.org/plugins/wp-php-console/)
+[![Download from WordPress.org](https://github.com/nekojira/wp-php-console/blob/master/assets/wordpress-download-btn.png)](https://wordpress.org/plugins/wp-php-console/)
 
 
 ## Installation
