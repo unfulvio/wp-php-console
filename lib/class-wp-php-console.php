@@ -274,6 +274,11 @@ class WP_PHP_Console {
 		if ( ! $password )
 			return;
 
+		// Selectively remove slashes added by WordPress as expected by PhpConsole
+		if(isset($_POST[PhpConsole\Connector::POST_VAR_NAME])) {
+			$_POST[PhpConsole\Connector::POST_VAR_NAME] = stripslashes_deep($_POST[PhpConsole\Connector::POST_VAR_NAME]);
+		}
+
 		$connector = PhpConsole\Connector::getInstance();
 		$connector->setPassword( $password );
 
