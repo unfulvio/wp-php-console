@@ -53,7 +53,7 @@ class WP_PHP_Console {
 	public function __construct() {
 
 		$this->plugin_name = 'wp-php-console';
-		$this->version = '1.1.0';
+		$this->version = '1.2.3';
 		$this->options = get_option( 'wp-php-console' );
 
 		add_action( 'plugins_loaded',   array( $this, 'set_locale' ) );

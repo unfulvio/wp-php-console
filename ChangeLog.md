@@ -1,4 +1,7 @@
-### 1.2.1 (15 jan 2015)
+### 1.2.3 (21 jan 2015)
+* Fixes "Wrong PHP Console eval request signature" error when executing WordPress code from terminal, props @Polfo @barbushin
+
+### 1.2.2 (15 jan 2015)
 * Submission to WordPress.org plugins repository.
 
 ### 1.2.1 (12 dec 2014)
