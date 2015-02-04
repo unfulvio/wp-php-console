@@ -82,7 +82,7 @@ class WP_PHP_Console {
 
 		add_options_page(
 			__( 'WP PHP Console', $this->plugin_name ),
-			__( 'PHP Console', $this->plugin_name ),
+			__( 'WP PHP Console', $this->plugin_name ),
 			'manage_options',
 			$this->plugin_name,
 			array( $this, 'settings_page' )
