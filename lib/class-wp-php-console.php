@@ -376,7 +376,7 @@ class WP_PHP_Console {
 			$connector->enableSslOnlyMode();
 
 		$allowedIpMasks = isset( $options['ip'] ) ? ( ! empty( $options['ip'] ) ? explode( ',', $options['ip'] ) : '' ) : '';
-		if ( ! is_array( $allowedIpMasks ) && ! empty( $allowedIpMasks ) )
+		if ( is_array( $allowedIpMasks ) && ! empty( $allowedIpMasks ) )
 			$connector->setAllowedIpMasks( (array) $allowedIpMasks );
 
 		// Apply 'register' option to PHP Console
