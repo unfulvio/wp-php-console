@@ -52,6 +52,12 @@ None yet.
 
 == Changelog ==
 
+= 1.2.4 =
+* Added configuration options
+* - Register PC class
+* - Show Call Stack
+* - Short Path Names
+
 = 1.2.3 =
 * Fixes "Wrong PHP Console eval request signature" error when executing WordPress code from terminal
 

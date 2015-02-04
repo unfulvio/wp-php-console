@@ -53,7 +53,7 @@ class WP_PHP_Console {
 	public function __construct() {
 
 		$this->plugin_name = 'wp-php-console';
-		$this->version = '1.2.3';
+		$this->version = '1.2.4 beta1';
 		$this->options = get_option( 'wp-php-console' );
 
 		add_action( 'plugins_loaded',   array( $this, 'set_locale' ) );
@@ -135,6 +135,30 @@ class WP_PHP_Console {
 			'wp_php_console'
 		);
 
+		add_settings_field(
+			'register',
+			__( 'Register PC Class ', $this->plugin_name ),
+			array( $this, 'register_field' ),
+			$this->plugin_name,
+			'wp_php_console'
+		);
+
+		add_settings_field(
+			'stack',
+			__( 'Show Call Stack', $this->plugin_name ),
+			array( $this, 'stack_field' ),
+			$this->plugin_name,
+			'wp_php_console'
+		);
+
+		add_settings_field(
+			'short',
+			__( 'Short Path Names', $this->plugin_name ),
+			array( $this, 'short_field' ),
+			$this->plugin_name,
+			'wp_php_console'
+		);
+
 	}
 
 	/**
@@ -188,6 +212,60 @@ class WP_PHP_Console {
 	}
 
 	/**
+	 * Settings page Register PC Class field.
+	 *
+	 * @since   1.2.4
+	 */
+	public function register_field() {
+
+		$register = ! empty( $this->options['register'] );
+
+		printf (
+			'<input type="checkbox" id="wp-php-console-register" name="wp_php_console[register]" value="1" %s /> ',
+			$register ? 'checked="checked"' : ''
+		);
+		echo '<label for="wp-php-console-register">' . __( 'Yes (optional)', $this->plugin_name ) . '</label>';
+		echo '<br />';
+		echo '<small class="description">' . __( 'Choose to register PC in the global namespace. Allows to write PC::debug($var, $tag) or PC::magic_tag($var) instructions in PHP to inspect $var in the JavaScript-console.', $this->plugin_name ) . '</small>';
+	}
+
+	/**
+	 * Settings page Show Call Stack field.
+	 *
+	 * @since   1.2.4
+	 */
+	public function stack_field() {
+
+		$stack = ! empty( $this->options['stack'] );
+
+		printf (
+			'<input type="checkbox" id="wp-php-console-stack" name="wp_php_console[stack]" value="1" %s /> ',
+			$stack ? 'checked="checked"' : ''
+		);
+		echo '<label for="wp-php-console-stack">' . __( 'Yes (optional)', $this->plugin_name ) . '</label>';
+		echo '<br />';
+		echo '<small class="description">' . __( 'Choose to also see the call stack when PHP Console writes to the browser\'s JavaScript-console.', $this->plugin_name ) . '</small>';
+	}
+
+	/**
+	 * Settings page Show Short Paths field.
+	 *
+	 * @since   1.2.4
+	 */
+	public function short_field() {
+
+		$short = ! empty( $this->options['short'] );
+
+		printf (
+			'<input type="checkbox" id="wp-php-console-short" name="wp_php_console[short]" value="1" %s /> ',
+			$short ? 'checked="checked"' : ''
+		);
+		echo '<label for="wp-php-console-short">' . __( 'Yes (optional)', $this->plugin_name ) . '</label>';
+		echo '<br />';
+		echo '<small class="description">' . __( 'Choose to shorten PHP Console error sources and traces paths in browser\'s JavaScript-console. Paths like /server/path/to/document/root/WP/wp-admin/admin.php:31 will be displayed as /W/wp-admin/admin.php:31', $this->plugin_name ) . '</small>';
+	}
+
+	/**
 	 * Sanitize user input in settings page.
 	 *
 	 * @since   1.0.0
@@ -208,6 +286,12 @@ class WP_PHP_Console {
 
 			if ( isset( $input['ip'] ) )
 				$sanitized_input['ip'] = sanitize_text_field( $input['ip'] );
+
+			$sanitized_input['register'] = empty( $input['register'] ) ? '' : 1;
+
+			$sanitized_input['stack'   ] = empty( $input['stack'   ] ) ? '' : 1;
+
+			$sanitized_input['short'   ] = empty( $input['short'] ) ? '' : 1;
 
 			return $sanitized_input;
 	}
@@ -253,6 +337,7 @@ class WP_PHP_Console {
 			<li><?php _e( 'Set a password for the eval terminal in the options below and hit `save changes`.', $this->plugin_name ); ?></li>
 			<li><?php _e( 'Reload any page of your installation and click on the key icon in your Chrome browser address bar, enter your password and access the terminal.', $this->plugin_name ); ?></li>
 			<li><?php _e( 'From the eval terminal you can execute any PHP or WordPress specific function, including functions from your plugins and active theme.', $this->plugin_name ); ?></li>
+			<li><?php _e( 'In your PHP code, you can call PHP Console debug statements like debug($var, $tag) to display PHP variables in the browser\'s JavaScript-console (Ctrl+Shift+J) and optionally filter selected tags through the browser\'s Remote PHP Eval Terminal screen\'s Ignore Debug options.', $this->plugin_name ); ?></li>
 		</ol>
 		<?php
 
@@ -293,6 +378,24 @@ class WP_PHP_Console {
 		$allowedIpMasks = isset( $options['ip'] ) ? ( ! empty( $options['ip'] ) ? explode( ',', $options['ip'] ) : '' ) : '';
 		if ( ! is_array( $allowedIpMasks ) && ! empty( $allowedIpMasks ) )
 			$connector->setAllowedIpMasks( (array) $allowedIpMasks );
+
+		// Apply 'register' option to PHP Console
+		if ( ! empty( $options['register'] ) ) {
+			PhpConsole\Helper::register();
+			// PC::debug('PC::debug() is available');
+		}
+
+		// Apply 'stack' option to PHP Console
+		if ( ! empty( $options['stack'] ) ) {
+			$connector->getDebugDispatcher()->detectTraceAndSource = true;
+			// PC::debug('call stack is shown');
+		}
+
+		// Apply 'short' option to PHP Console
+		if ( ! empty( $options['short'] ) ) {
+			$connector->setSourcesBasePath($_SERVER['DOCUMENT_ROOT']);
+			// PC::debug('short path is shown');
+		}
 
 		$evalProvider = $connector->getEvalDispatcher()->getEvalProvider();
 
