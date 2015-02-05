@@ -401,13 +401,11 @@ class WP_PHP_Console {
 		// Apply 'stack' option to PHP Console
 		if ( ! empty( $options['stack'] ) ) {
 			$connector->getDebugDispatcher()->detectTraceAndSource = true;
-			// PC::debug('call stack is shown');
 		}
 
 		// Apply 'short' option to PHP Console
 		if ( ! empty( $options['short'] ) ) {
 			$connector->setSourcesBasePath($_SERVER['DOCUMENT_ROOT']);
-			// PC::debug('short path is shown');
 		}
 
 		$evalProvider = $connector->getEvalDispatcher()->getEvalProvider();
