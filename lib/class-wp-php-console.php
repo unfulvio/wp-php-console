@@ -55,7 +55,7 @@ class WP_PHP_Console {
 
 		$this->plugin_name = 'wp-php-console';
 		$this->version = '1.2.4 beta1';
-		$this->options = get_option( 'wp-php-console' );
+		$this->options = get_option( 'wp_php_console' );
 
 		add_action( 'plugins_loaded',   array( $this, 'set_locale' ) );
 		add_action( 'admin_menu',       array( $this, 'register_settings_page' ) );
@@ -304,7 +304,7 @@ class WP_PHP_Console {
 	 */
 	function settings_page() {
 
-		$this->options = get_option( 'wp_php_console' );
+//		$this->options = get_option( 'wp_php_console' );
 		?>
 		<div class="wrap">
 			<h2><?php _e( 'WP PHP Console', $this->plugin_name ); ?></h2>
@@ -354,7 +354,7 @@ class WP_PHP_Console {
 		if ( ! class_exists( 'PhpConsole\Connector' ) )
 			return;
 
-		$options = get_option( 'wp_php_console' );
+		$options = $this->options;
 
 		$password = isset( $options['password'] ) ? $options['password'] : '';
 
