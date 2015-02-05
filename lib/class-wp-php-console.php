@@ -17,6 +17,7 @@
  * @package    WP_PHP_Console
  * @subpackage WP_PHP_Console/lib
  */
+
 class WP_PHP_Console {
 
 	/**
@@ -72,7 +73,7 @@ class WP_PHP_Console {
 			false,
 			dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
-	
+
 	/**
 	 * Plugin Settings menu.
 	 *
@@ -356,8 +357,18 @@ class WP_PHP_Console {
 		$options = get_option( 'wp_php_console' );
 
 		$password = isset( $options['password'] ) ? $options['password'] : '';
-		if ( ! $password )
-			return;
+
+		// Display admin notice and abort if no password
+		if ( ! $password ) {
+			add_action('admin_notices', function() {
+				?>
+				<div class="update-nag">
+					<?php _e( 'WP PHP Console plugin: Please enter a password in Settings / WP PHP Console for it to work.', $this->plugin_name ); ?>
+				</div>
+				<?php
+			});
+			return; // abort
+		}
 
 		// Selectively remove slashes added by WordPress as expected by PhpConsole
 		if(isset($_POST[PhpConsole\Connector::POST_VAR_NAME])) {
@@ -376,7 +387,7 @@ class WP_PHP_Console {
 			$connector->enableSslOnlyMode();
 
 		$allowedIpMasks = isset( $options['ip'] ) ? ( ! empty( $options['ip'] ) ? explode( ',', $options['ip'] ) : '' ) : '';
-		if ( ! is_array( $allowedIpMasks ) && ! empty( $allowedIpMasks ) )
+		if ( is_array( $allowedIpMasks ) && ! empty( $allowedIpMasks ) )
 			$connector->setAllowedIpMasks( (array) $allowedIpMasks );
 
 		// Apply 'register' option to PHP Console
