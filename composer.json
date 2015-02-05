@@ -1,7 +1,7 @@
 {
 	"name": "nekojira/wp-php-console",
 	"description": "A WordPress implementation of PHP Console.",
-	"version": "1.2.3",
+	"version": "1.3.0",
 	"keywords": [
 		"wordpress",
 		"debug",
