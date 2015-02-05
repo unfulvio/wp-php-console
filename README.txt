@@ -12,9 +12,11 @@ An implementation of PHP Console for WordPress. Use Chrome Dev Tools to debug yo
 
 == Description ==
 
-WP PHP Console allows you to handle WordPress PHP errors & exceptions, dump variables, execute PHP code remotely and many other things using Google Chrome extension PHP Console and PhpConsole server library.
+WP PHP Console allows you to handle PHP errors & exceptions, dump variables, execute PHP code remotely and many other things using Google Chrome extension PHP Console and PhpConsole server library.
 
 [PHP Console](https://github.com/barbushin/php-console) is a PHP library by barbushin.
+
+This implementation for WordPress installs the PhpConsole server library and provides a WP PHP Console Settings page to Administrators.
 
 For support and pull requests, please refer to [WP PHP Console Github repo](https://github.com/nekojira/wp-php-console) and read the instructions there - thank you.
 
