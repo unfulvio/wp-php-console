@@ -381,7 +381,9 @@ class WP_PHP_Console {
 
 		// Apply 'register' option to PHP Console
 		if ( ! empty( $options['register'] ) ) {
-			PhpConsole\Helper::register();
+			if( !class_exists( 'PC', false ) ) { // only if not registered yet
+				PhpConsole\Helper::register( );
+			}
 			// PC::debug('PC::debug() is available');
 		}
 
