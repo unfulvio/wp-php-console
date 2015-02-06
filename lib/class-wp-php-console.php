@@ -54,11 +54,38 @@ class WP_PHP_Console {
 	public function __construct() {
 
 		$this->plugin_name = 'wp-php-console';
-		$this->version = '1.2.4 beta1';
+		$this->version = '1.3.1 beta1';
 		$this->options = get_option( 'wp_php_console' );
 
+		// Perform PHP Console initialisation required asap for other code to be able to output to the JavaScript console
+
+		$connector = PhpConsole\Connector::getInstance();
+
+		// Apply 'register' option to PHP Console
+		if ( ! empty( $this->options['register'] ) ) {
+			if( !class_exists( 'PC', false ) ) { // only if not registered yet
+				PhpConsole\Helper::register( );
+			}
+			// PC::debug('PC::debug() is available');
+		}
+
+		// Apply 'stack' option to PHP Console
+		if ( ! empty( $this->options['stack'] ) ) {
+			$connector->getDebugDispatcher()->detectTraceAndSource = true;
+		}
+
+		// Apply 'short' option to PHP Console
+		if ( ! empty( $this->options['short'] ) ) {
+			$connector->setSourcesBasePath($_SERVER['DOCUMENT_ROOT']);
+		}
+
+		// Initialise WordPress actions
+
+		// Translation
 		add_action( 'plugins_loaded',   array( $this, 'set_locale' ) );
+		// Admin menu
 		add_action( 'admin_menu',       array( $this, 'register_settings_page' ) );
+		// Delay further PHP Console initialisation to have more context during Remote PHP execution
 		add_action( 'wp_loaded',   array( $this, 'init' ) );
 	}
 
@@ -389,24 +416,6 @@ class WP_PHP_Console {
 		$allowedIpMasks = isset( $options['ip'] ) ? ( ! empty( $options['ip'] ) ? explode( ',', $options['ip'] ) : '' ) : '';
 		if ( is_array( $allowedIpMasks ) && ! empty( $allowedIpMasks ) )
 			$connector->setAllowedIpMasks( (array) $allowedIpMasks );
-
-		// Apply 'register' option to PHP Console
-		if ( ! empty( $options['register'] ) ) {
-			if( !class_exists( 'PC', false ) ) { // only if not registered yet
-				PhpConsole\Helper::register( );
-			}
-			// PC::debug('PC::debug() is available');
-		}
-
-		// Apply 'stack' option to PHP Console
-		if ( ! empty( $options['stack'] ) ) {
-			$connector->getDebugDispatcher()->detectTraceAndSource = true;
-		}
-
-		// Apply 'short' option to PHP Console
-		if ( ! empty( $options['short'] ) ) {
-			$connector->setSourcesBasePath($_SERVER['DOCUMENT_ROOT']);
-		}
 
 		$evalProvider = $connector->getEvalDispatcher()->getEvalProvider();
 
