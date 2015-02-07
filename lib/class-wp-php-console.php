@@ -54,7 +54,7 @@ class WP_PHP_Console {
 	public function __construct() {
 
 		$this->plugin_name = 'wp-php-console';
-		$this->version = '1.3.1 beta1';
+		$this->version = '1.3.1';
 		$this->options = get_option( 'wp_php_console' );
 
 		// Perform PHP Console initialisation required asap for other code to be able to output to the JavaScript console
@@ -63,7 +63,7 @@ class WP_PHP_Console {
 
 		// Apply 'register' option to PHP Console
 		if ( ! empty( $this->options['register'] ) ) {
-			if( !class_exists( 'PC', false ) ) { // only if not registered yet
+			if( ! class_exists( 'PC', false ) ) { // only if PC not registered yet
 				PhpConsole\Helper::register( );
 			}
 			// PC::debug('PC::debug() is available');
@@ -331,7 +331,6 @@ class WP_PHP_Console {
 	 */
 	function settings_page() {
 
-//		$this->options = get_option( 'wp_php_console' );
 		?>
 		<div class="wrap">
 			<h2><?php _e( 'WP PHP Console', $this->plugin_name ); ?></h2>

@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: development, debug, debugging
 Requires at least: 3.6.0
 Tested up to: 4.1
-Stable tag: 1.2.3
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -54,8 +54,13 @@ None yet.
 
 == Changelog ==
 
+<<<<<<< HEAD
 = 1.2.4 =
 * Added configuration options nekojira/wp-php-console#5
+=======
+= 1.3.0 =
+* Enhancement: added configuration options (props @polfo)
+>>>>>>> GithubPolfo/wp-php-console/master
 * - Register PC class
 * - Show Call Stack
 * - Short Path Names

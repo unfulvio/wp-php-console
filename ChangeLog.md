@@ -1,3 +1,9 @@
+### 1.3.0 (05 feb 2015)
+* Enhancement: added configuration options - props @Polfo
+* - Register PC class
+* - Show Call Stack
+* - Short Path Names
+
 ### 1.2.3 (21 jan 2015)
 * Fixes "Wrong PHP Console eval request signature" error when executing WordPress code from terminal, props @Polfo @barbushin
 
