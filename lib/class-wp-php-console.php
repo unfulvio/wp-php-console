@@ -17,6 +17,7 @@
  * @package    WP_PHP_Console
  * @subpackage WP_PHP_Console/lib
  */
+
 class WP_PHP_Console {
 
 	/**
@@ -53,11 +54,38 @@ class WP_PHP_Console {
 	public function __construct() {
 
 		$this->plugin_name = 'wp-php-console';
-		$this->version = '1.3.0';
-		$this->options = get_option( 'wp-php-console' );
+		$this->version = '1.3.1';
+		$this->options = get_option( 'wp_php_console' );
 
+		// Perform PHP Console initialisation required asap for other code to be able to output to the JavaScript console
+
+		$connector = PhpConsole\Connector::getInstance();
+
+		// Apply 'register' option to PHP Console
+		if ( ! empty( $this->options['register'] ) ) {
+			if( ! class_exists( 'PC', false ) ) { // only if PC not registered yet
+				PhpConsole\Helper::register( );
+			}
+			// PC::debug('PC::debug() is available');
+		}
+
+		// Apply 'stack' option to PHP Console
+		if ( ! empty( $this->options['stack'] ) ) {
+			$connector->getDebugDispatcher()->detectTraceAndSource = true;
+		}
+
+		// Apply 'short' option to PHP Console
+		if ( ! empty( $this->options['short'] ) ) {
+			$connector->setSourcesBasePath($_SERVER['DOCUMENT_ROOT']);
+		}
+
+		// Initialise WordPress actions
+
+		// Translation
 		add_action( 'plugins_loaded',   array( $this, 'set_locale' ) );
+		// Admin menu
 		add_action( 'admin_menu',       array( $this, 'register_settings_page' ) );
+		// Delay further PHP Console initialisation to have more context during Remote PHP execution
 		add_action( 'wp_loaded',   array( $this, 'init' ) );
 	}
 
@@ -72,7 +100,7 @@ class WP_PHP_Console {
 			false,
 			dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
-	
+
 	/**
 	 * Plugin Settings menu.
 	 *
@@ -82,7 +110,7 @@ class WP_PHP_Console {
 
 		add_options_page(
 			__( 'WP PHP Console', $this->plugin_name ),
-			__( 'PHP Console', $this->plugin_name ),
+			__( 'WP PHP Console', $this->plugin_name ),
 			'manage_options',
 			$this->plugin_name,
 			array( $this, 'settings_page' )
@@ -303,7 +331,6 @@ class WP_PHP_Console {
 	 */
 	function settings_page() {
 
-		$this->options = get_option( 'wp_php_console' );
 		?>
 		<div class="wrap">
 			<h2><?php _e( 'WP PHP Console', $this->plugin_name ); ?></h2>
@@ -353,11 +380,21 @@ class WP_PHP_Console {
 		if ( ! class_exists( 'PhpConsole\Connector' ) )
 			return;
 
-		$options = get_option( 'wp_php_console' );
+		$options = $this->options;
 
 		$password = isset( $options['password'] ) ? $options['password'] : '';
-		if ( ! $password )
-			return;
+
+		// Display admin notice and abort if no password
+		if ( ! $password ) {
+			add_action('admin_notices', function() {
+				?>
+				<div class="update-nag">
+					<?php _e( 'WP PHP Console plugin: Please enter a password in Settings / WP PHP Console for it to work.', $this->plugin_name ); ?>
+				</div>
+				<?php
+			});
+			return; // abort
+		}
 
 		// Selectively remove slashes added by WordPress as expected by PhpConsole
 		if(isset($_POST[PhpConsole\Connector::POST_VAR_NAME])) {
@@ -378,24 +415,6 @@ class WP_PHP_Console {
 		$allowedIpMasks = isset( $options['ip'] ) ? ( ! empty( $options['ip'] ) ? explode( ',', $options['ip'] ) : '' ) : '';
 		if ( is_array( $allowedIpMasks ) && ! empty( $allowedIpMasks ) )
 			$connector->setAllowedIpMasks( (array) $allowedIpMasks );
-
-		// Apply 'register' option to PHP Console
-		if ( ! empty( $options['register'] ) ) {
-			PhpConsole\Helper::register();
-			// PC::debug('PC::debug() is available');
-		}
-
-		// Apply 'stack' option to PHP Console
-		if ( ! empty( $options['stack'] ) ) {
-			$connector->getDebugDispatcher()->detectTraceAndSource = true;
-			// PC::debug('call stack is shown');
-		}
-
-		// Apply 'short' option to PHP Console
-		if ( ! empty( $options['short'] ) ) {
-			$connector->setSourcesBasePath($_SERVER['DOCUMENT_ROOT']);
-			// PC::debug('short path is shown');
-		}
 
 		$evalProvider = $connector->getEvalDispatcher()->getEvalProvider();
 

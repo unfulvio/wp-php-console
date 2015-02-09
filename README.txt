@@ -8,33 +8,74 @@ Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-An implementation of PHP Console for WordPress. Use Chrome Dev Tools to debug your WordPress installation!
+An implementation of PHP Console as a WordPress plugin.
+Use Chrome Dev Tools to debug your WordPress installation!
 
 == Description ==
 
-WP PHP Console allows you to handle WordPress PHP errors & exceptions, dump variables, execute PHP code remotely and many other things using Google Chrome extension PHP Console and PhpConsole server library.
+> PHP Console allows you to handle PHP errors & exceptions, dump variables, execute PHP code remotely and many other things using [Google Chrome extension PHP Console](https://chrome.google.com/webstore/detail/php-console/nfhmhhlpfleoednkpnnnkolmclajemef) and [PHP Console server library](https://github.com/barbushin/php-console), both from [Sergey Barbushin](https://github.com/barbushin).
 
-[PHP Console](https://github.com/barbushin/php-console) is a PHP library by barbushin.
+This WP PHP Console [WordPress](http://www.wordpress.org) plugin includes and initialises the PHP Console server library and provides a WP PHP Console Settings page to Administrators.
+
+PHP Console allows you to test any WordPress specific function or class (including those introduced by your active theme and plugins!) from Remote PHP Eval Terminal and inspect results, catch error and warnings with call stack trace straight from the Chrome JavaScript console.
+
+PHP Console also allows you to "`print_r()`" PHP variables from the WordPress server to the JavaScript console and optionally filter some of them from the Eval Terminal based on a tag mechanism.
+
+PHP Console uses an http(s) side channel for communication between Browser and Server.
+The debug information from the server does not appear in the HTML content of your pages but directly in the Browser's JavaScript console.
 
 For support and pull requests, please refer to [WP PHP Console Github repo](https://github.com/nekojira/wp-php-console) and read the instructions there - thank you.
 
 == Installation ==
 
-Install as any other WordPress plugin from your WordPress dashboard or through direct upload to server. In the latter case:
+1. First, install [Google Chrome extension PHP Console](https://chrome.google.com/webstore/detail/php-console/nfhmhhlpfleoednkpnnnkolmclajemef) from the [Chrome WebStore](https://chrome.google.com/webstore/search/php%20console?_category=extensions).
+Make sure the PHP Console Chrome extension is enabled through chrome://extensions/.
 
-1. Upload the plugin to your `/wp-content/plugins/` directory (make sure the plugin resides in `wp-php-console` directory).
-2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. In the `Settings` menu go to `PHP Console`, edit any options and activate the console. You must also set a password otherwise the plugin won't work.
+2. Then, add this plugin to your WordPress installation
 
-To make use of this plugin, you need to have PHP Console installed in your Google Chrome browser.
-To install the extension, take the following steps:
+  - Install as any other WordPress plugin from your WordPress `Plugins` `Add New` menu or
 
-1. Go to https://chrome.google.com/webstore/ and browse for PHP Console (this is normally located at https://chrome.google.com/webstore/detail/php-console/nfhmhhlpfleoednkpnnnkolmclajemef).
-2. Follow the extension instructions.
-3. Once installed, you need to navigate to your WordPress installation.
-4. If you configured WP PHP Plugin correctly, your browser address bar should show a "key" icon, which, if clicked, will prompt for an authentication. Enter the password you have set earlier in the plugin options page.
-5. "Key" icon will change into a terminal icon, click on and open the eval terminal.
-6. You should be ready to go. You can use the PHP Console to debug your WordPress installation through your javascript console bundled with Chrome Dev Tools.
+  - Upload it in `wp-php-console` directory into your `wp-content/plugins/` directory or corresponding plugins directory in your installation
+
+3. Activate the plugin through the `Plugins` menu in WordPress.
+
+4. In the `Settings` menu go to `WP PHP Console`
+
+  - Activate WP PHP Console from WordPress `Plugins` menu as you would do with any other plugin.
+
+  - Then go to `WP PHP Console` settings page from the `Settings` menu. From here you need to enter a password for the Eval Terminal.
+
+  - You can also set other options.
+
+= Options =
+
+In `Settings` `WP PHP Console` page
+
+- You can tick a checkbox to force PHP Console to a SSL connection (of course then if you don't actually have SSL (https), PHP Console simply won't work).
+
+- You can secure your server by specifying IP addresses to restrict the accessibility from the Eval Terminal
+(a single address eg. `192.168.0.4` or an address mask eg. `192.168.*.*` or multiple IPs, comma separated `192.168.1.22,192.168.1.24,192.168.3.*`).
+In case of having issues connecting with the Remote PHP Eval Terminal, temporarily leave this blank.
+
+- You can tick a checkbox to register `PC` in the global PHP namespace.
+This allows to write PC::debug($var, $tag) or PC::magic_tag($var) instructions in PHP to inspect $var in the JavaScript console.
+
+- You can tick a checkbox to also see the call stack when PHP Console server writes to the JavaScript console.
+
+- You can tick a checkbox to shorten PHP Console error sources and traces paths in the JavaScript console.
+Paths like `/server/path/to/document/root/WP/wp-admin/admin.php:38` will be displayed as `/WP/wp-admin/admin.php:38`
+
+== Usage ==
+
+After you entered WP PHP Plugin password, your browser address bar should show a yellow "key" icon, which, if clicked, will prompt for the password you have set earlier.
+The "key" icon will change into a "terminal" icon, click on it to open the PHP Console eval & options form.
+
+After entering the correct password, you can use the Eval Terminal in the PHP Console eval & options form and run any PHP code from it, including WordPress's own functions: enter one or more lines of PHP code in the black Eval terminal screen, press Ctrl+Enter and see the result in Chrome Dev Tools JavaScript console.
+The result includes the output, the return value and the net server execution time.
+
+In your PHP code on the Server, you can call PHP Console debug statements like `PC::debug( $var, $tag )` to display PHP variables in the JavaScript console and optionally filter selected tags through the PHP Console eval & options form opened from the address bar in your browser.
+
+In the JavaScript console you will see printed any PC::debug() information, PHP errors, warnings, notices with optional stack trace, which will be useful to debug your plugin or theme.
 
 == Frequently Asked Questions ==
 
@@ -44,7 +85,50 @@ No, but it makes use of Sergey's PHP Console library as it is.
 
 = Does it work with Firefox? Internet Explorer? Opera? Other browsers? =
 
-No it doesn't, unless PHP Console is ported as a Firefox add-on for example.
+No it doesn't, unless PHP Console extension is ported as a Firefox add-on for example.
+
+= Tell me about security risks =
+
+PHP Console allows execution of any remote PHP code. Use IP address protection. Choose a strong password.
+
+You should NOT activate this plugin or PHP Console library in a production environment, rather a development/testing environment.
+You will otherwise add more load to your server and put your site at risk.
+
+It may also be safe to disable the browser plugin when not needed.
+
+= Why are my PHP arrays shown as objects? =
+
+The JavaScript console shows PHP variables converted to JavaScript variables.
+A consequence of this is that associative PHP arrays like ['one'=>1, 'two'] are shown as object, automatically index arrays like [1, 'two'] are shown as array.
+
+= Fatal error: Class 'PC' not found in 'my code' =
+
+`PC::debug( $my_var, $my_tag )` can only be called after the WordPress core included the WP PHP Console plugin.
+
+You could move your debug code or either do something like
+
+`
+  // delay use of PC class until WP PHP Console plugin is included
+  add_action('plugins_loaded', function () use ($my_var) {
+    // send $my_var with tag 'my_tag' to the JavaScript console through PHP Console Server Library and PHP Console Chrome Plugin
+    PC::my_tag($my_var);
+  });
+`
+
+or
+
+`
+  // PHP Console autoload
+  require_once dirname( __FILE__ ) . '/wp-php-console/vendor/autoload.php';
+
+  // make PC class available in global PHP scope
+  if( !class_exists( 'PC', false ) ) PhpConsole\Helper::register();
+
+    // send $my_var with tag 'my_tag' to the JavaScript console through PHP Console Server Library and PHP Console Chrome Plugin
+  PC::my_tag($my_var);
+
+`
+
 
 == Screenshots ==
 
@@ -52,28 +136,37 @@ None yet.
 
 == Changelog ==
 
-= 1.3.0 =
-* Enhancement: added configuration options (props @polfo)
-* - Register PC class
-* - Show Call Stack
-* - Short Path Names
+= 1.3.1 (feb 2015) =
+* Enhancement: earlier PC initialisation
+* Enhancement: synchronized documentation for GitHub and WordPress
 
-= 1.2.3 =
-* Fixes "Wrong PHP Console eval request signature" error when executing WordPress code from terminal
+= 1.3.0 (05 feb 2015) =
+* Enhancement: added configuration options - props @Polfo
+  - Register PC class
+  - Show Call Stack
+  - Short Path Names
+* Fix: IP mask
 
-= 1.2.2 =
+= 1.2.3 (21 jan 2015) =
+
+* Fixes "Wrong PHP Console eval request signature" error when executing WordPress code from terminal, props @Polfo @barbushin
+
+= 1.2.2 (15 jan 2015) =
 * Bugfixes
-* Submission to WordPress.org plugins repo
+* Submission to WordPress.org plugins repository.
 
-= 1.2.0 =
-* Updated dependencies
+= 1.2.1 (12 dec 2014) =
+* Fixed allowed IPs bug.
 
-= 1.1.0 =
+= 1.2.0 (11 dec 2014) =
+* Updated dependencies and got rid of git submodules.
+
+= 1.1.0 (07 nov 2014) =
 * Added donation link/button.
 * PHP Console server is now instantiated later, allowing to catch all your theme functions too.
 * Included PHP Console server library as git submodule rather than a composer dependency.
 
-= 1.0.0 =
+= 1.0.0 (06 nov 2014) =
 * Added three options to set a custom password, enable on SSL only, authorized IP ranges.
 * First public release.
 
