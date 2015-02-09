@@ -61,15 +61,15 @@ In the JavaScript console you will see printed any PC::debug() information, PHP 
 
 ## Frequently Asked Questions
 
-### Is this an official plugin from PHP Console author?
+#### Is this an official plugin from PHP Console author?
 
 No, but it makes use of Sergey's PHP Console library as it is.
 
-### Does it work with Firefox, IE, Opera or other browsers?
+#### Does it work with Firefox, IE, Opera or other browsers?
 
 No it doesn't, unless PHP Console browser extension is ported, for example, as a Firefox add-on.
 
-### Can I use PHP Console in a live production environment?
+#### Can I use PHP Console in a live production environment?
 
 You *can* but it is probably not a good idea. You should do your debugging and testing on a development/testing environment on a staging server or local machine. Likewise, you normally wouldn't want to turn on PHP error reporting or set WP_DEBUG to true in a live site as you wouldn't want to display error information to public. Furthermore, PHP Console allows execution of any remote PHP code through terminal - for this you can set a strong password and restrict the IP address range to access the terminal, but still it's not advisable. Besides putting your site at risk, you will also add more load to your server.
 
