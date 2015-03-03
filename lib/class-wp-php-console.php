@@ -62,10 +62,13 @@ class WP_PHP_Console {
 
 		// Apply 'register' option to PHP Console
 		if ( ! empty( $this->options['register'] ) ) {
-			if( ! class_exists( 'PC', false ) ) { // only if PC not registered yet
+
+			if ( ! class_exists( 'PC', false ) ) {
+				// only if PC not registered yet
 				PhpConsole\Helper::register( );
 			}
-			// PC::debug('PC::debug() is available');
+			// PC::debug( 'PC::debug() is available');
+
 		}
 
 		// Apply 'stack' option to PHP Console
@@ -75,17 +78,17 @@ class WP_PHP_Console {
 
 		// Apply 'short' option to PHP Console
 		if ( ! empty( $this->options['short'] ) ) {
-			$connector->setSourcesBasePath($_SERVER['DOCUMENT_ROOT']);
+			$connector->setSourcesBasePath( $_SERVER['DOCUMENT_ROOT'] );
 		}
 
 		// Initialise WordPress actions
 
 		// Translation
-		add_action( 'plugins_loaded',   array( $this, 'set_locale' ) );
+		add_action( 'plugins_loaded', array( $this, 'set_locale' ) );
 		// Admin menu
-		add_action( 'admin_menu',       array( $this, 'register_settings_page' ) );
+		add_action( 'admin_menu', array( $this, 'register_settings_page' ) );
 		// Delay further PHP Console initialisation to have more context during Remote PHP execution
-		add_action( 'wp_loaded',   array( $this, 'init' ) );
+		add_action( 'wp_loaded', array( $this, 'init' ) );
 
 	}
 
@@ -350,18 +353,16 @@ class WP_PHP_Console {
 				?>
 			</form>
 		</div>
-		<hr />
-		<p><?php _e( 'Like this plugin? Was it useful to you? Please consider a donation to support open source software development.', $this->plugin_name ); ?></p>
-		<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-			<input type="hidden" name="cmd" value="_s-xclick">
-			<input type="hidden" name="hosted_button_id" value="GSTFUY3LMCA5W">
-			<input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
-			<img alt="" border="0" src="https://www.paypalobjects.com/it_IT/i/scr/pixel.gif" width="1" height="1">
-		</form>
 		<?php
 
 	}
 
+	/**
+	 * Settings page additional info.
+	 * Prints more details on the plugin settings page.
+	 *
+	 * @since 1.3.0
+	 */
 	public function settings_info() {
 
 		?>

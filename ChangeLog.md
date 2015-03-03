@@ -8,11 +8,11 @@
 * Updated readme files.
 
 ### 1.3.0 (05 feb 2015)
+* Fix: IP mask
 * Enhancement: added configuration options - props @Polfo
   - Register PC class
   - Show Call Stack
   - Short Path Names
-* Fix: IP mask
 
 ### 1.2.3 (21 jan 2015)
 
