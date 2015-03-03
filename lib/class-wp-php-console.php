@@ -54,11 +54,10 @@ class WP_PHP_Console {
 	public function __construct() {
 
 		$this->plugin_name = 'wp-php-console';
-		$this->version = '1.3.1';
+		$this->version = '1.3.2';
 		$this->options = get_option( 'wp_php_console' );
 
 		// Perform PHP Console initialisation required asap for other code to be able to output to the JavaScript console
-
 		$connector = PhpConsole\Connector::getInstance();
 
 		// Apply 'register' option to PHP Console
@@ -87,6 +86,7 @@ class WP_PHP_Console {
 		add_action( 'admin_menu',       array( $this, 'register_settings_page' ) );
 		// Delay further PHP Console initialisation to have more context during Remote PHP execution
 		add_action( 'wp_loaded',   array( $this, 'init' ) );
+
 	}
 
 	/**
@@ -117,6 +117,7 @@ class WP_PHP_Console {
 		);
 
 		add_action( 'admin_init', array( $this, 'register_settings'  ) );
+
 	}
 
 	/**
@@ -203,6 +204,7 @@ class WP_PHP_Console {
 		echo '<label for="wp-php-console-ip">' . __( 'Required', $this->plugin_name ) . '</label>';
 		echo '<br />';
 		echo '<small class="description">' . __( 'The password for eval terminal. If empty, the plugin will not work.', $this->plugin_name ) . '</small>';
+
 	}
 
 	/**
@@ -221,6 +223,7 @@ class WP_PHP_Console {
 		echo '<label for="wp-php-console-ssl">' . __( 'Yes (optional)', $this->plugin_name ) . '</label>';
 		echo '<br />';
 		echo '<small class="description">' . __( 'Choose if you want the eval terminal to work only on a SSL connection.', $this->plugin_name ) . '</small>';
+
 	}
 
 	/**
@@ -237,6 +240,7 @@ class WP_PHP_Console {
 		echo '<label for="wp-php-console-ip">' . __( 'IP addresses (optional)', $this->plugin_name ) . '</label>';
 		echo '<br />';
 		echo '<small class="description">' . __( 'You may specify an IP address (e.g. 192.169.1.50), a range of addresses (192.168.*.*) or multiple addresses, comma separated (192.168.10.25,192.168.10.28) to grant access to eval terminal.', $this->plugin_name ) . '</small>';
+
 	}
 
 	/**
@@ -255,6 +259,7 @@ class WP_PHP_Console {
 		echo '<label for="wp-php-console-register">' . __( 'Yes (optional)', $this->plugin_name ) . '</label>';
 		echo '<br />';
 		echo '<small class="description">' . __( 'Choose to register PC in the global namespace. Allows to write PC::debug($var, $tag) or PC::magic_tag($var) instructions in PHP to inspect $var in the JavaScript-console.', $this->plugin_name ) . '</small>';
+
 	}
 
 	/**
@@ -273,6 +278,7 @@ class WP_PHP_Console {
 		echo '<label for="wp-php-console-stack">' . __( 'Yes (optional)', $this->plugin_name ) . '</label>';
 		echo '<br />';
 		echo '<small class="description">' . __( 'Choose to also see the call stack when PHP Console writes to the browser\'s JavaScript-console.', $this->plugin_name ) . '</small>';
+
 	}
 
 	/**
@@ -291,6 +297,7 @@ class WP_PHP_Console {
 		echo '<label for="wp-php-console-short">' . __( 'Yes (optional)', $this->plugin_name ) . '</label>';
 		echo '<br />';
 		echo '<small class="description">' . __( 'Choose to shorten PHP Console error sources and traces paths in browser\'s JavaScript-console. Paths like /server/path/to/document/root/WP/wp-admin/admin.php:31 will be displayed as /W/wp-admin/admin.php:31', $this->plugin_name ) . '</small>';
+
 	}
 
 	/**
@@ -386,20 +393,13 @@ class WP_PHP_Console {
 
 		// Display admin notice and abort if no password
 		if ( ! $password ) {
-			add_action('admin_notices', function() {
-				?>
-				<div class="update-nag">
-					<?php _e( 'WP PHP Console plugin: Please enter a password in Settings / WP PHP Console for it to work.', $this->plugin_name ); ?>
-				</div>
-				<?php
-			});
+			add_action( 'admin_notices', array( $this, 'password_notice' ) );
 			return; // abort
 		}
 
 		// Selectively remove slashes added by WordPress as expected by PhpConsole
-		if(isset($_POST[PhpConsole\Connector::POST_VAR_NAME])) {
-			$_POST[PhpConsole\Connector::POST_VAR_NAME] = stripslashes_deep($_POST[PhpConsole\Connector::POST_VAR_NAME]);
-		}
+		if ( isset( $_POST[PhpConsole\Connector::POST_VAR_NAME] ) )
+			$_POST[PhpConsole\Connector::POST_VAR_NAME] = stripslashes_deep( $_POST[PhpConsole\Connector::POST_VAR_NAME] );
 
 		$connector = PhpConsole\Connector::getInstance();
 		$connector->setPassword( $password );
@@ -427,6 +427,24 @@ class WP_PHP_Console {
    	    $evalProvider->setOpenBaseDirs( $openBaseDirs );
 
 		$connector->startEvalRequestsListener();
+
+	}
+
+	/**
+	 * Admin password notice.
+	 * Prompts user to set a password for PHP Console upon plugin activation.
+	 *
+	 * @since   1.3.2
+	 */
+	public function password_notice() {
+
+		$link = admin_url( 'options-general.php?page=wp-php-console' );
+
+		?>
+		<div class="update-nag">
+			<?php printf( __( 'WP PHP Console: remember to %1$s set a password %2$s if you want to enable terminal.', $this->plugin_name ), '<a href="' . $link .'">', '</a>' ); ?>
+		</div>
+		<?php
 
 	}
 

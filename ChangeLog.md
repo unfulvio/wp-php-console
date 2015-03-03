@@ -1,8 +1,11 @@
 # Changelog
 
+### 1.3.2 (03 mar 2015)
+* Fixes "Fatal error: Using $this when not in object context" upon activation in some installations.
+
 ### 1.3.1 (09 feb 2015)
 * Enhancement: earlier PC initialisation - props @Polfo
-* Updated readme files
+* Updated readme files.
 
 ### 1.3.0 (05 feb 2015)
 * Enhancement: added configuration options - props @Polfo
