@@ -1,5 +1,7 @@
 # WP PHP Console
 
+[![Join the chat at https://gitter.im/nekojira/wp-php-console](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/nekojira/wp-php-console?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 An implementation of [PHP Console](https://github.com/barbushin/php-console "PHP Console") as a [WordPress](http://www.wordpress.org) plugin. Use Chrome Dev Tools to debug your WordPress installation!
 
 ## Description
