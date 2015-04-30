@@ -54,7 +54,7 @@ class WP_PHP_Console {
 	public function __construct() {
 
 		$this->plugin_name = 'wp-php-console';
-		$this->version = '1.3.2';
+		$this->version = '1.3.3';
 		$this->options = get_option( 'wp_php_console' );
 
 		// Perform PHP Console initialisation required asap for other code to be able to output to the JavaScript console

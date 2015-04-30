@@ -3,8 +3,8 @@ Contributors: nekojira
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GSTFUY3LMCA5W
 Tags: development, debug, debugging
 Requires at least: 3.6.0
-Tested up to: 4.1
-Stable tag: 1.3.2
+Tested up to: 4.2.1
+Stable tag: 1.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -118,6 +118,9 @@ or
 None yet.
 
 == Changelog ==
+
+= 1.3.3 =
+* Supports WordPress 4.2
 
 = 1.3.2 =
 * Fixes "Fatal error: Using $this when not in object context" upon activation in some installations.

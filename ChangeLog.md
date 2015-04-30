@@ -1,5 +1,8 @@
 # Changelog
 
+### 1.3.3 (30 apr 2015)
+* Supports WordPress 4.2
+
 ### 1.3.2 (03 mar 2015)
 * Fixes "Fatal error: Using $this when not in object context" upon activation in some installations.
 
