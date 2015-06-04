@@ -1,5 +1,6 @@
 # WP PHP Console
 
+[![GitHub version](https://badge.fury.io/gh/nekojira%2Fwp-php-console.svg)](http://badge.fury.io/gh/nekojira%2Fwp-php-console)
 [![Join the chat at https://gitter.im/nekojira/wp-php-console](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/nekojira/wp-php-console?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 An implementation of [PHP Console](https://github.com/barbushin/php-console "PHP Console") as a [WordPress](http://www.wordpress.org) plugin. Use Chrome Dev Tools to debug your WordPress installation!
@@ -8,7 +9,7 @@ An implementation of [PHP Console](https://github.com/barbushin/php-console "PHP
 
 > PHP Console allows you to handle PHP errors & exceptions, dump variables, execute PHP code remotely and many other things using [Google Chrome extension PHP Console](https://chrome.google.com/webstore/detail/php-console/nfhmhhlpfleoednkpnnnkolmclajemef) and [PHP Console server library](https://github.com/barbushin/php-console).
 
-This implementation of PHP Console allows you to test any WordPress specific function or class (including those introduced by your active theme and plugins!) from a terminal and inspect results, catch error and warnings with call stack trace straight from the Chrome JavaScript console. In other words, besides debugging, you can execute PHP or WordPress specific PHP code straight from the terminal and print PHP variables straight in Chrome Dev Tools JavaScript console rather than your HTML document, cluttering the page.
+This implementation of PHP Console makes easy to debug a WordPress installation from Chrome browser JavaScript console and test any WordPress specific function or class (including those introduced by your active theme and plugins!) from a terminal. You can run any PHP or WordPress specific function and inspect results, catch errors and warnings with call stack trace straight which will be displayed in the Chrome JavaScript console. You can do PHP debugging alongside your JavaScript debugging in one place, without having PHP to print errors and warnings in your HTML page.
 
 [![Download from WordPress.org](https://github.com/nekojira/wp-php-console/blob/master/assets/wordpress-download-btn.png)](https://wordpress.org/plugins/wp-php-console/)
 
@@ -32,7 +33,7 @@ Make sure the PHP Console Chrome extension is enabled through [chrome://extensio
 
   - You can also set other options.
 
-### Options
+## Options
 
 ##### Allow only on SSL	
 Forces PHP Console to connect on a SSL connection only (of course then if you don't actually have SSL (https), PHP Console simply won't work).
@@ -61,7 +62,7 @@ In your PHP code on the Server, you can call PHP Console debug statements like `
 
 In the JavaScript console you will see printed any PC::debug() information, PHP errors, warnings, notices with optional stack trace, which will be useful to debug your plugin or theme.
 
-## Frequently Asked Questions
+## FAQ
 
 #### Is this an official plugin from PHP Console author?
 
@@ -73,13 +74,13 @@ No it doesn't, unless PHP Console browser extension is ported, for example, as a
 
 #### Can I use PHP Console in a live production environment?
 
-You *can* but it is probably not a good idea. You should do your debugging and testing on a development/testing environment on a staging server or local machine. Likewise, you normally wouldn't want to turn on PHP error reporting or set WP_DEBUG to true in a live site as you wouldn't want to display error information to public. Furthermore, PHP Console allows execution of any remote PHP code through terminal - for this you can set a strong password and restrict the IP address range to access the terminal, but still it's not advisable. Besides putting your site at risk, you will also add more load to your server.
+You *can* but it is probably not a good idea. You should do your debugging and testing on a development/testing environment on a staging server or local machine. Likewise, you normally wouldn't want to turn on PHP error reporting or set `WP_DEBUG` to `true` in a live site as you wouldn't want to display error information to public. Furthermore, PHP Console allows execution of any remote PHP code through terminal - for this you can set a strong password and restrict the IP address range to access the terminal, but still it's not advisable. Besides putting your site at risk, you will also add more load to your server.
 
 #### Why are PHP arrays shown as objects?
 
 The JavaScript console prints PHP variables as JavaScript variables. Associative PHP arrays such as `['key1' => 'var2', 'key2' => 'var2', ... ]` are shown as objects; automatically indexed arrays like `[ 'var1', 'var2', ... ]` are shown as arrays.
 
-#### Fatal error: Class 'PC' not found in 'my code'
+#### I got `Fatal error: Class 'PC' not found in 'my code'` - what's that?
 
 `PC::debug( $my_var, $my_tag )` can only be called after the WordPress core included the WP PHP Console plugin.
 
