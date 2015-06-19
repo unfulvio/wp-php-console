@@ -36,19 +36,19 @@ Make sure the PHP Console Chrome extension is enabled through [chrome://extensio
 ## Options
 
 ##### Allow only on SSL	
-Forces PHP Console to connect on a SSL connection only (of course then if you don't actually have SSL (https), PHP Console simply won't work).
+> Forces PHP Console to connect on a SSL connection only (of course then if you don't actually have SSL (https), PHP Console simply won't work).
 
 ##### Allowed IP Masks
-You can secure your server by specifying IP addresses to restrict the accessibility from the Eval Terminal (a single address eg. `192.168.0.4` or an address mask eg. `192.168.*.*` or multiple IPs, comma separated `192.168.1.22,192.168.1.24,192.168.3.*`). In case of having issues connecting with the Remote PHP Eval Terminal, try leaving this blank.
+> You can secure your server by specifying IP addresses to restrict the accessibility from the Eval Terminal (a single address eg. `192.168.0.4` or an address mask eg. `192.168.*.*` or multiple IPs, comma separated `192.168.1.22,192.168.1.24,192.168.3.*`). In case of having issues connecting with the Remote PHP Eval Terminal, try leaving this blank.
 
 ##### Register PC Class
-Tick this option to register `PC` in the global PHP namespace. This allows to write `PC::debug($var, $tag)` or `PC::magic_tag($var)` instructions in PHP to inspect `$var` in the JavaScript console.
+> Tick this option to register `PC` in the global PHP namespace. This allows to write `PC::debug($var, $tag)` or `PC::magic_tag($var)` instructions in PHP to inspect `$var` in the JavaScript console.
 
 ##### Show Call Stack	
-Tick this option to see the call stack when PHP Console server writes to the JavaScript console.
+> Tick this option to see the call stack when PHP Console server writes to the JavaScript console.
 
 ##### Short Path Names
-Tick this checkbox to shorten PHP Console error sources and traces paths in the JavaScript console. E.g. paths like `/server/path/to/document/root/WP/wp-admin/admin.php:38` will be displayed as `/WP/wp-admin/admin.php:38`
+> Tick this checkbox to shorten PHP Console error sources and traces paths in the JavaScript console. E.g. paths like `/server/path/to/document/root/WP/wp-admin/admin.php:38` will be displayed as `/WP/wp-admin/admin.php:38`
 
 ## Usage
 
@@ -66,19 +66,19 @@ In the JavaScript console you will see printed any PC::debug() information, PHP 
 
 #### Is this an official plugin from PHP Console author?
 
-No, but it makes use of Sergey's PHP Console library as it is.
+>No, but it makes use of Sergey's PHP Console library as it is.
 
 #### Does it work with Firefox, IE, Opera or other browsers?
 
-No it doesn't, unless PHP Console browser extension is ported, for example, as a Firefox add-on.
+>No it doesn't, unless PHP Console browser extension is ported, for example, as a Firefox add-on.
 
 #### Can I use PHP Console in a live production environment?
 
-You *can* but it is probably not a good idea. You should do your debugging and testing on a development/testing environment on a staging server or local machine. Likewise, you normally wouldn't want to turn on PHP error reporting or set `WP_DEBUG` to `true` in a live site as you wouldn't want to display error information to public. Furthermore, PHP Console allows execution of any remote PHP code through terminal - for this you can set a strong password and restrict the IP address range to access the terminal, but still it's not advisable. Besides putting your site at risk, you will also add more load to your server.
+>You *can* but it is probably not a good idea. You should do your debugging and testing on a development/testing environment on a staging server or local machine. Likewise, you normally wouldn't want to turn on PHP error reporting or set `WP_DEBUG` to `true` in a live site as you wouldn't want to display error information to public. Furthermore, PHP Console allows execution of any remote PHP code through terminal - for this you can set a strong password and restrict the IP address range to access the terminal, but still it's not advisable. Besides putting your site at risk, you will also add more load to your server.
 
 #### Why are PHP arrays shown as objects?
 
-The JavaScript console prints PHP variables as JavaScript variables. Associative PHP arrays such as `['key1' => 'var2', 'key2' => 'var2', ... ]` are shown as objects; automatically indexed arrays like `[ 'var1', 'var2', ... ]` are shown as arrays.
+>The JavaScript console prints PHP variables as JavaScript variables. Associative PHP arrays such as `['key1' => 'var2', 'key2' => 'var2', ... ]` are shown as objects; automatically indexed arrays like `[ 'var1', 'var2', ... ]` are shown as arrays.
 
 #### I got `Fatal error: Class 'PC' not found in 'my code'` - what's that?
 
