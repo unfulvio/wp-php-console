@@ -7,17 +7,18 @@
  * @since      1.0.0
  *
  * @package    WP_PHP_Console
- * @subpackage WP_PHP_Console/lib
  */
+
+if ( ! defined( 'WPINC' ) ) {
+	exit; // Exit if accessed directly
+}
 
 /**
  * WP PHP Console.
  *
  * @since      1.0.0
  * @package    WP_PHP_Console
- * @subpackage WP_PHP_Console/lib
  */
-
 class WP_PHP_Console {
 
 	/**
@@ -54,7 +55,7 @@ class WP_PHP_Console {
 	public function __construct() {
 
 		$this->plugin_name = 'wp-php-console';
-		$this->version = '1.3.3';
+		$this->version = '1.3.5';
 		$this->options = get_option( 'wp_php_console' );
 
 		// Perform PHP Console initialisation required asap for other code to be able to output to the JavaScript console
@@ -316,19 +317,20 @@ class WP_PHP_Console {
 
 			$sanitized_input = array();
 
-			if ( isset( $input['password'] ) )
+			if ( isset( $input['password'] ) ) {
 				$sanitized_input['password'] = sanitize_text_field( $input['password'] );
+			}
 
-			if ( isset( $input['ssl'] ) )
+			if ( isset( $input['ssl'] ) ) {
 				$sanitized_input['ssl'] = ! empty( $input['ssl'] ) ? 1 : '';
+			}
 
-			if ( isset( $input['ip'] ) )
+			if ( isset( $input['ip'] ) ) {
 				$sanitized_input['ip'] = sanitize_text_field( $input['ip'] );
+			}
 
 			$sanitized_input['register'] = empty( $input['register'] ) ? '' : 1;
-
 			$sanitized_input['stack'   ] = empty( $input['stack'   ] ) ? '' : 1;
-
 			$sanitized_input['short'   ] = empty( $input['short'] ) ? '' : 1;
 
 			return $sanitized_input;
@@ -385,8 +387,9 @@ class WP_PHP_Console {
 	 */
 	public function init() {
 
-		if ( ! class_exists( 'PhpConsole\Connector' ) )
+		if ( ! class_exists( 'PhpConsole\Connector' ) ) {
 			return;
+		}
 
 		$options = $this->options;
 
@@ -399,23 +402,27 @@ class WP_PHP_Console {
 		}
 
 		// Selectively remove slashes added by WordPress as expected by PhpConsole
-		if ( isset( $_POST[PhpConsole\Connector::POST_VAR_NAME] ) )
-			$_POST[PhpConsole\Connector::POST_VAR_NAME] = stripslashes_deep( $_POST[PhpConsole\Connector::POST_VAR_NAME] );
+		if ( isset( $_POST[PhpConsole\Connector::POST_VAR_NAME] ) ) {
+			$_POST[ PhpConsole\Connector::POST_VAR_NAME ] = stripslashes_deep( $_POST[ PhpConsole\Connector::POST_VAR_NAME ] );
+		}
 
 		$connector = PhpConsole\Connector::getInstance();
 		$connector->setPassword( $password );
 
 		$handler = PhpConsole\Handler::getInstance();
-		if ( PhpConsole\Handler::getInstance()->isStarted() != true )
+		if ( PhpConsole\Handler::getInstance()->isStarted() != true ) {
 			$handler->start();
+		}
 
 		$enableSslOnlyMode = isset( $options['ssl'] ) ? ( ! empty( $options['ssl'] ) ? $options['ssl'] : '' ) : '';
-		if ( $enableSslOnlyMode == true )
+		if ( $enableSslOnlyMode == true ) {
 			$connector->enableSslOnlyMode();
+		}
 
 		$allowedIpMasks = isset( $options['ip'] ) ? ( ! empty( $options['ip'] ) ? explode( ',', $options['ip'] ) : '' ) : '';
-		if ( is_array( $allowedIpMasks ) && ! empty( $allowedIpMasks ) )
+		if ( is_array( $allowedIpMasks ) && ! empty( $allowedIpMasks ) ) {
 			$connector->setAllowedIpMasks( (array) $allowedIpMasks );
+		}
 
 		$evalProvider = $connector->getEvalDispatcher()->getEvalProvider();
 
@@ -425,7 +432,7 @@ class WP_PHP_Console {
 		// $evalProvider->disableFileAccessByOpenBaseDir();
 		$openBaseDirs = array( ABSPATH, get_template_directory() );
 		$evalProvider->addSharedVarReference( 'dirs', $openBaseDirs );
-   	    $evalProvider->setOpenBaseDirs( $openBaseDirs );
+		$evalProvider->setOpenBaseDirs( $openBaseDirs );
 
 		$connector->startEvalRequestsListener();
 

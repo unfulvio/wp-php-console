@@ -1,17 +1,4 @@
-### WP PHP Console .gitignore file
-
-## OS crap
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-*[Tt]humbs.db
-*.Trashes
-us.stackdump
-
-## IDE
+### IDE ###
 # IntelliJ
 .idea/
 *.ipr
@@ -35,18 +22,26 @@ nb-configuration.xml
 *.sublime-workspace
 sftp-config.json
 
-## Node
-node_modules
+### Node ###
+/node_modules
 
-## Log files
+### Log files ###
 *.log
 error_log
 access_log
 .sass-cache
 
-## Other
-*.back
-*.bak
-*.tmp
-temp
-tmp
+### OS crap ###
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+*[Tt]humbs.db
+*.Trashes
+us.stackdump
+
+### Subversion ###
+.svn
+/svn

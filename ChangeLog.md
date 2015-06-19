@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.3.5 (10 jun 2015)
+* Updated PHP Console library to 3.1.3
+* PHP 5.4.0 is the minimum required version to activate the plugin
+
 ### 1.3.3 (30 apr 2015)
 * Supports WordPress 4.2
 
