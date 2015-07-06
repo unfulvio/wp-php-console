@@ -457,3 +457,5 @@ class WP_PHP_Console {
 	}
 
 }
+
+new WP_PHP_Console();

@@ -69,14 +69,10 @@ if ( version_compare( PHP_VERSION, '5.4.0', '<') ) {
  * @link https://github.com/barbushin/php-console
  * Copyright (c) 2011-2013 by Barbushin Sergey <barbushin@gmail.com>.
  */
-require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 /**
  * The main class of this plugin.
  */
-require_once plugin_dir_path( __FILE__ ) . 'lib/class-wp-php-console.php';
+require_once 'lib/class-wp-php-console.php';
 
-/**
- * Instantiate this plugin.
- */
-$wpPhpConsole = new WP_PHP_Console();
