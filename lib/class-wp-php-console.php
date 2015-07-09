@@ -55,7 +55,7 @@ class WP_PHP_Console {
 	public function __construct() {
 
 		$this->plugin_name = 'wp-php-console';
-		$this->version = '1.3.5';
+		$this->version = '1.3.6';
 		$this->options = get_option( 'wp_php_console' );
 
 		if ( ! class_exists( 'PhpConsole\Connector' ) ) {
