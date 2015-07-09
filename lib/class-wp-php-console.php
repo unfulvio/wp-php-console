@@ -408,6 +408,11 @@ class WP_PHP_Console {
 			$_POST[ PhpConsole\Connector::POST_VAR_NAME ] = stripslashes_deep( $_POST[ PhpConsole\Connector::POST_VAR_NAME ] );
 		}
 
+		// By default PHP Console uses PhpConsole\Storage\Session for postponed responses,
+		// so all temporary data will be stored in $_SESSION.
+		// But there is some problem with frameworks like WordPress that override PHP session handler.
+		PhpConsole\Connector::setPostponeStorage( new PhpConsole\Storage\File( '/tmp/pc.data' ) );
+
 		$connector = PhpConsole\Connector::getInstance();
 		$connector->setPassword( $password );
 
