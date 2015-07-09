@@ -65,19 +65,15 @@ In the JavaScript console you will see printed any PC::debug() information, PHP 
 ## FAQ
 
 #### Is this an official plugin from PHP Console author?
-
 >No, but it makes use of Sergey's PHP Console library as it is.
 
 #### Does it work with Firefox, IE, Opera or other browsers?
-
 >No it doesn't, unless PHP Console browser extension is ported, for example, as a Firefox add-on.
 
 #### Can I use PHP Console in a live production environment?
-
->You *can* but it is probably not a good idea. You should do your debugging and testing on a development/testing environment on a staging server or local machine. Likewise, you normally wouldn't want to turn on PHP error reporting or set `WP_DEBUG` to `true` in a live site as you wouldn't want to display error information to public. Furthermore, PHP Console allows execution of any remote PHP code through terminal - for this you can set a strong password and restrict the IP address range to access the terminal, but still it's not advisable. Besides putting your site at risk, you will also add more load to your server.
+>You *can* but it is definitely not a good idea. You should do your debugging and testing on a development/testing environment on a staging server or local machine. Likewise, you normally wouldn't want to turn on PHP error reporting or set `WP_DEBUG` to `true` in a live site as you wouldn't want to display error information to public. Furthermore, PHP Console allows execution of any remote PHP code through terminal - for this you can set a strong password and restrict the IP address range to access the terminal, but still it's not advisable. Besides putting your site **at risk**, you will also add more load to your server.
 
 #### Why are PHP arrays shown as objects?
-
 >The JavaScript console prints PHP variables as JavaScript variables. Associative PHP arrays such as `['key1' => 'var2', 'key2' => 'var2', ... ]` are shown as objects; automatically indexed arrays like `[ 'var1', 'var2', ... ]` are shown as arrays.
 
 #### I got `Fatal error: Class 'PC' not found in 'my code'` - what's that?
@@ -91,7 +87,6 @@ You could move your debug code or either do something like
          // send $my_var with tag 'my_tag' to the JavaScript console through PHP Console Server  Library and PHP Console Chrome Plugin
          PC::my_tag($my_var);
      });
-
 
 or
 

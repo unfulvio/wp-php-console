@@ -172,6 +172,10 @@ None yet.
 
 == Upgrade Notice ==
 
+= 1.3.7 =
+To improve compatibility with other plugins, now stores session data in a file.
+You need to be able to write inside WP PHP Console plugin dir for better compatibility.
+
 = 1.3.5 =
 PHP 5.4.0 is the minimum PHP required version to run this plugin.
 
