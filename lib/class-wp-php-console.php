@@ -406,8 +406,16 @@ class WP_PHP_Console {
 			$_POST[ PhpConsole\Connector::POST_VAR_NAME ] = stripslashes_deep( $_POST[ PhpConsole\Connector::POST_VAR_NAME ] );
 		}
 
-		$connector = PhpConsole\Connector::getInstance();
-		$connector->setPassword( $password );
+		/**
+		 * By default PHP Console uses PhpConsole\Storage\Session for postponed responses,
+		 * so all temporary data will be stored in $_SESSION.
+		 * But there is some problem with frameworks like WordPress that override PHP session handler.
+		 */
+		$connector = new PhpConsole\Connector;
+		$connector->setPostponeStorage( new PhpConsole\Storage\File( '/tmp/pc.data' ) );
+
+		$connector_instance = $connector::getInstance();
+		$connector_instance->setPassword( $password );
 
 		$handler = PhpConsole\Handler::getInstance();
 		if ( PhpConsole\Handler::getInstance()->isStarted() != true ) {
@@ -416,15 +424,15 @@ class WP_PHP_Console {
 
 		$enableSslOnlyMode = isset( $options['ssl'] ) ? ( ! empty( $options['ssl'] ) ? $options['ssl'] : '' ) : '';
 		if ( $enableSslOnlyMode == true ) {
-			$connector->enableSslOnlyMode();
+			$connector_instance->enableSslOnlyMode();
 		}
 
 		$allowedIpMasks = isset( $options['ip'] ) ? ( ! empty( $options['ip'] ) ? explode( ',', $options['ip'] ) : '' ) : '';
 		if ( is_array( $allowedIpMasks ) && ! empty( $allowedIpMasks ) ) {
-			$connector->setAllowedIpMasks( (array) $allowedIpMasks );
+			$connector_instance->setAllowedIpMasks( (array) $allowedIpMasks );
 		}
 
-		$evalProvider = $connector->getEvalDispatcher()->getEvalProvider();
+		$evalProvider = $connector_instance->getEvalDispatcher()->getEvalProvider();
 
 		$evalProvider->addSharedVar( 'uri', $_SERVER['REQUEST_URI'] );
 		$evalProvider->addSharedVarReference( 'post', $_POST );
@@ -434,7 +442,7 @@ class WP_PHP_Console {
 		$evalProvider->addSharedVarReference( 'dirs', $openBaseDirs );
 		$evalProvider->setOpenBaseDirs( $openBaseDirs );
 
-		$connector->startEvalRequestsListener();
+		$connector_instance->startEvalRequestsListener();
 
 	}
 
