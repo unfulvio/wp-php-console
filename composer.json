@@ -2,7 +2,7 @@
 	"name": "nekojira/wp-php-console",
 	"description": "A WordPress implementation of PHP Console.",
   "type": "wordpress-plugin",
-	"version": "1.3.6",
+	"version": "1.3.7",
 	"keywords": [
 		"wordpress",
 		"debug",

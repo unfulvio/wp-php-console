@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: development, debug, debugging
 Requires at least: 3.6.0
 Tested up to: 4.2.2
-Stable tag: 1.3.6
+Stable tag: 1.3.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -121,7 +121,7 @@ None yet.
 
 == Changelog ==
 
-= 1.3.6 =
+= 1.3.7 =
 * Fixes a bug `Cannot send session cache limiter - headers already sent`
 * Updated PHP Console Library to 3.1.4
 

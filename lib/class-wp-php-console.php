@@ -55,7 +55,7 @@ class WP_PHP_Console {
 	public function __construct() {
 
 		$this->plugin_name = 'wp-php-console';
-		$this->version = '1.3.6';
+		$this->version = '1.3.7';
 		$this->options = get_option( 'wp_php_console' );
 
 		if ( ! class_exists( 'PhpConsole\Connector' ) ) {
@@ -65,8 +65,14 @@ class WP_PHP_Console {
 		// By default PHP Console uses PhpConsole\Storage\Session for postponed responses,
 		// so all temporary data will be stored in $_SESSION.
 		// But there is some problem with frameworks like WordPress that override PHP session handler.
-		// So we need to call the Storage session very early.
-		PhpConsole\Connector::setPostponeStorage( new PhpConsole\Storage\Session() );
+		// PHP Console has alternative storage drivers for this - we will write to a temporary file:
+		$phpcdir = dirname( __FILE__ ) . '/tmp';
+		$make_dir = wp_mkdir_p( $phpcdir );
+		if ( $make_dir === true ) {
+			PhpConsole\Connector::setPostponeStorage(
+				new PhpConsole\Storage\File( $phpcdir . '/' . md5( __FILE__ ) . '_pc.data', false )
+			);
+		}
 
 		// Perform PHP Console initialisation required asap for other code to be able to output to the JavaScript console
 		$connector = PhpConsole\Connector::getInstance();
