@@ -1,6 +1,6 @@
 # Changelog
 
-### 1.3.6 (09 jun 2015)
+### 1.3.6 (09 jul 2015)
 * Fixes a bug `Cannot send session cache limiter - headers already sent`
 * Updated PHP Console Library to 3.1.4
 
