@@ -96,17 +96,17 @@
     },
     {
         "name": "php-console/php-console",
-        "version": "3.1.3",
-        "version_normalized": "3.1.3.0",
+        "version": "3.1.4",
+        "version_normalized": "3.1.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/barbushin/php-console.git",
-            "reference": "ef0e953214093196866edb536d6b64f106332820"
+            "reference": "b40e988dcd7686128a47010161ba13e32d5fdb45"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/barbushin/php-console/zipball/ef0e953214093196866edb536d6b64f106332820",
-            "reference": "ef0e953214093196866edb536d6b64f106332820",
+            "url": "https://api.github.com/repos/barbushin/php-console/zipball/b40e988dcd7686128a47010161ba13e32d5fdb45",
+            "reference": "b40e988dcd7686128a47010161ba13e32d5fdb45",
             "shasum": ""
         },
         "require": {
@@ -116,7 +116,7 @@
             "php-console/laravel-service-provider": "*",
             "php-console/silex-service-provider": "*"
         },
-        "time": "2015-03-30 15:37:37",
+        "time": "2015-06-30 07:52:47",
         "type": "library",
         "extra": {
             "branch-alias": {
