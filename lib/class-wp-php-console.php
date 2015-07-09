@@ -65,7 +65,8 @@ class WP_PHP_Console {
 		// By default PHP Console uses PhpConsole\Storage\Session for postponed responses,
 		// so all temporary data will be stored in $_SESSION.
 		// But there is some problem with frameworks like WordPress that override PHP session handler.
-		PhpConsole\Connector::setPostponeStorage( new PhpConsole\Storage\File( '/tmp/pc.data' ) );
+		// So we need to call the Storage session very early.
+		PhpConsole\Connector::setPostponeStorage( new PhpConsole\Storage\Session() );
 
 		// Perform PHP Console initialisation required asap for other code to be able to output to the JavaScript console
 		$connector = PhpConsole\Connector::getInstance();
