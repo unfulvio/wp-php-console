@@ -58,18 +58,26 @@ class WP_PHP_Console {
 		$this->version = '1.3.5';
 		$this->options = get_option( 'wp_php_console' );
 
+		if ( ! class_exists( 'PhpConsole\Connector' ) ) {
+			return;
+		}
+
+		// By default PHP Console uses PhpConsole\Storage\Session for postponed responses,
+		// so all temporary data will be stored in $_SESSION.
+		// But there is some problem with frameworks like WordPress that override PHP session handler.
+		$php_console = new PhpConsole\Connector;
+		$php_console->setPostponeStorage( new PhpConsole\Storage\File( '/tmp/pc.data' ) );
+
 		// Perform PHP Console initialisation required asap for other code to be able to output to the JavaScript console
-		$connector = PhpConsole\Connector::getInstance();
+		$connector = $php_console::getInstance();
 
 		// Apply 'register' option to PHP Console
 		if ( ! empty( $this->options['register'] ) ) {
-
 			if ( ! class_exists( 'PC', false ) ) {
-				// only if PC not registered yet
+				// Only if PC not registered yet
 				PhpConsole\Helper::register( );
 			}
 			// PC::debug( 'PC::debug() is available');
-
 		}
 
 		// Apply 'stack' option to PHP Console
@@ -81,8 +89,6 @@ class WP_PHP_Console {
 		if ( ! empty( $this->options['short'] ) ) {
 			$connector->setSourcesBasePath( $_SERVER['DOCUMENT_ROOT'] );
 		}
-
-		// Initialise WordPress actions
 
 		// Translation
 		add_action( 'plugins_loaded', array( $this, 'set_locale' ) );
@@ -387,10 +393,6 @@ class WP_PHP_Console {
 	 */
 	public function init() {
 
-		if ( ! class_exists( 'PhpConsole\Connector' ) ) {
-			return;
-		}
-
 		$options = $this->options;
 
 		$password = isset( $options['password'] ) ? $options['password'] : '';
@@ -406,16 +408,8 @@ class WP_PHP_Console {
 			$_POST[ PhpConsole\Connector::POST_VAR_NAME ] = stripslashes_deep( $_POST[ PhpConsole\Connector::POST_VAR_NAME ] );
 		}
 
-		/**
-		 * By default PHP Console uses PhpConsole\Storage\Session for postponed responses,
-		 * so all temporary data will be stored in $_SESSION.
-		 * But there is some problem with frameworks like WordPress that override PHP session handler.
-		 */
-		$connector = new PhpConsole\Connector;
-		$connector->setPostponeStorage( new PhpConsole\Storage\File( '/tmp/pc.data' ) );
-
-		$connector_instance = $connector::getInstance();
-		$connector_instance->setPassword( $password );
+		$connector = PhpConsole\Connector::getInstance();
+		$connector->setPassword( $password );
 
 		$handler = PhpConsole\Handler::getInstance();
 		if ( PhpConsole\Handler::getInstance()->isStarted() != true ) {
@@ -424,15 +418,15 @@ class WP_PHP_Console {
 
 		$enableSslOnlyMode = isset( $options['ssl'] ) ? ( ! empty( $options['ssl'] ) ? $options['ssl'] : '' ) : '';
 		if ( $enableSslOnlyMode == true ) {
-			$connector_instance->enableSslOnlyMode();
+			$connector->enableSslOnlyMode();
 		}
 
 		$allowedIpMasks = isset( $options['ip'] ) ? ( ! empty( $options['ip'] ) ? explode( ',', $options['ip'] ) : '' ) : '';
 		if ( is_array( $allowedIpMasks ) && ! empty( $allowedIpMasks ) ) {
-			$connector_instance->setAllowedIpMasks( (array) $allowedIpMasks );
+			$connector->setAllowedIpMasks( (array) $allowedIpMasks );
 		}
 
-		$evalProvider = $connector_instance->getEvalDispatcher()->getEvalProvider();
+		$evalProvider = $connector->getEvalDispatcher()->getEvalProvider();
 
 		$evalProvider->addSharedVar( 'uri', $_SERVER['REQUEST_URI'] );
 		$evalProvider->addSharedVarReference( 'post', $_POST );
@@ -442,7 +436,7 @@ class WP_PHP_Console {
 		$evalProvider->addSharedVarReference( 'dirs', $openBaseDirs );
 		$evalProvider->setOpenBaseDirs( $openBaseDirs );
 
-		$connector_instance->startEvalRequestsListener();
+		$connector->startEvalRequestsListener();
 
 	}
 
