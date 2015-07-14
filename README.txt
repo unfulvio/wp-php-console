@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: development, debug, debugging
 Requires at least: 3.6.0
 Tested up to: 4.2.2
-Stable tag: 1.3.7
+Stable tag: 1.3.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -16,6 +16,8 @@ Use Chrome Dev Tools to debug your WordPress installation!
 > PHP Console allows you to handle PHP errors & exceptions, dump variables, execute PHP code remotely and many other things using [Google Chrome extension PHP Console](https://chrome.google.com/webstore/detail/php-console/nfhmhhlpfleoednkpnnnkolmclajemef) and [PHP Console server library](https://github.com/barbushin/php-console).
 
 This implementation of PHP Console offers yet another tool to make it more easy to test on the fly any WordPress specific function or class (including those introduced by your active theme and plugins!) from a terminal and inspect results, catch errors and warnings with call stack trace straight from the Chrome JavaScript console. In other words, besides debugging, you can execute PHP or WordPress-specific PHP code straight from the terminal and print PHP variables in Chrome Dev Tools JavaScript console as if it were Javascript. It's very handy to keep everything in one place.
+
+Note: PHP 5.4.0 minimum version is required your machine to use this plugin. 
 
 For support and pull requests, please refer to [WP PHP Console Github repo](https://github.com/nekojira/wp-php-console) and read the instructions there - thank you.
 
@@ -121,13 +123,16 @@ None yet.
 
 == Changelog ==
 
+= 1.3.8 =
+* Internal changes (alternate PHP version check, automated SVN deploys) 
+
 = 1.3.7 =
 * Fixes a bug `Cannot send session cache limiter - headers already sent`
 * Updated PHP Console Library to 3.1.4
 
 = 1.3.5 =
-* Updated PHP Console library to 3.1.3
 * Made PHP 5.4.0 the minimum required version to activate the plugin
+* Updated PHP Console library to 3.1.3
 
 = 1.3.3 =
 * Supports WordPress 4.2

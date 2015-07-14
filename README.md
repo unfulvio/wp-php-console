@@ -16,6 +16,8 @@ This implementation of PHP Console makes easy to debug a WordPress installation 
 
 ## Installation
 
+Note: you will need PHP 5.4.0 minimum version on your machine or server to run this plugin.
+
 1. First, install [Google Chrome extension PHP Console](https://chrome.google.com/webstore/detail/php-console/nfhmhhlpfleoednkpnnnkolmclajemef) from the [Chrome WebStore](https://chrome.google.com/webstore/search/php%20console?_category=extensions).
 Make sure the PHP Console Chrome extension is enabled through [chrome://extensions/](chrome://extensions/ "chrome://extensions/").
 

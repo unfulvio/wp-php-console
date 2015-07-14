@@ -1,12 +1,15 @@
 # Changelog
 
+### 1.3.8 (14 jul 2015)
+* Internal changes (alternate PHP version check, automated SVN deploys)
+
 ### 1.3.7 (09 jul 2015)
 * Fixes a bug `Cannot send session cache limiter - headers already sent`
 * Updated PHP Console Library to 3.1.4
 
 ### 1.3.5 (10 jun 2015)
-* Updated PHP Console library to 3.1.3
 * PHP 5.4.0 is the minimum required version to activate the plugin
+* Updated PHP Console library to 3.1.3
 
 ### 1.3.3 (30 apr 2015)
 * Supports WordPress 4.2

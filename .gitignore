@@ -42,6 +42,6 @@ ehthumbs.db
 *.Trashes
 us.stackdump
 
-### Subversion ###
-.svn
-/svn
+### Builds ###
+svn/
+release/
