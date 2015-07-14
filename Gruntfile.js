@@ -68,9 +68,8 @@ module.exports = function( grunt ) {
 			deploy: {
 				options: {
 					plugin_slug: 'wp-php-console',
-					svn_user: 'nekojira',
-					build_dir: 'svn',
-					assets_dir: 'assets'
+					build_dir: 'svn/trunk',
+					assets_dir: 'svn/assets'
 				}
 			}
 		},
@@ -82,7 +81,7 @@ module.exports = function( grunt ) {
 
 	// Register tasks
 
-	grunt.registerTask( 'release', ['clean', 'copy:trunk', 'copy:tag', 'compress'] );
+	grunt.registerTask( 'release', ['clean', 'copy:assets', 'copy:trunk', 'copy:tag', 'compress'] );
 
 	grunt.registerTask( 'deploy', ['release', 'wp_deploy'] );
 
