@@ -9,7 +9,6 @@ atlassian-ide-plugin.xml
 com_crashlytics_export_strings.xml
 # NetBeans
 nbproject/private/
-build/
 nbbuild/
 dist/
 nbdist/
@@ -43,5 +42,6 @@ ehthumbs.db
 us.stackdump
 
 ### Builds ###
+build/
 svn/
 release/

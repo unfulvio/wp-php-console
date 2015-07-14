@@ -24,29 +24,15 @@ module.exports = function( grunt ) {
 		pkg: pkg,
 
 		clean: {
-			main: [
-				// Clean directories before new build
-				'svn/trunk',
-				'release'
-			]
+			main: [ 'build' ]
 		},
 
-		// Copy the plugin to a svn versioned build directory
+		// Copy the plugin to build directory
 		copy: {
-			assets : {
-				expand: true,
-				src: 'assets/*.*',
-				dest: 'svn/assets/'
-			},
-			tag: {
+			main: {
 				expand: true,
 				src: distFiles,
-				dest: 'svn/tags/' + pkg.version + '/'
-			},
-			trunk: {
-				expand: true,
-				src: distFiles,
-				dest: 'svn/trunk'
+				dest: 'build/wp-php-console'
 			}
 		},
 
@@ -54,7 +40,7 @@ module.exports = function( grunt ) {
 			main: {
 				options: {
 					mode: 'zip',
-					archive: './release/wp-php-console.<%= pkg.version %>.zip'
+					archive: './build/wp-php-console.<%= pkg.version %>.zip'
 				},
 				expand: true,
 				src: distFiles,
@@ -66,11 +52,12 @@ module.exports = function( grunt ) {
 			deploy: {
 				options: {
 					plugin_slug: 'wp-php-console',
-					build_dir: 'svn/trunk',
-					assets_dir: 'svn/assets'
+					build_dir: 'build/wp-php-console',
+					assets_dir: 'assets',
+					svn_url: 'https://plugins.svn.wordpress.org/wp-php-console'
 				}
 			}
-		},
+		}
 
 	} );
 
@@ -79,7 +66,7 @@ module.exports = function( grunt ) {
 
 	// Register tasks
 
-	grunt.registerTask( 'release', ['clean', 'copy:assets', 'copy:trunk', 'copy:tag', 'compress'] );
+	grunt.registerTask( 'release', ['clean', 'copy', 'compress'] );
 
 	grunt.registerTask( 'deploy', ['release', 'wp_deploy'] );
 
