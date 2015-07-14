@@ -11,8 +11,6 @@ module.exports = function( grunt ) {
 			'!bootstrap.php',
 			'!bootstrap.php.dist',
 			'!ChangeLog.md',
-			'!composer.json',
-			'!composer.lock',
 			'!Gruntfile.js',
 			'!package.json',
 			'!phpunit.xml',
