@@ -17,7 +17,7 @@ Use Chrome Dev Tools to debug your WordPress installation!
 
 This implementation of PHP Console offers yet another tool to make it more easy to test on the fly any WordPress specific function or class (including those introduced by your active theme and plugins!) from a terminal and inspect results, catch errors and warnings with call stack trace straight from the Chrome JavaScript console. In other words, besides debugging, you can execute PHP or WordPress-specific PHP code straight from the terminal and print PHP variables in Chrome Dev Tools JavaScript console as if it were Javascript. It's very handy to keep everything in one place.
 
-Note: PHP 5.4.0 minimum version is required your machine to use this plugin. 
+Note: PHP 5.4.0 minimum version is required to use this plugin. 
 
 For support and pull requests, please refer to [WP PHP Console Github repo](https://github.com/nekojira/wp-php-console) and read the instructions there - thank you.
 
