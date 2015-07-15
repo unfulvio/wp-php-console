@@ -1,5 +1,4 @@
 <?php
-
 /**
  * WP PHP Console Plugin Core Class
  *

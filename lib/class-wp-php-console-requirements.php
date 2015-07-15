@@ -11,9 +11,9 @@
  * @license GPL2+
  */
 
-if ( ! class_exists( 'WP_Requirements' ) ) {
+if ( ! class_exists( 'WP_PHP_Console_Requirements' ) ) {
 
-	class WP_Requirements {
+	class WP_PHP_Console_Requirements {
 
 		/**
 		 * WordPress.
@@ -37,25 +37,24 @@ if ( ! class_exists( 'WP_Requirements' ) ) {
 		 * @access private
 		 * @var bool
 		 */
-		private $ext = true;
+		private $extensions = true;
 
 		/**
-		 * Errors.
+		 * Results failures.
 		 *
-		 * An array of errors to display if any of the checks do not pass.
+		 * Associative array with requirements results.
 		 *
 		 * @access private
 		 * @var array
 		 */
-		private $errors = array();
+		private $failures = array();
 
 		/**
 		 * Constructor.
 		 *
-		 * @param array $requirements Associative array with required things.
-		 * @param array $messages Associative array with messages to display (optional, to override default ones).
+		 * @param array $requirements Associative array with requirements.
 		 */
-		public function __construct( $requirements, $messages = array() ) {
+		public function __construct( $requirements ) {
 
 			if ( $requirements && is_array( $requirements ) ) {
 
@@ -64,37 +63,23 @@ if ( ! class_exists( 'WP_Requirements' ) ) {
 
 				// Check for WordPress version.
 				if ( $requirements['wp'] && is_string( $requirements['wp'] ) ) {
-
 					global $wp_version;
 					// If $wp_version isn't found or valid probably you are not running WordPress (properly)?
 					$wp_ver = $wp_version && is_string( $wp_version ) ? $wp_version : $requirements['wp'];
 					$wp_ver = version_compare( $wp_ver, $requirements['wp'] );
-
 					if ( $wp_ver === -1 ) {
-						if ( isset( $messages['wp'] ) ) {
-							$errors[] = $messages['wp'];
-						} else {
-							$errors[] = sprintf( 'The minimum WordPress version required is %1$s, WordPress version found: %2$s', '`' . $requirements['wp'] . '`', '`' . $wp_version . '`' );
-						}
+						$errors['wp'] = $wp_version;
 						$this->wp = false;
 					}
-
 				}
 
 				// Check fo PHP version.
 				if ( $requirements['php'] && is_string( $requirements['php'] ) ) {
-
 					$php_ver = version_compare( PHP_VERSION, $requirements['php'] );
-
 					if ( $php_ver === -1 ) {
-						if ( isset( $messages['wp'] ) ) {
-							$errors[] = $messages['wp'];
-						} else {
-							$errors[] = sprintf( 'The minimum PHP version required is %1$s, PHP version found: %2$s', '`' . $requirements['php'], '`' . PHP_VERSION . '``' );
-						}
+						$errors['php'] = PHP_VERSION;
 						$this->php = false;
 					}
-
 				}
 
 				// Check fo PHP Extensions.
@@ -106,34 +91,32 @@ if ( ! class_exists( 'WP_Requirements' ) ) {
 						}
 					}
 					if ( in_array( false, $extensions ) ) {
-						foreach ( $extensions as $extension ) {
-							if ( $extension === false ) {
-								if ( isset( $messages[ $extension ] ) ) {
-									$errors[] = $messages[ $extension ];
-								} else {
-									$errors[] = sprintf( 'The PHP extension %s is required and was not found', '`' . $extension . '`' );
-								}
+						foreach ( $extensions as $extension_name => $found  ) {
+							if ( $found === false ) {
+								$errors['extensions'][ $extension_name ] = $extension_name;
 							}
 						}
-						$this->ext = false;
+						$this->extensions = false;
 					}
 				}
 
-				$this->errors = $errors;
+				$this->failures = $errors;
 
 			} else {
-				trigger_error( 'WP Requirements: the requirements passed as argument are invalid.', E_USER_ERROR );
+
+				trigger_error( 'WP Requirements: the requirements are invalid.', E_USER_ERROR );
+
 			}
 
 		}
 
 		/**
-		 * Get errors.
+		 * Get requirements results.
 		 *
 		 * @return array
 		 */
-		public function errors() {
-			return $this->errors;
+		public function failures() {
+			return $this->failures;
 		}
 
 		/**
@@ -142,7 +125,7 @@ if ( ! class_exists( 'WP_Requirements' ) ) {
 		 * @return bool
 		 */
 		public function pass() {
-			if ( in_array( false, array( $this->wp, $this->php, $this->ext ) ) ) {
+			if ( in_array( false, array( $this->wp, $this->php, $this->extensions ) ) ) {
 				return false;
 			}
 			return true;

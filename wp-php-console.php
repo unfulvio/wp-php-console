@@ -51,15 +51,15 @@ if ( ! defined( 'WPINC' ) ) {
  * @link https://make.wordpress.org/plugins/2015/06/05/policy-on-php-versions/
  * @link https://github.com/nekojira/wp-requirements
  */
-require_once 'lib/class-wp-requirements.php';
+require_once 'lib/class-wp-php-console-requirements.php';
 $php_console = array( 'php' => '5.4.0' );
-$requirements = new WP_Requirements( $php_console );
+$requirements = new WP_PHP_Console_Requirements( $php_console );
 if ( $requirements->pass() === false ) {
 
 	if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
 
 		add_action( 'admin_notices',
-			create_function( '', "echo '<div class=\"error\"><p>' . sprintf( 'WP PHP Console requires PHP 5.4 or above to function properly. Detected PHP version on your server is %s. Please upgrade PHP to activate WP PHP Console or remove the plugin.', '`' . phpversion() . '`' ) . '</p></div>';" )
+			create_function( '', "echo '<div class=\"error\"><p>' . sprintf( 'WP PHP Console requires PHP 5.4 or above to function properly. Detected PHP version on your server is %s. Please upgrade PHP to activate WP PHP Console or remove the plugin.', '<code>' . phpversion() . '</code>' ) . '</p></div>';" )
 		);
 
 		add_action( 'admin_init', 'wp_php_console_deactivate_self' );
@@ -70,16 +70,19 @@ if ( $requirements->pass() === false ) {
 	}
 
 	return;
+
+} else {
+
+	/**
+	 * Include PhpConsole server library.
+	 * @link https://github.com/barbushin/php-console
+	 * Copyright (c) 2011-2013 by Barbushin Sergey <barbushin@gmail.com>.
+	 */
+	require_once 'vendor/autoload.php';
+
+	/**
+	 * The main class of this plugin.
+	 */
+	require_once 'lib/class-wp-php-console.php';
+
 }
-
-/**
- * Include PhpConsole server library.
- * @link https://github.com/barbushin/php-console
- * Copyright (c) 2011-2013 by Barbushin Sergey <barbushin@gmail.com>.
- */
-require_once 'vendor/autoload.php';
-
-/**
- * The main class of this plugin.
- */
-require_once 'lib/class-wp-php-console.php';
