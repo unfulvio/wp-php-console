@@ -13,12 +13,14 @@ class Installer extends LibraryInstaller
      * @var array
      */
     private $supportedTypes = array(
+        'aimeos'       => 'AimeosInstaller',
         'asgard'       => 'AsgardInstaller',
         'agl'          => 'AglInstaller',
         'annotatecms'  => 'AnnotateCmsInstaller',
         'bitrix'       => 'BitrixInstaller',
         'cakephp'      => 'CakePHPInstaller',
         'chef'         => 'ChefInstaller',
+        'ccframework'  => 'ClanCatsFrameworkInstaller',
         'codeigniter'  => 'CodeIgniterInstaller',
         'concrete5'    => 'Concrete5Installer',
         'craft'        => 'CraftInstaller',
@@ -54,6 +56,7 @@ class Installer extends LibraryInstaller
         'roundcube'    => 'RoundcubeInstaller',
         'shopware'     => 'ShopwareInstaller',
         'silverstripe' => 'SilverStripeInstaller',
+        'smf'          => 'SMFInstaller',
         'symfony1'     => 'Symfony1Installer',
         'thelia'       => 'TheliaInstaller',
         'tusk'         => 'TuskInstaller',
@@ -64,6 +67,7 @@ class Installer extends LibraryInstaller
         'wordpress'    => 'WordPressInstaller',
         'zend'         => 'ZendInstaller',
         'zikula'       => 'ZikulaInstaller',
+        'prestashop'   => 'PrestashopInstaller',
     );
 
     /**

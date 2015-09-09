@@ -33,12 +33,14 @@ is not needed to install packages with these frameworks:
 
 | Framework    | Types
 | ---------    | -----
-| Asgard      | `asgard-module`<br>`asgard-theme`
+| Aimeos       | `aimeos-extension`
+| Asgard       | `asgard-module`<br>`asgard-theme`
 | AGL          | `agl-module`
 | AnnotateCms  | `annotatecms-module`<br>`annotatecms-component`<br>`annotatecms-service`
 | Bitrix       | `bitrix-module`<br>`bitrix-component`<br>`bitrix-theme`
 | CakePHP 2+   | **`cakephp-plugin`**
-| Chef         | `chef-recipe`<br>`chef-role`
+| Chef         | `chef-cookbook`<br>`chef-role`
+| CCFramework  | `ccframework-ship`<br>`ccframework-theme`
 | CodeIgniter  | `codeigniter-library`<br>`codeigniter-third-party`<br>`codeigniter-module`
 | concrete5    | `concrete5-block`<br>`concrete5-package`<br>`concrete5-theme`<br>`concrete5-update`
 | Craft        | `craft-plugin`
@@ -73,6 +75,7 @@ is not needed to install packages with these frameworks:
 | Roundcube    | `roundcube-plugin`
 | shopware     | `shopware-backend-plugin`<br/>`shopware-core-plugin`<br/>`shopware-frontend-plugin`<br/>`shopware-theme`
 | SilverStripe | `silverstripe-module`<br>`silverstripe-theme`
+| SMF          | `smf-module`<br>`smf-theme`
 | symfony1     | **`symfony1-plugin`**
 | Tusk         | `tusk-task`<br>`tusk-command`<br>`tusk-asset`
 | TYPO3 Flow   | `typo3-flow-package`<br>`typo3-flow-framework`<br>`typo3-flow-plugin`<br>`typo3-flow-site`<br>`typo3-flow-boilerplate`<br>`typo3-flow-build`
@@ -81,6 +84,7 @@ is not needed to install packages with these frameworks:
 | WordPress    | <b>`wordpress-plugin`<br>`wordpress-theme`</b><br>`wordpress-muplugin`
 | Zend         | `zend-library`<br>`zend-extra`<br>`zend-module`
 | Zikula       | `zikula-module`<br>`zikula-theme`
+| Prestashop   | `prestashop-module`<br>`prestashop-theme`
 
 ## Example `composer.json` File
 

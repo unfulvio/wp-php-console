@@ -85,6 +85,7 @@ class InstallerTest extends TestCase
     {
         return array(
             array('agl-module', true),
+            array('aimeos-extension', true),
             array('annotatecms-module', true),
             array('annotatecms-component', true),
             array('annotatecms-service', true),
@@ -142,6 +143,8 @@ class InstallerTest extends TestCase
             array('phpbb-extension', true),
             array('pimcore-plugin', true),
             array('ppi-module', true),
+            array('prestashop-module', true),
+            array('prestashop-theme', true),
             array('puppet-module', true),
             array('redaxo-addon', true),
             array('redaxo-bestyle-plugin', true),
@@ -152,6 +155,8 @@ class InstallerTest extends TestCase
             array('shopware-theme', true),
             array('silverstripe-module', true),
             array('silverstripe-theme', true),
+            array('smf-module', true),
+            array('smf-theme', true),
             array('symfony1-plugin', true),
             array('thelia-module', true),
             array('thelia-frontoffice-template', true),
@@ -193,6 +198,7 @@ class InstallerTest extends TestCase
     {
         return array(
             array('agl-module', 'More/MyTestPackage/', 'agl/my_test-package'),
+            array('aimeos-extension', 'ext/ai-test/', 'author/ai-test'),
             array('annotatecms-module', 'addons/modules/my_module/', 'vysinsky/my_module'),
             array('annotatecms-component', 'addons/components/my_component/', 'vysinsky/my_component'),
             array('annotatecms-service', 'addons/services/my_service/', 'vysinsky/my_service'),
@@ -250,6 +256,8 @@ class InstallerTest extends TestCase
             array('october-plugin', 'plugins/shama/my_plugin/', 'shama/my_plugin'),
             array('october-theme', 'themes/my_theme/', 'shama/my_theme'),
             array('piwik-plugin', 'plugins/VisitSummary/', 'shama/visit-summary'),
+            array('prestashop-module', 'modules/a-module/', 'vendor/a-module'),
+            array('prestashop-theme', 'themes/a-theme/', 'vendor/a-theme'),
             array('phpbb-extension', 'ext/test/foo/', 'test/foo'),
             array('phpbb-style', 'styles/foo/', 'test/foo'),
             array('phpbb-language', 'language/foo/', 'test/foo'),
@@ -270,6 +278,8 @@ class InstallerTest extends TestCase
             array('silverstripe-module', 'framework/', 'silverstripe/framework', '3.0.0-rc1'),
             array('silverstripe-module', 'framework/', 'silverstripe/framework', 'my/branch'),
             array('silverstripe-theme', 'themes/my_theme/', 'shama/my_theme'),
+            array('smf-module', 'Sources/my_module/', 'shama/my_module'),
+            array('smf-theme', 'Themes/my_theme/', 'shama/my_theme'),
             array('symfony1-plugin', 'plugins/sfShamaPlugin/', 'shama/sfShamaPlugin'),
             array('symfony1-plugin', 'plugins/sfShamaPlugin/', 'shama/sf-shama-plugin'),
             array('thelia-module', 'local/modules/my_module/', 'shama/my_module'),
