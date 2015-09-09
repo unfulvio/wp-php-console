@@ -1,0 +1,31 @@
+{
+  "name": "nekojira/wp-requirements",
+  "description": "Utility for WordPress plugin developers to check PHP version, WordPress version and presence of PHP extensions in current installation.",
+  "version": "1.4.0",
+  "license": "GPL-2.0+",
+  "type": "library",
+  "homepage": "https://github.com/nekojira/wp-requirements/",
+  "support": {
+    "issues": "https://github.com/nekojira/wp-requirements/issues",
+    "source": "https://github.com/nekojira/wp-requirements"
+  },
+  "authors": [
+    {
+      "name": "Fulvio Notarstefano",
+      "email": "fulvio.notarstefano@gmail.com",
+      "homepage": "https://github.com/nekojira",
+      "role": "Developer"
+    }
+  ],
+  "keywords" : [ 
+    "php",
+    "requirements",
+    "wordpress",
+    "version"
+  ],
+  "autoload": {
+    "psr-0": {
+      "": "src"
+    }
+  }
+}

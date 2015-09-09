@@ -2,7 +2,7 @@
 	"name": "nekojira/wp-php-console",
 	"description": "A WordPress implementation of PHP Console.",
   "type": "wordpress-plugin",
-	"version": "1.3.8",
+	"version": "1.3.9",
 	"keywords": ["wordpress", "debug", "debugging", "development", "php-console", "console", "terminal", "command-line", "cli" ],
 	"homepage": "https://github.com/nekojira/wp-php-console",
   "license": "GPLv2.0+",
@@ -17,6 +17,23 @@
 	"require": {
 		"php": ">=5.4.0",
 		"composer/installers": "v1.0.19",
-		"php-console/php-console": "~3.1"
-	}
+		"php-console/php-console": "~3.1",
+		"nekojira/wp-requirements": "^1.4",
+    "xrstf/composer-php52": "1.*"
+	},
+  "require-dev": {
+    "phpunit/phpunit": "*@stable",
+    "whatthejeff/nyancat-phpunit-resultprinter": "~1.2"
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "xrstf\\Composer52\\Generator::onPostInstallCmd"
+    ],
+    "post-update-cmd": [
+      "xrstf\\Composer52\\Generator::onPostInstallCmd"
+    ],
+    "post-autoload-dump": [
+      "xrstf\\Composer52\\Generator::onPostInstallCmd"
+    ]
+  }
 }

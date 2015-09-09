@@ -9,7 +9,6 @@ module.exports = function( grunt ) {
 			'!tests/**',
 			'!**/.*',
 			'!bootstrap.php',
-			'!bootstrap.php.dist',
 			'!ChangeLog.md',
 			'!Gruntfile.js',
 			'!package.json',
@@ -66,9 +65,8 @@ module.exports = function( grunt ) {
 
 	// Register tasks
 
-	grunt.registerTask( 'release', ['clean', 'copy', 'compress'] );
-
-	grunt.registerTask( 'deploy', ['release', 'wp_deploy'] );
+	grunt.registerTask( 'build',  ['clean', 'copy', 'compress'] );
+	grunt.registerTask( 'deploy', ['build', 'wp_deploy'] );
 
 	grunt.util.linefeed = '\n';
 };

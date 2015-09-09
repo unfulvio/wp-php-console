@@ -1,22 +1,24 @@
 <?php
 /**
- * @link              https://github.com/nekojira/wp-php-console/
- * @since             1.0.0
- * @package           WP_PHP_Console
- * @author            Fulvio Notarstefano <fulvio.notarstefano@gmail.com>
- *
- * @wordpress-plugin
  * Plugin Name:       WP PHP Console
  * Plugin URI:        https://github.com/nekojira/wp-php-console/
  * Description:       An implementation of PHP Console for WordPress. Easily debug and trace PHP errors and warnings from your Chrome dev tools console using a Google Chrome extension.
- * Version:           1.3.8
+ *
+ * Version:           1.3.9
+ *
  * Author:            Fulvio Notarstefano
  * Author URI:        https://github.com/nekojira/
+ *
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ *
  * Text Domain:       wp-php-console
  * Domain Path:       /languages
  */
+
+if ( ! defined( 'WPINC' ) ) {
+	exit;
+}
 
 /**
  * WP PHP Console
@@ -41,8 +43,11 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-if ( ! defined( 'WPINC' ) ) {
-	exit; // Exit if accessed directly
+// Composer fallback for PHP < 5.3.0.
+if ( version_compare( PHP_VERSION, '5.3.0' ) === -1 ) {
+	include_once 'vendor/autoload_52.php';
+} else {
+	include_once 'vendor/autoload.php';
 }
 
 /**
@@ -51,34 +56,20 @@ if ( ! defined( 'WPINC' ) ) {
  * @link https://make.wordpress.org/plugins/2015/06/05/policy-on-php-versions/
  * @link https://github.com/nekojira/wp-requirements
  */
-require_once 'lib/class-wp-php-console-requirements.php';
-$php_console = array( 'php' => '5.4.0' );
-$requirements = new WP_PHP_Console_Requirements( $php_console );
-if ( $requirements->pass() === false ) {
+$this_plugin_checks = new WP_Requirements(
+	'WP PHP Console',
+	plugin_basename( __FILE__ ),
+	array(
+		'PHP' => '5.4.0',
+	)
+);
 
-	if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
+if ( $this_plugin_checks->pass() === false ) {
 
-		add_action( 'admin_notices',
-			create_function( '', "echo '<div class=\"error\"><p>' . sprintf( 'WP PHP Console requires PHP 5.4 or above to function properly. Detected PHP version on your server is %s. Please upgrade PHP to activate WP PHP Console or remove the plugin.', '<code>' . phpversion() . '</code>' ) . '</p></div>';" )
-		);
-
-		add_action( 'admin_init', 'wp_php_console_deactivate_self' );
-		function wp_php_console_deactivate_self() {
-			deactivate_plugins( plugin_basename( __FILE__ ) );
-		}
-
-	}
-
+	$this_plugin_checks->halt();
 	return;
 
 } else {
-
-	/**
-	 * Include PhpConsole server library.
-	 * @link https://github.com/barbushin/php-console
-	 * Copyright (c) 2011-2013 by Barbushin Sergey <barbushin@gmail.com>.
-	 */
-	require_once 'vendor/autoload.php';
 
 	/**
 	 * The main class of this plugin.
