@@ -1,5 +1,8 @@
 # Changelog
 
+### 1.3.9 (09 sep 2015)
+* Use WP Requirements as Composer dependency
+
 ### 1.3.8 (14 jul 2015)
 * Internal changes (alternate PHP version check, automated SVN deploys)
 
