@@ -26,6 +26,7 @@ sftp-config.json
 !/includes/tmp/index.php
 /node_modules
 /vendor
+composer.lock
 
 ### Builds ###
 build/
