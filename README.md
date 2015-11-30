@@ -25,9 +25,9 @@ Make sure the PHP Console Chrome extension is enabled through [chrome://extensio
 
 2. Then, add this plugin to your WordPress installation either by:
 
-  - Installing it as any other WordPress plugin from your WordPress admin Plugins page (`Add New`)
+  - Installing it as any other WordPress plugin from your WordPress admin Plugins page (`Add New`).
 
-  - Uploading it in `wp-php-console` directory into your `wp-content/plugins/` directory or corresponding plugins directory in your installation
+  - Downloading a copy from [WordPress.org]((https://wordpress.org/plugins/wp-php-console/)) and uploading it in `wp-php-console` directory into your `wp-content/plugins/` directory or corresponding plugins directory in your installation. You can also do this from the WordPress plugins installation admim dashboard pages.
 
 3. Activate the plugin through the `Plugins` admin page in WordPress
 
@@ -35,7 +35,7 @@ Make sure the PHP Console Chrome extension is enabled through [chrome://extensio
 
   - Enter a password for the Eval Terminal (this setting is needed or the terminal feature simply won't work).
 
-  - You can also set other options.
+  - You can also set other options (see inline instructions or read below).
 
 ## Options
 
@@ -65,40 +65,3 @@ The result includes the output, the return value and the net server execution ti
 In your PHP code on the Server, you can call PHP Console debug statements like `PC::debug( $var, $tag )` to display PHP variables in the JavaScript console and optionally filter selected tags through the PHP Console eval & options form opened from the address bar in your browser.
 
 In the JavaScript console you will see printed any PC::debug() information, PHP errors, warnings, notices with optional stack trace, which will be useful to debug your plugin or theme.
-
-## FAQ
-
-#### Is this an official plugin from PHP Console author?
->No, but it makes use of Sergey's PHP Console library as it is.
-
-#### Does it work with Firefox, IE, Opera or other browsers?
->No it doesn't, unless PHP Console browser extension is ported, for example, as a Firefox add-on.
-
-#### Can I use PHP Console in a live production environment?
->You *can* but it is definitely not a good idea. You should do your debugging and testing on a development/testing environment on a staging server or local machine. Likewise, you normally wouldn't want to turn on PHP error reporting or set `WP_DEBUG` to `true` in a live site as you wouldn't want to display error information to public. Furthermore, PHP Console allows execution of any remote PHP code through terminal - for this you can set a strong password and restrict the IP address range to access the terminal, but still it's not advisable. Besides putting your site **at risk**, you will also add more load to your server.
-
-#### Why are PHP arrays shown as objects?
->The JavaScript console prints PHP variables as JavaScript variables. Associative PHP arrays such as `['key1' => 'var2', 'key2' => 'var2', ... ]` are shown as objects; automatically indexed arrays like `[ 'var1', 'var2', ... ]` are shown as arrays.
-
-#### I got `Fatal error: Class 'PC' not found in 'my code'` - what's that?
-
-`PC::debug( $my_var, $my_tag )` can only be called after the WordPress core included the WP PHP Console plugin.
-
-You could move your debug code or either do something like
-
-     // delay use of PC class until WP PHP Console plugin is included
-     add_action('plugins_loaded', function () use ($my_var) {
-         // send $my_var with tag 'my_tag' to the JavaScript console through PHP Console Server  Library and PHP Console Chrome Plugin
-         PC::my_tag($my_var);
-     });
-
-or
-
-    // PHP Console autoload
-    require_once dirname( __FILE__ ) . '/wp-php-console/vendor/autoload.php';
-    // make PC class available in global PHP scope
-    if( !class_exists( 'PC', false ) ) { 
-        PhpConsole\Helper::register();
-    }
-    // send $my_var with tag 'my_tag' to the JavaScript console through PHP Console Server Library and PHP Console Chrome Plugin
-    PC::my_tag($my_var);

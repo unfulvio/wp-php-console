@@ -1,5 +1,11 @@
 # Changelog
 
+### 1.4.0 (01 Dec 2015)
+* Internal changes, improved usage of Composer in plugin development
+* Support for WordPress language packs
+* Updated PHP Console Library to 3.1.5
+* Tested up to WordPress 4.4
+
 ### 1.3.9 (09 sep 2015)
 * Use WP Requirements as Composer dependency
 
@@ -32,7 +38,6 @@
   - Short Path Names
 
 ### 1.2.3 (21 jan 2015)
-
 * Fixes "Wrong PHP Console eval request signature" error when executing WordPress code from terminal, props @Polfo @barbushin
 
 ### 1.2.2 (15 jan 2015)

@@ -1,13 +1,13 @@
 <?php
 /**
  * Plugin Name:       WP PHP Console
- * Plugin URI:        https://github.com/nekojira/wp-php-console/
+ * Plugin URI:        https://github.com/unfulvio/wp-php-console/
  * Description:       An implementation of PHP Console for WordPress. Easily debug and trace PHP errors and warnings from your Chrome dev tools console using a Google Chrome extension.
  *
  * Version:           1.4.0
  *
  * Author:            Fulvio Notarstefano
- * Author URI:        https://github.com/nekojira/
+ * Author URI:        https://github.com/unfulvio/
  *
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
@@ -64,15 +64,11 @@ $this_plugin_checks = new WP_Requirements(
 );
 
 if ( $this_plugin_checks->pass() === false ) {
-
+	// Stop.
 	$this_plugin_checks->halt();
 	return;
-
 } else {
-
-	/**
-	 * The main class of this plugin.
-	 */
-	require_once 'lib/class-wp-php-console.php';
-
+	// Load the main class of this plugin.
+	require_once 'includes/class-wp-php-console.php';
+	new \WP_PHP_Console\Plugin();
 }

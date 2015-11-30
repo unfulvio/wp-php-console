@@ -22,9 +22,15 @@ nb-configuration.xml
 sftp-config.json
 
 ### Dev ###
-/lib/tmp
+/includes/tmp/*.*
+!/includes/tmp/index.php
 /node_modules
 /vendor
+
+### Builds ###
+build/
+svn/
+release/
 
 ### Log files ###
 *.log
@@ -42,8 +48,3 @@ ehthumbs.db
 *[Tt]humbs.db
 *.Trashes
 us.stackdump
-
-### Builds ###
-build/
-svn/
-release/

@@ -19,7 +19,7 @@ This implementation of PHP Console offers yet another tool to make it more easy 
 
 Note: PHP 5.4.0 minimum version is required to use this plugin. 
 
-For support and pull requests, please refer to [WP PHP Console Github repo](https://github.com/nekojira/wp-php-console) and read the instructions there - thank you.
+For support and pull requests, please refer to [WP PHP Console Github repo](https://github.com/unfulvio/wp-php-console) and read the instructions there - thank you.
 
 
 == Installation ==
@@ -125,6 +125,9 @@ None yet.
 
 = 1.4.0 =
 * Internal changes, improved usage of Composer in plugin development
+* Support for WordPress language packs
+* Updated PHP Console Library to 3.1.5
+* Tested up to WordPress 4.4
 
 = 1.3.9 =
 * Use WP Requirements as Composer dependency.
@@ -158,7 +161,6 @@ None yet.
   - Short Path Names
 
 = 1.2.3 =
-
 * Fixes "Wrong PHP Console eval request signature" error when executing WordPress code from terminal, props @Polfo @barbushin
 
 = 1.2.2 =
@@ -184,7 +186,7 @@ None yet.
 == Upgrade Notice ==
 
 = 1.4.0 =
-If you were installing this plugin by downloading a zip from the GitHub repo, please be aware to run `composer install` first
+If you were installing this plugin by downloading a zip directly from the GitHub repository, please be sure to run `composer install --no-dev` and then `composer dump-autoload --optimize --no-dev` first, or use the bundled grunt task `grunt build` to generate a working copy of the plugin (if using grunt, run `npm install` first).
 
 = 1.3.7 =
 To improve compatibility with other plugins, now stores session data in a file.

@@ -2,10 +2,9 @@
 /**
  * Fired when the plugin is uninstalled.
  *
- * @link       https://github.com/nekojira/wp-php-console
- * @since      1.0.0
- *
- * @package    WP_PHP_Console
+ * @link    https://github.com/nekojira/wp-php-console
+ * @since   1.0.0
+ * @package WP_PHP_Console
  */
 
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {

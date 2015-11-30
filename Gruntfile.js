@@ -10,6 +10,8 @@ module.exports = function( grunt ) {
 			'!**/.*',
 			'!bootstrap.php',
 			'!ChangeLog.md',
+			'!composer.json',
+			'!composer.lock',
 			'!Gruntfile.js',
 			'!package.json',
 			'!phpunit.xml',
@@ -21,6 +23,77 @@ module.exports = function( grunt ) {
 	grunt.initConfig( {
 
 		pkg: pkg,
+
+		checktextdomain: {
+			options: {
+				text_domain   : 'wp-php-console',
+				correct_domain: false,
+				keywords      : [
+					'__:1,2d',
+					'_e:1,2d',
+					'_x:1,2c,3d',
+					'esc_html__:1,2d',
+					'esc_html_e:1,2d',
+					'esc_html_x:1,2c,3d',
+					'esc_attr__:1,2d',
+					'esc_attr_e:1,2d',
+					'esc_attr_x:1,2c,3d',
+					'_ex:1,2c,3d',
+					'_n:1,2,4d',
+					'_nx:1,2,4c,5d',
+					'_n_noop:1,2,3d',
+					'_nx_noop:1,2,3c,4d',
+					' __ngettext:1,2,3d',
+					'__ngettext_noop:1,2,3d',
+					'_c:1,2d',
+					'_nc:1,2,4c,5d'
+				]
+			},
+			files  : {
+				src   : [
+					'includes/**/*.php',
+					'wp-php-console.php',
+					'uninstall.php'
+				],
+				expand: true
+			}
+		},
+
+		makepot: {
+			target: {
+				options: {
+					cwd            : '',
+					domainPath     : '/languages',
+					potFilename    : 'wp-php-console.pot',
+					mainFile       : 'wp-php-console.php',
+					include        : [],
+					exclude        : [
+						'assets/',
+						'build/',
+						'languages/',
+						'node_modules',
+						'release/',
+						'svn/',
+						'tests',
+						'tmp',
+						'vendor'
+					],
+					potComments    : '',
+					potHeaders     : {
+						poedit                 : true,
+						'x-poedit-keywordslist': true,
+						'language'             : 'en_US',
+						'report-msgid-bugs-to' : 'https://github.com/unfulvio/wp-php-console',
+						'last-translator'      : 'Fulvio Notarstefano <fulvio.notarstefano@gmail.com>',
+						'language-Team'        : 'Fulvio Notarstefano <fulvio.notarstefano@gmail.com>'
+					},
+					type           : 'wp-plugin',
+					updateTimestamp: true,
+					updatePoFiles  : true,
+					processPot     : null
+				}
+			}
+		},
 
 		clean: {
 			main: [ 'build' ]
@@ -64,9 +137,9 @@ module.exports = function( grunt ) {
 	require('load-grunt-tasks')(grunt);
 
 	// Register tasks
-
-	grunt.registerTask( 'build',  ['clean', 'copy', 'compress'] );
-	grunt.registerTask( 'deploy', ['build', 'wp_deploy'] );
+	grunt.registerTask( 'pot',    ['checktextdomain', 'makepot'] );
+	grunt.registerTask( 'build',  ['composer:install:no-dev', 'composer:dump-autoload:optimize:no-dev', 'clean', 'copy', 'compress', 'composer:update', 'composer:dump-autoload:optimize'] );
+	grunt.registerTask( 'deploy', ['pot', 'build', 'wp_deploy'] );
 
 	grunt.util.linefeed = '\n';
 };
