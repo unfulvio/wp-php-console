@@ -27,7 +27,7 @@ class WP_PHP_Console {
 	 * @access   protected
 	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
 	 */
-	protected $plugin_name;
+	protected $plugin_name = '';
 
 	/**
 	 * The current version of the plugin.
@@ -36,7 +36,7 @@ class WP_PHP_Console {
 	 * @access   protected
 	 * @var      string    $version    The current version of the plugin.
 	 */
-	protected $version;
+	protected $version = '';
 
 	/**
 	 * Options.
@@ -44,7 +44,8 @@ class WP_PHP_Console {
 	 * @since    1.0.0
 	 * @access   protected
 	 */
-	protected $options;
+	protected $options = array();
+
 
 	/**
 	 * Construct.
@@ -54,8 +55,8 @@ class WP_PHP_Console {
 	public function __construct() {
 
 		$this->plugin_name = 'wp-php-console';
-		$this->version = '1.3.9';
-		$this->options = get_option( 'wp_php_console' );
+		$this->version     = '1.4.0';
+		$this->options     = get_option( 'wp_php_console' );
 
 		if ( ! class_exists( 'PhpConsole\Connector' ) ) {
 			return;
@@ -104,6 +105,7 @@ class WP_PHP_Console {
 
 	}
 
+
 	/**
 	 * Set plugin text domain.
 	 *
@@ -115,6 +117,7 @@ class WP_PHP_Console {
 			false,
 			dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
+
 
 	/**
 	 * Plugin Settings menu.
@@ -134,6 +137,7 @@ class WP_PHP_Console {
 		add_action( 'admin_init', array( $this, 'register_settings'  ) );
 
 	}
+
 
 	/**
 	 * Register plugin settings.
@@ -205,6 +209,7 @@ class WP_PHP_Console {
 
 	}
 
+
 	/**
 	 * Settings Page Password field.
 	 *
@@ -221,6 +226,7 @@ class WP_PHP_Console {
 		echo '<small class="description">' . __( 'The password for eval terminal. If empty, the plugin will not work.', $this->plugin_name ) . '</small>';
 
 	}
+
 
 	/**
 	 * Settings Page SSL option field.
@@ -241,6 +247,7 @@ class WP_PHP_Console {
 
 	}
 
+
 	/**
 	 * Settings page IP Range field.
 	 *
@@ -257,6 +264,7 @@ class WP_PHP_Console {
 		echo '<small class="description">' . __( 'You may specify an IP address (e.g. 192.169.1.50), a range of addresses (192.168.*.*) or multiple addresses, comma separated (192.168.10.25,192.168.10.28) to grant access to eval terminal.', $this->plugin_name ) . '</small>';
 
 	}
+
 
 	/**
 	 * Settings page Register PC Class field.
@@ -277,6 +285,7 @@ class WP_PHP_Console {
 
 	}
 
+
 	/**
 	 * Settings page Show Call Stack field.
 	 *
@@ -296,6 +305,7 @@ class WP_PHP_Console {
 
 	}
 
+
 	/**
 	 * Settings page Show Short Paths field.
 	 *
@@ -314,6 +324,7 @@ class WP_PHP_Console {
 		echo '<small class="description">' . __( 'Choose to shorten PHP Console error sources and traces paths in browser\'s JavaScript-console. Paths like /server/path/to/document/root/WP/wp-admin/admin.php:31 will be displayed as /W/wp-admin/admin.php:31', $this->plugin_name ) . '</small>';
 
 	}
+
 
 	/**
 	 * Sanitize user input in settings page.
@@ -347,6 +358,7 @@ class WP_PHP_Console {
 			return $sanitized_input;
 	}
 
+
 	/**
 	 * Settings page.
 	 *
@@ -370,6 +382,7 @@ class WP_PHP_Console {
 
 	}
 
+
 	/**
 	 * Settings page additional info.
 	 * Prints more details on the plugin settings page.
@@ -390,6 +403,7 @@ class WP_PHP_Console {
 		<?php
 
 	}
+
 
 	/**
 	 * Initialize PHP Console.
@@ -445,6 +459,7 @@ class WP_PHP_Console {
 
 	}
 
+
 	/**
 	 * Admin password notice.
 	 * Prompts user to set a password for PHP Console upon plugin activation.
@@ -462,6 +477,7 @@ class WP_PHP_Console {
 		<?php
 
 	}
+
 
 }
 
