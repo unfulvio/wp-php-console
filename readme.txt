@@ -3,7 +3,7 @@ Contributors: nekojira
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=P64V9NTEYFKDL
 Tags: development, debug, debugging
 Requires at least: 3.6.0
-Tested up to: 4.3.0
+Tested up to: 4.4
 Stable tag: 1.3.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -123,6 +123,9 @@ None yet.
 
 == Changelog ==
 
+= 1.4.0 =
+* Internal changes, improved usage of Composer in plugin development
+
 = 1.3.9 =
 * Use WP Requirements as Composer dependency.
 
@@ -179,6 +182,9 @@ None yet.
 
 
 == Upgrade Notice ==
+
+= 1.4.0 =
+If you were installing this plugin by downloading a zip from the GitHub repo, please be aware to run `composer install` first
 
 = 1.3.7 =
 To improve compatibility with other plugins, now stores session data in a file.
