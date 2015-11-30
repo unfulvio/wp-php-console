@@ -21,11 +21,10 @@ nb-configuration.xml
 *.sublime-workspace
 sftp-config.json
 
-### PHP Console ###
+### Dev ###
 /lib/tmp
-
-### Node ###
 /node_modules
+/vendor
 
 ### Log files ###
 *.log
