@@ -159,7 +159,7 @@ class Plugin {
 	 *
 	 * @since 1.0.0
 	 */
-	function register_settings() {
+	public function register_settings() {
 
 		register_setting(
 			'wp_php_console',
@@ -378,7 +378,7 @@ class Plugin {
 	 *
 	 * @since 1.0.0
 	 */
-	function settings_page() {
+	public function settings_page() {
 
 		?>
 		<div class="wrap">
