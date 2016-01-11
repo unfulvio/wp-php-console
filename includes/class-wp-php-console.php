@@ -61,7 +61,7 @@ class Plugin {
 
 
 	/**
-	 * Init.
+	 * Load plugin and connect to PHP Console.
 	 *
 	 * @since 1.0.0
 	 */
@@ -69,13 +69,52 @@ class Plugin {
 
 		$this->plugin_name = 'WP PHP Console';
 		$this->plugin_slug = 'wp-php-console';
-		$this->version     = '1.4.0';
+		$this->version     = '1.4.1';
 		$this->options     = $this->get_options();
 
 		// Bail out if PHP Console can't be found
 		if ( ! class_exists( 'PhpConsole\Connector' ) ) {
 			return;
 		}
+
+		// Connect to PHP Console.
+		$this->connect();
+
+		// Apply PHP Console options.
+		$this->apply_options();
+
+		// Translations
+		add_action( 'plugins_loaded', array( $this, 'set_locale' ) );
+
+		// Admin menu
+		add_action( 'admin_menu', array( $this, 'register_settings_page' ) );
+
+		// Delay further PHP Console initialisation to have more context during Remote PHP execution
+		add_action( 'wp_loaded', array( $this, 'init' ) );
+
+	}
+
+
+	/**
+	 * Set plugin text domain.
+	 *
+	 * @since 1.0.0
+	 */
+	public function set_locale() {
+
+		load_plugin_textdomain(
+			$this->plugin_slug,
+			false,
+			dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+	}
+
+
+	/**
+	 * Connect to PHP Console.
+	 *
+	 * @since 1.4.1
+	 */
+	private function connect() {
 
 		// By default PHP Console uses PhpConsole\Storage\Session for postponed responses,
 		// so all temporary data will be stored in $_SESSION.
@@ -98,6 +137,27 @@ class Plugin {
 
 		// Perform PHP Console initialisation required asap for other code to be able to output to the JavaScript console
 		$connector = PhpConsole\Connector::getInstance();
+
+	}
+
+
+	/**
+	 * Get WP PHP Console settings options.
+	 *
+	 * @since 1.4.0
+	 * @return array
+	 */
+	protected function get_options() {
+		return get_option( 'wp_php_console', array() );
+	}
+
+
+	/**
+	 * Apply options.
+	 *
+	 * @since 1.4.1
+	 */
+	private function apply_options() {
 
 		// Apply 'register' option to PHP Console
 		if ( ! empty( $this->options['register'] ) && ! class_exists( 'PC', false ) ) {
@@ -123,24 +183,91 @@ class Plugin {
 			}
 		}
 
-		// Translation
-		add_action( 'plugins_loaded', array( $this, 'set_locale' ) );
-		// Admin menu
-		add_action( 'admin_menu', array( $this, 'register_settings_page' ) );
-		// Delay further PHP Console initialisation to have more context during Remote PHP execution
-		add_action( 'wp_loaded', array( $this, 'init' ) );
-
 	}
 
 
 	/**
-	 * Get WP PHP Console settings options.
+	 * Initialize PHP Console.
 	 *
-	 * @since 1.4.0
-	 * @return array
+	 * @since 1.0.0
 	 */
-	protected function get_options() {
-		return get_option( 'wp_php_console', array() );
+	public function init() {
+
+		// Display admin notice and abort if no password has been set
+		$password = isset( $this->options['password'] ) ? $this->options['password'] : '';
+		if ( ! $password ) {
+			add_action( 'admin_notices', array( $this, 'password_notice' ) );
+			return;
+		}
+
+		// Selectively remove slashes added by WordPress as expected by PhpConsole
+		if ( isset( $_POST[PhpConsole\Connector::POST_VAR_NAME] ) ) {
+			$_POST[ PhpConsole\Connector::POST_VAR_NAME ] = stripslashes_deep( $_POST[ PhpConsole\Connector::POST_VAR_NAME ] );
+		}
+
+		$connector = PhpConsole\Connector::getInstance();
+
+		try {
+			$connector->setPassword( $password );
+		} catch ( \Exception $e ) {
+			$this->print_notice_exception( $e );
+		}
+
+		// PhpConsole instance
+		$handler = PhpConsole\Handler::getInstance();
+
+		if ( PhpConsole\Handler::getInstance()->isStarted() !== true ) {
+			try {
+				$handler->start();
+			} catch( \Exception $e ) {
+				$this->print_notice_exception( $e );
+			}
+		}
+
+		// Enable SSL-only mode
+		$enableSslOnlyMode = isset( $this->options['ssl'] ) ? ( ! empty( $this->options['ssl'] ) ? $this->options['ssl'] : '' ) : '';
+
+		if ( $enableSslOnlyMode ) {
+			$connector->enableSslOnlyMode();
+		}
+
+		// Restrict IP addresses
+		$allowedIpMasks = isset( $this->options['ip'] ) ? ( ! empty( $this->options['ip'] ) ? explode( ',', $this->options['ip'] ) : '' ) : '';
+
+		if ( is_array( $allowedIpMasks ) && ! empty( $allowedIpMasks ) ) {
+			$connector->setAllowedIpMasks( (array) $allowedIpMasks );
+		}
+
+		$evalProvider = $connector->getEvalDispatcher()->getEvalProvider();
+
+		try {
+			$evalProvider->addSharedVar( 'uri', $_SERVER['REQUEST_URI'] );
+		} catch ( \Exception $e ) {
+			$this->print_notice_exception( $e );
+		}
+
+		try {
+			$evalProvider->addSharedVarReference( 'post', $_POST );
+		} catch ( \Exception $e ) {
+			$this->print_notice_exception( $e );
+		}
+
+		$openBaseDirs = array( ABSPATH, get_template_directory() );
+
+		try {
+			$evalProvider->addSharedVarReference( 'dirs', $openBaseDirs );
+		} catch ( \Exception $e ) {
+			$this->print_notice_exception( $e );
+		}
+
+		$evalProvider->setOpenBaseDirs( $openBaseDirs );
+
+		try {
+			$connector->startEvalRequestsListener();
+		} catch ( \Exception $e ) {
+			$this->print_notice_exception( $e );
+		}
+
 	}
 
 
@@ -151,13 +278,13 @@ class Plugin {
 	 * @param \Exception $e Exception object
 	 * @return void
 	 */
-	protected function print_notice_exception( \Exception $e ) {
+	public function print_notice_exception( \Exception $e ) {
 
 		add_action( 'admin_notices', function() use ( $e ) {
 
 			?>
 			<div class="error">
-				<p><?php echo $this->plugin_name . ': ' . $e->getMessage(); ?></p>
+				<p><?php printf( '%1$s: %2$s', $this->plugin_name, $e->getMessage() ); ?></p>
 			</div>
 			<?php
 
@@ -165,17 +292,28 @@ class Plugin {
 	}
 
 
-	/**
-	 * Set plugin text domain.
-	 *
-	 * @since 1.0.0
-	 */
-	public function set_locale() {
 
-		load_plugin_textdomain(
-			$this->plugin_slug,
-			false,
-			dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+	/**
+	 * Admin password notice.
+	 * Prompts user to set a password for PHP Console upon plugin activation.
+	 *
+	 * @since   1.3.2
+	 */
+	public function password_notice() {
+
+		?>
+		<div class="update-nag">
+			<?php
+
+			$settings_page = esc_url( admin_url( 'options-general.php?page=wp-php-console' ) );
+
+			/* translators: Placeholders: %1$s - opening HTML <a> link tag; %2$s closing HTML </a> link tag */
+			printf( $this->plugin_name . ': ' . __( 'Please remember to %1$s set a password %2$s if you want to enable terminal.', 'wp-php-console' ), '<a href="' . $settings_page .'">', '</a>' );
+
+			?>
+		</div>
+		<?php
+
 	}
 
 
@@ -407,7 +545,7 @@ class Plugin {
 			}
 
 			if ( isset( $input['ip'] ) ) {
-				$sanitized_input['ip'] = sanitize_text_field( $input['ip'] );
+				$sanitized_input['ip']  = sanitize_text_field( $input['ip'] );
 			}
 
 			$sanitized_input['register'] = empty( $input['register'] ) ? '' : 1;
@@ -461,110 +599,6 @@ class Plugin {
 			<li><?php _e( 'From the eval terminal you can execute any PHP or WordPress specific function, including functions from your plugins and active theme.', 'wp-php-console' ); ?></li>
 			<li><?php _e( "In your PHP code, you can call PHP Console debug statements like <code>debug(&#36;var, &#36;tag)</code> to display PHP variables in the browser's JavaScript-console (<code>Ctrl Shift J </code>) and optionally filter selected tags through the browser's Remote PHP Eval Terminal screen's Ignore Debug options.", 'wp-php-console' ); ?></li>
 		</ol>
-		<?php
-
-	}
-
-
-	/**
-	 * Initialize PHP Console.
-	 *
-	 * @since   1.0.0
-	 */
-	public function init() {
-
-		// Display admin notice and abort if no password has been set
-		$password = isset( $this->options['password'] ) ? $this->options['password'] : '';
-		if ( ! $password ) {
-			add_action( 'admin_notices', array( $this, 'password_notice' ) );
-			return; // abort
-		}
-
-		// Selectively remove slashes added by WordPress as expected by PhpConsole
-		if ( isset( $_POST[PhpConsole\Connector::POST_VAR_NAME] ) ) {
-			$_POST[ PhpConsole\Connector::POST_VAR_NAME ] = stripslashes_deep( $_POST[ PhpConsole\Connector::POST_VAR_NAME ] );
-		}
-
-		$connector = PhpConsole\Connector::getInstance();
-
-		try {
-			$connector->setPassword( $password );
-		} catch ( \Exception $e ) {
-			$this->print_notice_exception( $e );
-		}
-
-		// PhpConsole instance
-		$handler = PhpConsole\Handler::getInstance();
-		if ( PhpConsole\Handler::getInstance()->isStarted() !== true ) {
-			try {
-				$handler->start();
-			} catch( \Exception $e ) {
-				$this->print_notice_exception( $e );
-			}
-		}
-
-		// Enable SSL-only mode
-		$enableSslOnlyMode = isset( $this->options['ssl'] ) ? ( ! empty( $this->options['ssl'] ) ? $this->options['ssl'] : '' ) : '';
-		if ( $enableSslOnlyMode ) {
-			$connector->enableSslOnlyMode();
-		}
-
-		// Restrict IP addresses
-		$allowedIpMasks = isset( $this->options['ip'] ) ? ( ! empty( $this->options['ip'] ) ? explode( ',', $this->options['ip'] ) : '' ) : '';
-		if ( is_array( $allowedIpMasks ) && ! empty( $allowedIpMasks ) ) {
-			$connector->setAllowedIpMasks( (array) $allowedIpMasks );
-		}
-
-		$evalProvider = $connector->getEvalDispatcher()->getEvalProvider();
-
-		try {
-			$evalProvider->addSharedVar( 'uri', $_SERVER['REQUEST_URI'] );
-		} catch ( \Exception $e ) {
-			$this->print_notice_exception( $e );
-		}
-		try {
-			$evalProvider->addSharedVarReference( 'post', $_POST );
-		} catch ( \Exception $e ) {
-			$this->print_notice_exception( $e );
-		}
-
-		$openBaseDirs = array( ABSPATH, get_template_directory() );
-		try {
-			$evalProvider->addSharedVarReference( 'dirs', $openBaseDirs );
-		} catch ( \Exception $e ) {
-			$this->print_notice_exception( $e );
-		}
-
-		$evalProvider->setOpenBaseDirs( $openBaseDirs );
-
-		try {
-			$connector->startEvalRequestsListener();
-		} catch ( \Exception $e ) {
-			$this->print_notice_exception( $e );
-		}
-
-	}
-
-
-	/**
-	 * Admin password notice.
-	 * Prompts user to set a password for PHP Console upon plugin activation.
-	 *
-	 * @since   1.3.2
-	 */
-	public function password_notice() {
-
-		?>
-		<div class="update-nag">
-			<?php
-
-			$settings_page = esc_url( admin_url( 'options-general.php?page=wp-php-console' ) );
-
-			/* translators: Placeholders: %1$s - opening HTML <a> link tag; %2$s closing HTML </a> link tag */
-			printf( $this->plugin_name . ': ' . __( 'Please remember to %1$s set a password %2$s if you want to enable terminal.', 'wp-php-console' ), '<a href="' . $settings_page .'">', '</a>' );
-
-			?>
-		</div>
 		<?php
 
 	}

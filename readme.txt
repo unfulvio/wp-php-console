@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: development, debug, debugging
 Requires at least: 3.6.0
 Tested up to: 4.4.1
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -124,35 +124,35 @@ None.
 == Changelog ==
 
 = 1.4.0 =
-* Improved error and exception handling
-* Internal changes, improved usage of Composer in plugin development
-* Support for WordPress language packs
-* Updated PHP Console Library to 3.1.5
-* Tested up to WordPress 4.4.1
+* Enhancement: Support for WordPress language packs
+* Tweak: Improved error and exception handling
+* Misc: Improved error and exception handling and usage of Composer in plugin development
+* Misc: Updated PHP Console Library to 3.1.5
+* Misc: Tested up to WordPress 4.4.1
 
 = 1.3.9 =
-* Use WP Requirements as Composer dependency.
+* Misc: Use WP Requirements as Composer dependency.
 
 = 1.3.8 =
-* Internal changes (alternate PHP version check, automated SVN deploys) 
+* Misc: Internal changes (alternate PHP version check, automated SVN deploys) 
 
 = 1.3.7 =
-* Fixes a bug `Cannot send session cache limiter - headers already sent`
-* Updated PHP Console Library to 3.1.4
+* Fix: Fixes a bug `Cannot send session cache limiter - headers already sent`
+* Misc: Updated PHP Console Library to 3.1.4
 
 = 1.3.5 =
-* Made PHP 5.4.0 the minimum required version to activate the plugin
-* Updated PHP Console library to 3.1.3
+* Misc: Made PHP 5.4.0 the minimum required version to activate the plugin
+* Misc: Updated PHP Console library to 3.1.3
 
 = 1.3.3 =
-* Supports WordPress 4.2
+* Misc: Supports WordPress 4.2
 
 = 1.3.2 =
-* Fixes "Fatal error: Using $this when not in object context" upon activation in some installations.
+* Fix: Fixes "Fatal error: Using $this when not in object context" upon activation in some installations.
 
 = 1.3.1 =
 * Enhancement: earlier PC initialisation - props @Polfo
-* Updated readme files
+* Misc: Updated readme files
 
 = 1.3.0 =
 * Fix: IP mask
@@ -162,25 +162,23 @@ None.
   - Short Path Names
 
 = 1.2.3 =
-* Fixes "Wrong PHP Console eval request signature" error when executing WordPress code from terminal, props @Polfo @barbushin
+* Fix: Fixes "Wrong PHP Console eval request signature" error when executing WordPress code from terminal, props @Polfo @barbushin
 
 = 1.2.2 =
-* Bugfixes
-* Submission to WordPress.org plugins repository.
+* Misc: Bugfixes
+* Misc: Submission to WordPress.org plugins repository.
 
 = 1.2.1 =
-* Fixed allowed IPs bug.
+* Fix: Fixed allowed IPs bug.
 
 = 1.2.0 =
-* Updated dependencies and got rid of git submodules.
+* Misc: Updated dependencies and got rid of git submodules.
 
 = 1.1.0 =
-* Added donation link/button.
-* PHP Console server is now instantiated later, allowing to catch all your theme functions too.
-* Included PHP Console server library as git submodule rather than a composer dependency.
+* Fix: PHP Console server is now instantiated later, allowing to catch all your theme functions too.
+* Misc: Included PHP Console server library as git submodule rather than a composer dependency.
 
 = 1.0.0 =
-* Added three options to set a custom password, enable on SSL only, authorized IP ranges.
 * First public release.
 
 
