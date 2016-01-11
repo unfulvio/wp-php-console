@@ -59,6 +59,15 @@ class Plugin {
 	 */
 	protected $options = array();
 
+	/**
+	 * Instance of PHP Console connector object.
+	 *
+	 * @since 1.4.1
+	 * @access public
+	 * @var PhpConsole\Connector $connector Instance.
+	 */
+	public $connector = null;
+
 
 	/**
 	 * Load plugin and connect to PHP Console.
@@ -136,7 +145,7 @@ class Plugin {
 		}
 
 		// Perform PHP Console initialisation required asap for other code to be able to output to the JavaScript console
-		$connector = PhpConsole\Connector::getInstance();
+		$this->connector = PhpConsole\Connector::getInstance();
 
 	}
 
@@ -171,13 +180,13 @@ class Plugin {
 
 		// Apply 'stack' option to PHP Console
 		if ( ! empty( $this->options['stack'] ) ) {
-			$connector->getDebugDispatcher()->detectTraceAndSource = true;
+			$this->connector->getDebugDispatcher()->detectTraceAndSource = true;
 		}
 
 		// Apply 'short' option to PHP Console
 		if ( ! empty( $this->options['short'] ) ) {
 			try {
-				$connector->setSourcesBasePath( $_SERVER['DOCUMENT_ROOT'] );
+				$this->connector->setSourcesBasePath( $_SERVER['DOCUMENT_ROOT'] );
 			} catch ( \Exception $e ) {
 				$this->print_notice_exception( $e );
 			}
@@ -205,10 +214,10 @@ class Plugin {
 			$_POST[ PhpConsole\Connector::POST_VAR_NAME ] = stripslashes_deep( $_POST[ PhpConsole\Connector::POST_VAR_NAME ] );
 		}
 
-		$connector = PhpConsole\Connector::getInstance();
+		$this->connector = PhpConsole\Connector::getInstance();
 
 		try {
-			$connector->setPassword( $password );
+			$this->connector->setPassword( $password );
 		} catch ( \Exception $e ) {
 			$this->print_notice_exception( $e );
 		}
@@ -228,17 +237,17 @@ class Plugin {
 		$enableSslOnlyMode = isset( $this->options['ssl'] ) ? ( ! empty( $this->options['ssl'] ) ? $this->options['ssl'] : '' ) : '';
 
 		if ( $enableSslOnlyMode ) {
-			$connector->enableSslOnlyMode();
+			$this->connector->enableSslOnlyMode();
 		}
 
 		// Restrict IP addresses
 		$allowedIpMasks = isset( $this->options['ip'] ) ? ( ! empty( $this->options['ip'] ) ? explode( ',', $this->options['ip'] ) : '' ) : '';
 
 		if ( is_array( $allowedIpMasks ) && ! empty( $allowedIpMasks ) ) {
-			$connector->setAllowedIpMasks( (array) $allowedIpMasks );
+			$this->connector->setAllowedIpMasks( (array) $allowedIpMasks );
 		}
 
-		$evalProvider = $connector->getEvalDispatcher()->getEvalProvider();
+		$evalProvider = $this->connector->getEvalDispatcher()->getEvalProvider();
 
 		try {
 			$evalProvider->addSharedVar( 'uri', $_SERVER['REQUEST_URI'] );
@@ -263,7 +272,7 @@ class Plugin {
 		$evalProvider->setOpenBaseDirs( $openBaseDirs );
 
 		try {
-			$connector->startEvalRequestsListener();
+			$this->connector->startEvalRequestsListener();
 		} catch ( \Exception $e ) {
 			$this->print_notice_exception( $e );
 		}
