@@ -69,7 +69,7 @@ class Plugin {
 
 		$this->plugin_name = 'WP PHP Console';
 		$this->plugin_slug = 'wp-php-console';
-		$this->version     = '1.4.1';
+		$this->version     = '1.4.0';
 		$this->options     = $this->get_options();
 
 		// Bail out if PHP Console can't be found
@@ -136,7 +136,7 @@ class Plugin {
 	/**
 	 * Get WP PHP Console settings options.
 	 *
-	 * @since 1.4.1
+	 * @since 1.4.0
 	 * @return array
 	 */
 	protected function get_options() {
@@ -147,7 +147,7 @@ class Plugin {
 	/**
 	 * Prints an exception message as WordPress admin notice
 	 *
-	 * @since 1.4.1
+	 * @since 1.4.0
 	 * @param \Exception $e Exception object
 	 * @return void
 	 */

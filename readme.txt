@@ -123,14 +123,12 @@ None.
 
 == Changelog ==
 
-= 1.4.1 =
-* Improved error and exception handling
-
 = 1.4.0 =
+* Improved error and exception handling
 * Internal changes, improved usage of Composer in plugin development
 * Support for WordPress language packs
 * Updated PHP Console Library to 3.1.5
-* Tested up to WordPress 4.4
+* Tested up to WordPress 4.4.1
 
 = 1.3.9 =
 * Use WP Requirements as Composer dependency.
