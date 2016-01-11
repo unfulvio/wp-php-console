@@ -3,8 +3,8 @@ Contributors: nekojira
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=P64V9NTEYFKDL
 Tags: development, debug, debugging
 Requires at least: 3.6.0
-Tested up to: 4.4
-Stable tag: 1.3.9
+Tested up to: 4.4.1
+Stable tag: 1.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -118,10 +118,13 @@ or
 
 == Screenshots ==
 
-None yet.
+None.
 
 
 == Changelog ==
+
+= 1.4.1 =
+* Improved error and exception handling
 
 = 1.4.0 =
 * Internal changes, improved usage of Composer in plugin development
