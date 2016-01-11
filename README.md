@@ -3,7 +3,7 @@
 [![GitHub version](https://badge.fury.io/gh/unfulvio%2Fwp-php-console.svg)](http://badge.fury.io/gh/nekojira%2Fwp-php-console)
 [![Dependency Status](https://gemnasium.com/nekojira/wp-php-console.svg)](https://gemnasium.com/nekojira/wp-php-console)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/unfulvio/wp-php-console/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/unfulvio/wp-php-console/?branch=master)
-[![Join the chat at https://gitter.im/nekojira/wp-php-console](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/unfulvio/wp-php-console?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Join the chat at https://gitter.im/unfulvio/wp-php-console](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/unfulvio/wp-php-console?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 An implementation of [PHP Console](https://github.com/barbushin/php-console "PHP Console") as a [WordPress](http://www.wordpress.org) plugin. Use Chrome Dev Tools to debug your WordPress installation!
 
