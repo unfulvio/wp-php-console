@@ -1,8 +1,13 @@
 # Changelog
 
+### 1.5.0 (29 May 2016)
+ * Fix: Tries to address an incompatibility between WordPress and PHP Console: "PHP Warning: session_start(): Cannot send session cache limiter - headers already sent"
+ * Misc: Internal changes, new Settings class, deprecated methods and properties in main Plugin class
+ * Misc: Updated PHP Console Library to 3.1.6
+ * Misc: Tested up to WordPress 4.5.2
+
 ### 1.4.0 (11 Jan 2016)
  * Enhancement: Support for WordPress language packs
- * Tweak: Improved error and exception handling
  * Misc: Improved error and exception handling and usage of Composer in plugin development
  * Misc: Updated PHP Console Library to 3.1.5
  * Misc: Tested up to WordPress 4.4.1
@@ -39,10 +44,10 @@
    - Short Path Names
 
 ### 1.2.3 (21 jan 2015)
- * Fixes "Wrong PHP Console eval request signature" error when executing WordPress code from terminal, props @Polfo @barbushin
+ * Fix: Fixes "Wrong PHP Console eval request signature" error when executing WordPress code from terminal, props @Polfo @barbushin
 
 ### 1.2.2 (15 jan 2015)
- * Misc: Bugfixes
+ * Fix: Bugfixes
  * Misc: Submission to WordPress.org plugins repository.
 
 ### 1.2.1 (12 dec 2014) 

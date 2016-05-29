@@ -1,10 +1,10 @@
 === WP PHP Console ===
 Contributors: nekojira
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=P64V9NTEYFKDL
-Tags: development, debug, debugging
+Donate link: http://iheu.org/support/make-a-donation/
+Tags: dev, developer, developers, development, bug, debug, debugging, stacktrace, stack-trace, console, php
 Requires at least: 3.6.0
-Tested up to: 4.4.1
-Stable tag: 1.4.1
+Tested up to: 4.5.2
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,7 +19,7 @@ This implementation of PHP Console offers yet another tool to make it more easy 
 
 Note: PHP 5.4.0 minimum version is required to use this plugin. 
 
-For support and pull requests, please refer to [WP PHP Console Github repo](https://github.com/unfulvio/wp-php-console) and read the instructions there - thank you.
+For support and pull requests, please refer to [WP PHP Console GitHub repo](https://github.com/unfulvio/wp-php-console) and read the instructions there - thank you.
 
 
 == Installation ==
@@ -123,9 +123,14 @@ None.
 
 == Changelog ==
 
+= 1.5.0 =
+* Fix: Tries to address an incompatibility between WordPress and PHP Console: "PHP Warning: session_start(): Cannot send session cache limiter - headers already sent"
+* Misc: Internal changes, new Settings class, deprecated methods and properties in main Plugin class 
+* Misc: Updated PHP Console Library to 3.1.6
+* Misc: Tested up to WordPress 4.5.2
+
 = 1.4.0 =
 * Enhancement: Support for WordPress language packs
-* Tweak: Improved error and exception handling
 * Misc: Improved error and exception handling and usage of Composer in plugin development
 * Misc: Updated PHP Console Library to 3.1.5
 * Misc: Tested up to WordPress 4.4.1
@@ -165,7 +170,7 @@ None.
 * Fix: Fixes "Wrong PHP Console eval request signature" error when executing WordPress code from terminal, props @Polfo @barbushin
 
 = 1.2.2 =
-* Misc: Bugfixes
+* Fix: Bugfixes
 * Misc: Submission to WordPress.org plugins repository.
 
 = 1.2.1 =
@@ -184,15 +189,18 @@ None.
 
 == Upgrade Notice ==
 
+= 1.5.0 =
+* If you were extending or using public methods and properties of the plugin main class, you may have to do some changes in your code.
+
 = 1.4.0 =
-If you were installing this plugin by downloading a zip directly from the GitHub repository, please be sure to run `composer install --no-dev` and then `composer dump-autoload --optimize --no-dev` first, or use the bundled grunt task `grunt build` to generate a working copy of the plugin (if using grunt, run `npm install` first).
+* If you were installing this plugin by downloading a zip directly from the GitHub repository, please be sure to run `composer install --no-dev` and then `composer dump-autoload --optimize --no-dev` first, or use the bundled grunt task `grunt build` to generate a working copy of the plugin (if using grunt, run `npm install` first).
 
 = 1.3.7 =
-To improve compatibility with other plugins, now stores session data in a file.
-You need to be able to write inside WP PHP Console plugin dir for better compatibility.
+* To improve compatibility with other plugins, now stores session data in a file.
+* You need to be able to write inside WP PHP Console plugin dir for better compatibility.
 
 = 1.3.5 =
-PHP 5.4.0 is the minimum PHP required version to run this plugin.
+* PHP 5.4.0 is the minimum PHP required version to run this plugin.
 
 = 1.0.0 =
-First public release.
+* First public release.

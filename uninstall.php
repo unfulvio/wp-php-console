@@ -7,8 +7,8 @@
  * @package WP_PHP_Console
  */
 
-if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
-	exit; // If uninstall not called from WordPress, then exit.
+if ( ! defined( 'ABSPATH' ) || ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
+	exit; 
 }
 
 delete_option( 'wp_php_console' );
