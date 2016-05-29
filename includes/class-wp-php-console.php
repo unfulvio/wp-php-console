@@ -71,6 +71,15 @@ class Plugin {
 
 		// Load admin.
 		if ( ! defined( 'DOING_AJAX' )  && is_admin() ) {
+
+			// Add a settings link to the plugins admin screen.
+			$plugin_name = str_replace( 'includes/class-', '', plugin_basename( __FILE__ ) );
+			add_filter( "plugin_action_links_{$plugin_name}", function( $actions ) {
+				return array_merge( array(
+					'<a href="' . esc_url( admin_url( 'options-general.php?page=wp-php-console' ) ) . '">' . __( 'Settings', 'wp-php-console' ) . '</a>',
+				), $actions );
+			} );
+
 			require_once __DIR__ . '/class-wp-php-console-settings.php';
 			new Settings( $this->options );
 		}
@@ -106,7 +115,7 @@ class Plugin {
 		load_plugin_textdomain(
 			'wp-php-console',
 			false,
-			dirname( plugin_basename( __FILE__ ) ) . '/languages/'
+			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 		);
 
 	}
