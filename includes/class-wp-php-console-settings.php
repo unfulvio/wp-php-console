@@ -28,7 +28,6 @@ class Settings {
 	 */
 	private $page = '';
 
-
 	/**
 	 * This plugin's option name.
 	 *
@@ -119,7 +118,7 @@ class Settings {
 				 'callback' => array( $this, 'ip_field' ),
 			),
 			'register' => array(
-				 'label'    => esc_html__( 'Register PC Class ', 'wp-php-console' ),
+				 'label'    => esc_html__( 'Register PC Class',  'wp-php-console' ),
 				 'callback' => array( $this, 'register_field' ),
 			),
 			'stack'    => array(
@@ -156,8 +155,10 @@ class Settings {
 		?>
 		<p><?php
 			/* translators: %s refers to 'PHP Console' Chrome extension, will print download link for the Chrome extension */
-			printf( _x( 'This plugin allows you to use %s within your WordPress installation for testing, debugging and development purposes.', 'PHP Console, the Chrome Extension', 'wp-php-console' ), '<a href="https://github.com/barbushin/php-console" target="_blank">PHP Console</a>' ); ?>
-			<br><?php esc_html_e( 'Usage instructions:', 'wp-php-console' ); ?>
+			printf( _x( 'This plugin allows you to use %s within your WordPress installation for testing, debugging and development purposes.', 'PHP Console, the PHP Library', 'wp-php-console' ),
+				'<a href="https://github.com/barbushin/php-console" target="_blank">PHP Console</a>'
+			); ?><br>
+			<?php esc_html_e( 'Usage instructions:', 'wp-php-console' ); ?>
 		</p>
 		<ol>
 			<?php
@@ -235,7 +236,7 @@ class Settings {
 			<ol>
 				<li><small><?php
 					/* translators: Placeholders: %1$s - a single IP address, %2$s link to Varying Vagrant Vagrants repo */
-					printf( __( 'An IP address (for example %1$s, %2$s default IP address).' ),
+					printf( __( 'An IP address (for example %1$s, %2$s default IP address).', 'wp-php-console' ),
 						'<code>192.168.50.4</code>',
 						'<a href="https://github.com/Varying-Vagrant-Vagrants/VVV">Varying Vagrant Vagrants</a>'
 					); ?></small></li>
@@ -319,12 +320,12 @@ class Settings {
 	 * Sanitize user input in settings page.
 	 *
 	 * @since  1.5.0
-	 * @param  array $field user input
+	 * @param  array $option user input
 	 * @return array sanitized input
 	 */
-	public function sanitize_field( $field ) {
+	public function sanitize_field( $option ) {
 
-		$input = wp_parse_args( $field, array(
+		$input = wp_parse_args( $option, array(
 			'ip'       => '',
 			'password' => '',
 			'register' => false,

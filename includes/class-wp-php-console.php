@@ -49,7 +49,7 @@ class Plugin {
 	/**
 	 * Instance of PHP Console connector object.
 	 *
-	 * @since  1.4.1
+	 * @since  1.4.0
 	 * @access public
 	 * @var    PhpConsole\Connector $connector Instance.
 	 */
@@ -81,13 +81,17 @@ class Plugin {
 		}
 
 		// Connect to PHP Console.
-		$this->connect();
+		add_action( 'init', function() {
 
-		// Apply PHP Console options.
-		$this->apply_options();
+			$this->connect();
+
+			// Apply PHP Console options.
+			$this->apply_options();
+
+		}, -100 );
 
 		// Delay further PHP Console initialisation to have more context during Remote PHP execution.
-		add_action( 'wp_loaded', array( $this, 'init' ) );
+		add_action( 'wp_loaded', array( $this, 'init' ), -100 );
 
 	}
 
@@ -120,26 +124,25 @@ class Plugin {
 		// But there is some problem with frameworks like WordPress that override PHP session handler.
 		// PHP Console has alternative storage drivers for this - we will write to a temporary file:
 
-		// TODO this generates "PHP Warning: session_start(): Cannot send session cache limiter - headers already sent"
-
-		/**
 		$phpcdir  = __DIR__ . '/tmp';
 		$make_dir = wp_mkdir_p( $phpcdir );
 
 		if ( true === $make_dir ) {
 
 			try {
-				$storage = @new PhpConsole\Storage\File( $phpcdir . '/' . md5( __FILE__ ) . '_pc.data' );
+				$storage = new PhpConsole\Storage\File( $phpcdir . '/' . md5( __FILE__ ) . '_pc.data' );
 				PhpConsole\Connector::setPostponeStorage( $storage );
 			} catch( \Exception $e ) {
-				// TODO $storage is under DOCUMENT_ROOT - it's insecure but did not find another solution in WP
-				$this->print_notice_exception( $e );
+				// PHP Console will complain about this: "Path <...> is under DOCUMENT_ROOT. It's insecure!"
+				// but there's nothing we can do at the moment as there doesn't seem to be another solution in WP
+				// nevertheless PHP Console tool is not meant to be used in production so this shouldn't be a concern
+				// $this->print_notice_exception( $e );
 			}
 
 		}
-		**/
 
-		// Perform PHP Console initialisation required asap for other code to be able to output to the JavaScript console.
+		// Perform PHP Console initialisation required asap
+		// for other code to be able to output to the JavaScript console.
 		if ( ! $this->connector instanceof PhpConsole\Connector ) {
 			$this->connector = PhpConsole\Connector::getInstance();
 		}
@@ -171,7 +174,7 @@ class Plugin {
 	/**
 	 * Apply options.
 	 *
-	 * @since 1.4.1
+	 * @since 1.4.0
 	 */
 	private function apply_options() {
 
@@ -180,9 +183,9 @@ class Plugin {
 			return;
 		}
 
-		// Apply 'register' option to PHP Console
+		// Apply 'register' option to PHP Console...
 		if ( true === $this->options['register'] && ! class_exists( 'PC', false ) ) {
-			// Only if PC not registered yet
+			// ...only if PC not registered yet.
 			try {
 				PhpConsole\Helper::register();
 			} catch( \Exception $e ) {
@@ -190,12 +193,12 @@ class Plugin {
 			}
 		}
 
-		// Apply 'stack' option to PHP Console
+		// Apply 'stack' option to PHP Console.
 		if ( true === $this->options['stack'] ) {
 			$this->connector->getDebugDispatcher()->detectTraceAndSource = true;
 		}
 
-		// Apply 'short' option to PHP Console
+		// Apply 'short' option to PHP Console.
 		if ( true === $this->options['short'] ) {
 			try {
 				$this->connector->setSourcesBasePath( $_SERVER['DOCUMENT_ROOT'] );
@@ -214,7 +217,7 @@ class Plugin {
 	 */
 	public function init() {
 
-		// Set PHP Console extension password.
+		// Get PHP Console extension password.
 		$password = $this->options['password'];
 
 		if ( ! $password ) {
@@ -228,17 +231,19 @@ class Plugin {
 			$_POST[ PhpConsole\Connector::POST_VAR_NAME ] = stripslashes_deep( $_POST[ PhpConsole\Connector::POST_VAR_NAME ] );
 		}
 
+		// Get PHP Console instance if wasn't set yet.
 		if ( ! $this->connector instanceof PhpConsole\Connector ) {
 			$this->connector = PhpConsole\Connector::getInstance();
 		}
 
+		// Set PHP Console password.
 		try {
 			$this->connector->setPassword( $password );
 		} catch ( \Exception $e ) {
 			$this->print_notice_exception( $e );
 		}
 
-		// PhpConsole instance.
+		// Get PHP Console handler instance.
 		$handler = PhpConsole\Handler::getInstance();
 
 		if ( true !== PhpConsole\Handler::getInstance()->isStarted() ) {
@@ -325,16 +330,14 @@ class Plugin {
 
 		?>
 		<div class="update-nag">
-			<?php
-
+			<p><?php
 			/* translators: Placeholders: %1$s - WP Php Console name, %2$s - opening HTML <a> link tag; %3$s closing HTML </a> link tag */
-			printf( __( '%1$s: Please remember to %2$s set a password %3$s if you want to enable the terminal.', 'wp-php-console' ),
+			printf( __( '%1$s: Please remember to %2$sset a password%3$s if you want to enable the terminal.', 'wp-php-console' ),
 				'<strong>' . self::NAME . '</strong>',
 				'<a href="' . esc_url( admin_url( 'options-general.php?page=wp-php-console' ) ) .'">',
 				'</a>'
-			);
-
-			?>
+			); ?>
+			</p>
 		</div>
 		<?php
 

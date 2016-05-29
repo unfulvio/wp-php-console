@@ -1,7 +1,7 @@
 === WP PHP Console ===
 Contributors: nekojira
 Donate link: http://iheu.org/support/make-a-donation/
-Tags: dev, developer, developers, development, bug, debug, debugging, stacktrace, stack-trace, console, php
+Tags: dev, development, bug, debug, debugging, stacktrace, php, console, terminal, browser
 Requires at least: 3.6.0
 Tested up to: 4.5.2
 Stable tag: 1.5.0
@@ -124,7 +124,7 @@ None.
 == Changelog ==
 
 = 1.5.0 =
-* Fix: Tries to address an incompatibility between WordPress and PHP Console: "PHP Warning: session_start(): Cannot send session cache limiter - headers already sent"
+* Fix: Fixes "PHP Warning: session_start(): Cannot send session cache limiter - headers already sent" notice in logs
 * Misc: Internal changes, new Settings class, deprecated methods and properties in main Plugin class 
 * Misc: Updated PHP Console Library to 3.1.6
 * Misc: Tested up to WordPress 4.5.2
