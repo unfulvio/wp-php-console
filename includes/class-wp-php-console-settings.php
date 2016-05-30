@@ -3,7 +3,7 @@
  * WP PHP Console Plugin Settings Class
  *
  * @link    https://github.com/unfulvio/wp-php-console
- * @since   1.0.0
+ * @since   1.5.0
  * @package WP_PHP_Console
  */
 namespace WP_PHP_Console;
