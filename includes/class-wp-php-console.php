@@ -63,26 +63,14 @@ class Plugin {
 	 */
 	public function __construct() {
 
-		// Translations.
+		// Handle translations.
 		add_action( 'plugins_loaded', array( $this, 'set_locale' ) );
 
 		// Set options.
 		$this->options = $this->get_options();
 
 		// Load admin.
-		if ( ! defined( 'DOING_AJAX' )  && is_admin() ) {
-
-			// Add a settings link to the plugins admin screen.
-			$plugin_name = str_replace( 'includes/class-', '', plugin_basename( __FILE__ ) );
-			add_filter( "plugin_action_links_{$plugin_name}", function( $actions ) {
-				return array_merge( array(
-					'<a href="' . esc_url( admin_url( 'options-general.php?page=wp-php-console' ) ) . '">' . __( 'Settings', 'wp-php-console' ) . '</a>',
-				), $actions );
-			} );
-
-			require_once __DIR__ . '/class-wp-php-console-settings.php';
-			new Settings( $this->options );
-		}
+		$this->set_admin();
 
 		// Bail out if PHP Console can't be found.
 		if ( ! class_exists( 'PhpConsole\Connector' ) ) {
@@ -90,16 +78,10 @@ class Plugin {
 		}
 
 		// Connect to PHP Console.
-		add_action( 'init', function() {
+		add_action( 'init', array( $this, 'connect' ), -100 );
 
-			$this->connect();
-
-			// Apply PHP Console options.
-			$this->apply_options();
-
-		}, -100 );
-
-		// Delay further PHP Console initialisation to have more context during Remote PHP execution.
+		// Delay further PHP Console initialisation
+		// to have more context during Remote PHP execution.
 		add_action( 'wp_loaded', array( $this, 'init' ), -100 );
 
 	}
@@ -122,39 +104,45 @@ class Plugin {
 
 
 	/**
+	 * Load admin.
+	 *
+	 * @since 1.5.0
+	 */
+	private function set_admin() {
+
+		if ( ! defined( 'DOING_AJAX' ) && is_admin() ) {
+
+			// Add a settings link to the plugins admin screen.
+			$plugin_name = str_replace( 'includes/class-', '', plugin_basename( __FILE__ ) );
+			add_filter( "plugin_action_links_{$plugin_name}", function( $actions ) {
+				return array_merge( array(
+					'<a href="' . esc_url( admin_url( 'options-general.php?page=wp-php-console' ) ) . '">' . __( 'Settings', 'wp-php-console' ) . '</a>',
+				), $actions );
+			} );
+
+			// Init settings.
+			require_once __DIR__ . '/class-wp-php-console-settings.php';
+			new Settings( $this->options );
+		}
+
+	}
+	
+	
+	/**
 	 * Connect to PHP Console.
 	 *
 	 * @since 1.4.0
 	 */
-	private function connect() {
+	public function connect() {
 
-		// By default PHP Console uses PhpConsole\Storage\Session for postponed responses,
-		// so all temporary data will be stored in $_SESSION.
-		// But there is some problem with frameworks like WordPress that override PHP session handler.
-		// PHP Console has alternative storage drivers for this - we will write to a temporary file:
+		session_start();
 
-		$phpcdir  = __DIR__ . '/tmp';
-		$make_dir = wp_mkdir_p( $phpcdir );
-
-		if ( true === $make_dir ) {
-
-			try {
-				$storage = new PhpConsole\Storage\File( $phpcdir . '/' . md5( __FILE__ ) . '_pc.data' );
-				PhpConsole\Connector::setPostponeStorage( $storage );
-			} catch( \Exception $e ) {
-				// PHP Console will complain about this: "Path <...> is under DOCUMENT_ROOT. It's insecure!"
-				// but there's nothing we can do at the moment as there doesn't seem to be another solution in WP
-				// nevertheless PHP Console tool is not meant to be used in production so this shouldn't be a concern
-				// $this->print_notice_exception( $e );
-			}
-
-		}
-
-		// Perform PHP Console initialisation required asap
-		// for other code to be able to output to the JavaScript console.
 		if ( ! $this->connector instanceof PhpConsole\Connector ) {
 			$this->connector = PhpConsole\Connector::getInstance();
 		}
+
+		// Apply PHP Console options.
+		$this->apply_options();
 
 	}
 

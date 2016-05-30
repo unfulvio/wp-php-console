@@ -154,7 +154,7 @@ class Settings {
 
 		?>
 		<p><?php
-			/* translators: %s refers to 'PHP Console' Chrome extension, will print download link for the Chrome extension */
+			/* translators: Placeholder: %s refers to the PHP Console library, pointing to its GitHub repository */
 			printf( _x( 'This plugin allows you to use %s within your WordPress installation for testing, debugging and development purposes.', 'PHP Console, the PHP Library', 'wp-php-console' ),
 				'<a href="https://github.com/barbushin/php-console" target="_blank">PHP Console</a>'
 			); ?><br>
@@ -164,14 +164,14 @@ class Settings {
 			<?php
 
 			$instructions = array(
-				/* translators: Install PHP Console extension for Google Chrome download link */
+				/* translators: Placeholder: %s represents the Google Chrome PHP Console extension download link */
 				sprintf( _x( 'Make sure you have downloaded and installed %s.', 'PHP Console, the Chrome Extension', 'wp-php-console' ),
 					'<a target="_blank" href="https://chrome.google.com/webstore/detail/php-console/nfhmhhlpfleoednkpnnnkolmclajemef">PHP Console extension for Google Chrome</a>'
 				),
 				esc_html__( 'Set a password for the eval terminal in the options below and hit "Save Changes".', 'wp-php-console' ),
 				esc_html__( 'Reload any page of your installation and click on the key icon in your Chrome browser address bar, enter your password and access the terminal.', 'wp-php-console' ),
 				esc_html__( 'From the eval terminal you can execute any PHP or WordPress specific function, including functions from your plugins and active theme.', 'wp-php-console' ),
-				/* translators: %1$s - PHP code snippet example, %2$s - Chrome javascript console shortcut */
+				/* translators: Placeholders: %1$s - PHP code snippet example, %2$s - Chrome javascript console shortcut */
 				sprintf( __( 'In your PHP code, you can call PHP Console debug statements like %1$s to display PHP variables in the browser\'s JavaScript-console (e.g. %2$s) and optionally filter selected tags through the browser\'s Remote PHP Eval Terminal screen\'s "Ignore Debug options".', 'wp-php-console' ),
 					'<code>debug(&#36;var, &#36;tag)</code>',
 					'<code>CTRL+SHIFT+J</code>'
@@ -235,7 +235,7 @@ class Settings {
 		<p class="description"><?php esc_html_e( 'You may specify any of the following, to give access to specific IPs to the eval terminal:', 'wp-php-console' ); ?><br>
 			<ol>
 				<li><small><?php
-					/* translators: Placeholders: %1$s - a single IP address, %2$s link to Varying Vagrant Vagrants repo */
+					/* translators: Placeholders: %1$s - a single IP address, %2$s link to Varying Vagrant Vagrants project repository */
 					printf( __( 'An IP address (for example %1$s, %2$s default IP address).', 'wp-php-console' ),
 						'<code>192.168.50.4</code>',
 						'<a href="https://github.com/Varying-Vagrant-Vagrants/VVV">Varying Vagrant Vagrants</a>'
@@ -266,7 +266,7 @@ class Settings {
 		<p class="description"><?php
 			esc_html_e( 'Tick to register PC class in the global namespace.', 'wp-php-console' );
 			echo '<br>';
-			/* translators: Placeholders: PHP code snippets examples */
+			/* translators: Placeholders: %1$s, %2$s and %3$s are PHP code snippets examples */
 			printf( __( 'Allows to write %1$s or %2$s instructions in PHP to inspect %3$s in the JavaScript console.', 'wp-php-console' ),
 				'<code>PC::debug(&#36;var, &#36;tag)</code>',
 				'<code>PC::magic_tag(&#36;var)</code>',
@@ -306,7 +306,7 @@ class Settings {
 		<p class="description"><?php
 			esc_html_e( 'Tick to shorten the length of PHP Console error sources and traces paths in browser JavaScript console for better readability.', 'wp-php-console' );
 			echo '<br>';
-			/* translators: %1$s - long server path, %2$s shortened server path */
+			/* translators: Placeholders: %1$s - long server path, %2$s - shortened server path */
 			printf( __( 'Paths like %1$s will be displayed as %2$s', 'wp-php-console' ),
 				'<code>/server/path/to/document/root/WP/wp-admin/admin.php:31</code>',
 				'<code>/WP/wp-admin/admin.php:31</code>'
