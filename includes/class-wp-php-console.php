@@ -126,8 +126,8 @@ class Plugin {
 		}
 
 	}
-	
-	
+
+
 	/**
 	 * Connect to PHP Console.
 	 *
@@ -135,7 +135,11 @@ class Plugin {
 	 */
 	public function connect() {
 
-		session_start();
+		// PhpConsole needs to hook in session, in WordPress we need to be in 'init'
+		// @link http://silvermapleweb.com/using-the-php-session-in-wordpress/
+		if ( ! session_id() ) {
+			session_start();
+		}
 
 		if ( ! $this->connector instanceof PhpConsole\Connector ) {
 			$this->connector = PhpConsole\Connector::getInstance();
