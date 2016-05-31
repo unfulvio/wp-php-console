@@ -7,6 +7,8 @@
 
 An implementation of [PHP Console](https://github.com/barbushin/php-console "PHP Console") as a [WordPress](http://www.wordpress.org) plugin. Use Chrome Dev Tools to debug your WordPress installation!
 
+<sup>Note: this is the development repository. If you download a zip from the master branch here you'll also need to build the plugin using `npm install` and then `grunt build` since it uses composer to manage dependencies. Or you can simply download the packaged plugin in the latest publicly released version from [wordpress.org]((https://wordpress.org/plugins/wp-php-console/)) and you'll be ready to go.</sup>
+
 ## Description
 
 > PHP Console allows you to handle PHP errors & exceptions, dump variables, execute PHP code remotely and many other things using [Google Chrome extension PHP Console](https://chrome.google.com/webstore/detail/php-console/nfhmhhlpfleoednkpnnnkolmclajemef) and [PHP Console server library](https://github.com/barbushin/php-console).
