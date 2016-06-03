@@ -7,20 +7,18 @@
 
 An implementation of [PHP Console](https://github.com/barbushin/php-console "PHP Console") as a [WordPress](http://www.wordpress.org) plugin. Use Chrome Dev Tools to debug your WordPress installation!
 
-<sup>Note: this is the development repository. If you download a zip from the master branch here you'll also need to build the plugin using `npm install` and then `grunt build` since it uses composer to manage dependencies. Or you can simply download the packaged plugin in the latest publicly released version from [wordpress.org]((https://wordpress.org/plugins/wp-php-console/)) and you'll be ready to go.</sup>
-
 ## Description
 
 > PHP Console allows you to handle PHP errors & exceptions, dump variables, execute PHP code remotely and many other things using [Google Chrome extension PHP Console](https://chrome.google.com/webstore/detail/php-console/nfhmhhlpfleoednkpnnnkolmclajemef) and [PHP Console server library](https://github.com/barbushin/php-console).
 
-This implementation of PHP Console makes easy to debug a WordPress installation from Chrome browser JavaScript console and test any WordPress specific function or class (including those introduced by your active theme and plugins!) from a terminal. You can run any PHP or WordPress specific function and inspect results, catch errors and warnings with call stack trace straight which will be displayed in the Chrome JavaScript console. You can do PHP debugging alongside your JavaScript debugging in one place, without having PHP to print errors and warnings in your HTML page.
+This implementation of PHP Console is a handy tool to make it easier to test on the fly any WordPress specific function or class (including those introduced by your active theme and plugins!) from a terminal and inspect results, catch errors and warnings with complete call stack trace straight from the Chrome JavaScript console. In other words, besides debugging, you can execute PHP or WordPress-specific PHP code straight from the terminal and print PHP variables in Chrome Dev Tools JavaScript console along with your normal JavaScript debugging and testing. Keep everything in one place, without leaving the browser to check for your logs or writing temporary PHP test code on a PHP file and refresh your browser page.
 
 [![Download from WordPress.org](https://github.com/nekojira/wp-php-console/blob/master/assets/wordpress-download-btn.png)](https://wordpress.org/plugins/wp-php-console/)
 
 
 ## Installation
 
-Note: you will need PHP 5.4.0 minimum version on your machine or server to run this plugin.
+Note: you will at least PHP 5.4.0 or above installed on your machine or server to run this plugin.
 
 1. First, install [Google Chrome extension PHP Console](https://chrome.google.com/webstore/detail/php-console/nfhmhhlpfleoednkpnnnkolmclajemef) from the [Chrome WebStore](https://chrome.google.com/webstore/search/php%20console?_category=extensions).
 Make sure the PHP Console Chrome extension is enabled through [chrome://extensions/](chrome://extensions/ "chrome://extensions/").

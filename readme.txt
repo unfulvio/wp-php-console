@@ -15,9 +15,9 @@ Use Chrome Dev Tools to debug your WordPress installation!
 
 > PHP Console allows you to handle PHP errors & exceptions, dump variables, execute PHP code remotely and many other things using [Google Chrome extension PHP Console](https://chrome.google.com/webstore/detail/php-console/nfhmhhlpfleoednkpnnnkolmclajemef) and [PHP Console server library](https://github.com/barbushin/php-console).
 
-This implementation of PHP Console offers yet another tool to make it more easy to test on the fly any WordPress specific function or class (including those introduced by your active theme and plugins!) from a terminal and inspect results, catch errors and warnings with call stack trace straight from the Chrome JavaScript console. In other words, besides debugging, you can execute PHP or WordPress-specific PHP code straight from the terminal and print PHP variables in Chrome Dev Tools JavaScript console as if it were Javascript. It's very handy to keep everything in one place.
+This implementation of PHP Console is a handy tool to make it easier to test on the fly any WordPress specific function or class (including those introduced by your active theme and plugins!) from a terminal and inspect results, catch errors and warnings with complete call stack trace straight from the Chrome JavaScript console. In other words, besides debugging, you can execute PHP or WordPress-specific PHP code straight from the terminal and print PHP variables in Chrome Dev Tools JavaScript console along with your normal JavaScript debugging and testing. Keep everything in one place, without leaving the browser to check for your logs or writing temporary PHP test code on a PHP file and refresh your browser page.
 
-Note: PHP 5.4.0 minimum version is required to use this plugin. 
+Note: PHP version 5.4.0 or above is required to use this plugin. 
 
 For support and pull requests, please refer to [WP PHP Console GitHub repo](https://github.com/unfulvio/wp-php-console) and read the instructions there - thank you.
 
@@ -68,7 +68,7 @@ The result includes the output, the return value and the net server execution ti
 
 In your PHP code on the Server, you can call PHP Console debug statements like `PC::debug( $var, $tag )` to display PHP variables in the JavaScript console and optionally filter selected tags through the PHP Console eval & options form opened from the address bar in your browser.
 
-In the JavaScript console you will see printed any PC::debug() information, PHP errors, warnings, notices with optional stack trace, which will be useful to debug your plugin or theme.
+In the JavaScript console you will see printed any `PC::debug()`` information, PHP errors, warnings, notices with optional stack trace, which will be useful to debug your plugin or theme.
 
 == Frequently Asked Questions ==
 
@@ -84,6 +84,10 @@ No it doesn't, unless PHP Console browser extension is ported, for example, as a
 
 You *can* but it is probably not a good idea. You should do your debugging and testing on a development/testing environment on a staging server or local machine. Likewise, you normally wouldn't want to turn on PHP error reporting or set WP_DEBUG to true in a live site as you wouldn't want to display error information to public. Furthermore, PHP Console allows execution of any remote PHP code through terminal - for this you can set a strong password and restrict the IP address range to access the terminal, but still it's not advisable. Besides putting your site at risk, you will also add more load to your server.
 
+= Will there be items logged in my debug.log files when a PHP error occurs? =
+
+Generally no, WP PHP Console will intercept those. However, it's always a good idea to keep an eye on the logs too. Furthermore, WP PHP Console is unable to catch many server errors that result in a 500 error code on the browser. For those you may have traces left in the debug.log file. 
+
 = Why are PHP arrays shown as objects? =
 
 The JavaScript console prints PHP variables as JavaScript variables. Associative PHP arrays such as `['key1' => 'var2', 'key2' => 'var2', ... ]` are shown as objects; automatically indexed arrays like `[ 'var1', 'var2', ... ]` are shown as arrays.
@@ -96,9 +100,9 @@ You could move your debug code or either do something like
 
 `
   // delay use of PC class until WP PHP Console plugin is included
-  add_action('plugins_loaded', function () use ($my_var) {
+  add_action( 'plugins_loaded', function () use ( $my_var ) {
     // send $my_var with tag 'my_tag' to the JavaScript console through PHP Console Server Library and PHP Console Chrome Plugin
-    PC::my_tag($my_var);
+    PC::my_tag( $my_var );
   });
 `
 
@@ -109,10 +113,10 @@ or
   require_once dirname( __FILE__ ) . '/wp-php-console/vendor/autoload.php';
 
   // make PC class available in global PHP scope
-  if( !class_exists( 'PC', false ) ) PhpConsole\Helper::register();
+  if ( ! class_exists( 'PC', false ) ) PhpConsole\Helper::register();
 
-    // send $my_var with tag 'my_tag' to the JavaScript console through PHP Console Server Library and PHP Console Chrome Plugin
-  PC::my_tag($my_var);
+  // send $my_var with tag 'my_tag' to the JavaScript console through PHP Console Server Library and PHP Console Chrome Plugin
+  PC::my_tag( $my_var );
 
 `
 

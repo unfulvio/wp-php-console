@@ -1,6 +1,6 @@
 # Changelog
 
-### 1.5.0 (29 May 2016)
+### 1.5.0 (03 Jun 2016)
  * Fix: Fixes "PHP Warning: session_start(): Cannot send session cache limiter - headers already sent" notice in logs
  * Misc: Internal changes, new Settings class, deprecated methods and properties in main Plugin class
  * Misc: Updated PHP Console Library to 3.1.6
