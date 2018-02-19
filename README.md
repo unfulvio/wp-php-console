@@ -1,6 +1,6 @@
 # WP PHP Console
 
-[![GitHub version](https://badge.fury.io/gh/unfulvio%2Fwp-php-console.svg)](http://badge.fury.io/gh/nekojira%2Fwp-php-console)
+[![GitHub version](https://badge.fury.io/gh/unfulvio%2Fwp-php-console.svg)](https://badge.fury.io/gh/unfulvio%2Fwp-php-console)
 [![Dependency Status](https://gemnasium.com/nekojira/wp-php-console.svg)](https://gemnasium.com/nekojira/wp-php-console)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/unfulvio/wp-php-console/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/unfulvio/wp-php-console/?branch=master)
 [![Join the chat at https://gitter.im/unfulvio/wp-php-console](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/unfulvio/wp-php-console?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
@@ -64,4 +64,4 @@ The result includes the output, the return value and the net server execution ti
 
 In your PHP code on the Server, you can call PHP Console debug statements like `PC::debug( $var, $tag )` to display PHP variables in the JavaScript console and optionally filter selected tags through the PHP Console eval & options form opened from the address bar in your browser.
 
-In the JavaScript console you will see printed any PC::debug() information, PHP errors, warnings, notices with optional stack trace, which will be useful to debug your plugin or theme.
+In the JavaScript console you will see printed any `PC::debug()` information, PHP errors, warnings, notices with optional stack trace, which will be useful to debug your plugin or theme.
