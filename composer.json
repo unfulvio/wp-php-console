@@ -2,7 +2,7 @@
 	"name": "unfulvio/wp-php-console",
 	"description": "A WordPress implementation of PHP Console.",
   "type": "wordpress-plugin",
-	"version": "1.5.0",
+	"version": "1.5.1",
 	"keywords": ["wordpress", "debug", "debugging", "development", "php-console", "console", "terminal", "command-line", "cli" ],
 	"homepage": "https://github.com/unfulvio/wp-php-console",
   "license": "GPLv2.0+",

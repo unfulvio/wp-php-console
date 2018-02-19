@@ -1,5 +1,8 @@
 # Changelog
 
+### 1.5.1 (19 Feb 2018)
+ * Misc: Bump WordPress compatibility to mark support for the latest versions
+
 ### 1.5.0 (03 Jun 2016)
  * Fix: Fixes "PHP Warning: session_start(): Cannot send session cache limiter - headers already sent" notice in logs
  * Misc: Internal changes, new Settings class, deprecated methods and properties in main Plugin class

@@ -27,7 +27,7 @@ class Plugin {
 	 * @since 1.5.0
 	 * @const string
 	 */
-	CONST VERSION = '1.5.0';
+	CONST VERSION = '1.5.1';
 
 	/**
 	 * The plugin name.

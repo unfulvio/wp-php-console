@@ -3,8 +3,8 @@ Contributors: nekojira
 Donate link: http://iheu.org/support/make-a-donation/
 Tags: dev, development, bug, debug, debugging, stacktrace, php, console, terminal, browser
 Requires at least: 3.6.0
-Tested up to: 4.5.2
-Stable tag: 1.5.0
+Tested up to: 4.9
+Stable tag: 1.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,7 +17,7 @@ Use Chrome Dev Tools to debug your WordPress installation!
 
 This implementation of PHP Console is a handy tool to make it easier to test on the fly any WordPress specific function or class (including those introduced by your active theme and plugins!) from a terminal and inspect results, catch errors and warnings with complete call stack trace straight from the Chrome JavaScript console. In other words, besides debugging, you can execute PHP or WordPress-specific PHP code straight from the terminal and print PHP variables in Chrome Dev Tools JavaScript console along with your normal JavaScript debugging and testing. Keep everything in one place, without leaving the browser to check for your logs or writing temporary PHP test code on a PHP file and refresh your browser page.
 
-Note: PHP version 5.4.0 or above is required to use this plugin. 
+Note: PHP version 5.4.0 or above is required to use this plugin.
 
 For support and pull requests, please refer to [WP PHP Console GitHub repo](https://github.com/unfulvio/wp-php-console) and read the instructions there - thank you.
 
@@ -43,7 +43,7 @@ Make sure the PHP Console Chrome extension is enabled through [chrome://extensio
 
 = Options =
 
-**Allow only on SSL** 
+**Allow only on SSL**
 Forces PHP Console to connect on a SSL connection only (of course then if you don't actually have SSL (https), PHP Console simply won't work).
 
 **Allowed IP Masks**
@@ -86,7 +86,7 @@ You *can* but it is probably not a good idea. You should do your debugging and t
 
 = Will there be items logged in my debug.log files when a PHP error occurs? =
 
-Generally no, WP PHP Console will intercept those. However, it's always a good idea to keep an eye on the logs too. Furthermore, WP PHP Console is unable to catch many server errors that result in a 500 error code on the browser. For those you may have traces left in the debug.log file. 
+Generally no, WP PHP Console will intercept those. However, it's always a good idea to keep an eye on the logs too. Furthermore, WP PHP Console is unable to catch many server errors that result in a 500 error code on the browser. For those you may have traces left in the debug.log file.
 
 = Why are PHP arrays shown as objects? =
 
@@ -127,9 +127,12 @@ None.
 
 == Changelog ==
 
+= 1.5.1 =
+* Misc: Bump WordPress compatibility to mark support for the latest versions
+
 = 1.5.0 =
 * Fix: Fixes "PHP Warning: session_start(): Cannot send session cache limiter - headers already sent" notice in logs
-* Misc: Internal changes, new Settings class, deprecated methods and properties in main Plugin class 
+* Misc: Internal changes, new Settings class, deprecated methods and properties in main Plugin class
 * Misc: Updated PHP Console Library to 3.1.6
 * Misc: Tested up to WordPress 4.5.2
 
@@ -143,7 +146,7 @@ None.
 * Misc: Use WP Requirements as Composer dependency.
 
 = 1.3.8 =
-* Misc: Internal changes (alternate PHP version check, automated SVN deploys) 
+* Misc: Internal changes (alternate PHP version check, automated SVN deploys)
 
 = 1.3.7 =
 * Fix: Fixes a bug `Cannot send session cache limiter - headers already sent`

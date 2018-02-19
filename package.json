@@ -2,7 +2,7 @@
   "name": "wp-php-console",
   "title": "WP PHP Console",
   "description": "An implementation of PHP Console as a WordPress plugin. Use Chrome Dev Tools to debug your WordPress installation!",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "homepage": "https://wordpress.org/plugins/wp-php-console/",
   "repository": {
     "type": "git",
