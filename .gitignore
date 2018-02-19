@@ -29,7 +29,6 @@ sftp-config.json
 /includes/tmp
 tmp
 .tmp
-composer.lock
 
 ### Builds ###
 build/

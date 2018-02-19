@@ -14,6 +14,7 @@ module.exports = function( grunt ) {
 			'!composer.lock',
 			'!Gruntfile.js',
 			'!package.json',
+			'!package.lock.json',
 			'!phpunit.xml',
 			'!phpunit.xml.dist',
 			'!README.md'
