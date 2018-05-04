@@ -16,7 +16,7 @@ jobs:
       - run: sudo docker-php-ext-install -j$(nproc) mbstring zip gd
       - run: sudo docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
       - run: cd ..
-      - run: curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+      - run: curl -O "https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar"
       - run: chmod +x wp-cli.phar
       - run: ! ./wp-cli.phar core download --allow-root --path=wordpress
       - run: ! ./wp-cli.phar core config --allow-root --dbname=wordpress --dbuser=admin --dbpass=password --dbhost=127.0.0.1 --path=wordpress
