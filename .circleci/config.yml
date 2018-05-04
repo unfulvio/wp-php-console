@@ -25,8 +25,7 @@ jobs:
       - run: ./wp-cli.phar core download --allow-root --path=wordpress || true
       - run: ./wp-cli.phar core config --allow-root --dbname=wordpress --dbuser=admin --dbpass=password --dbhost=127.0.0.1 --path=wordpress || true
       - run: ./wp-cli.phar core install --allow-root --admin_name=admin --admin_password=password --admin_email=admin@example.com --url=http://wp-php-console.test:8080 --title="WP PHP Console Tests" --path=wordpress || true
-      - run: mkdir wordpress/wp-content/plugins/wp-php-console
-      - run: cp plugin wordpress/wp-content/plugins/wp-php-console
+      - run: mv plugin wordpress/wp-content/plugins/wp-php-console
       - run: cd wordpress/wp-content/plugins/wp-php-console
       - run: composer install
       - run: cd ../../../..
