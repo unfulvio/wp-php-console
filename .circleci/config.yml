@@ -28,18 +28,18 @@ jobs:
       # Grab WP CLI and make it executable
       - run: curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
       - run: chmod +x wp-cli.phar
-      # Download and install WordPress in a subdirectory
-      - run: ./wp-cli.phar core download --allow-root --path=wordpress
-      - run: ./wp-cli.phar core config --allow-root --dbname=wordpress --dbuser=admin --dbpass=password --dbhost=127.0.0.1 --path=wordpress
-      - run: ./wp-cli.phar core install --allow-root --admin_name=admin --admin_password=admin --admin_email=admin@example.com --url=http://wp-php-console.test:8080 --title="WP PHP Console Tests" --path=wordpress
+      # Download and install WordPress
+      - run: ./wp-cli.phar core download --allow-root
+      - run: ./wp-cli.phar core config --allow-root --dbname=wordpress --dbuser=admin --dbpass=password --dbhost=127.0.0.1
+      - run: ./wp-cli.phar core install --allow-root --admin_name=admin --admin_password=admin --admin_email=admin@example.com --url=http://wp-php-console.test:8080 --title="WP PHP Console Tests"
       # Clone WP PHP Console plugin from GitHub
-      - run: git clone git@github.com:unfulvio/wp-php-console.git wordpress/wp-content/plugins/wp-php-console
+      - run: git clone git@github.com:unfulvio/wp-php-console.git wp-content/plugins/wp-php-console
       # Install plugin's Composer dependencies
-      - run: cd wordpress/wp-content/plugins/wp-php-console
+      - run: cd wp-content/plugins/wp-php-console
       - run: composer install
-      - run: cd ../../../../..
+      - run: cd ../../../..
       # Activate the plugin
       - run: ./wp-cli.phar plugin activate wp-php-console
       # Restart Apache and run tests
       - run: sudo service apache2 restart
-      - run: wordpress/wp-content/plugins/wp-php-console/vendor/bin/codecept run
+      - run: wp-content/plugins/wp-php-console/vendor/bin/codecept run
