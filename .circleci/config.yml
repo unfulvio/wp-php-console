@@ -29,4 +29,5 @@ jobs:
       - run: mv plugin wordpress/wp-content/plugins/wp-php-console
       - run: ./wp-cli.phar plugin activate wp-php-console --path=wordpress || true
       - run: sudo service apache2 restart
-      - run: ./wordpress/wp-content/plugins/wp-php-console/vendor/bin/codecept run
+      - run: cd wordpress/wp-content/plugins/wp-php-console
+      - run: vendor/bin/codecept run
