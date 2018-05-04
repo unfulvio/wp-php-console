@@ -4,7 +4,11 @@ jobs:
   build:
     docker:
       - image: circleci/php:7.2.5-apache-node
-     steps:
+      - image: circleci/mysql:5.7.22
+
+    working_directory: ~/wp-php-console
+
+    steps:
       - checkout
       - run: echo 127.0.0.1 wp-php-console.test | sudo tee -a /etc/hosts
       # No password is required for the MySQL user `ubuntu`
