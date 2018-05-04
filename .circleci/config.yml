@@ -4,7 +4,7 @@ jobs:
   build:
     docker:
       - image: circleci/php:7.2.5-apache-node
-      - image: circleci/mariadb:10.3.4-ram
+      - image: circleci/mariadb:10.3.6-ram
         environment:
           - MYSQL_DATABASE: wordpress
           - MYSQL_USER: admin
@@ -16,7 +16,16 @@ jobs:
       - checkout
       # Set up hosts
       - run: echo 127.0.0.1 wp-php-console.test | sudo tee -a /etc/hosts
-      # Ensure we have a MySQL client
+      # Install PHP extensions and a MySQL client
+      - run: sudo apt-get install -y libzip-dev
+      - run: sudo apt-get install -y libfreetype6-dev
+      - run: sudo apt-get install -y libjpeg62-turbo-dev
+      - run: sudo apt-get install -y libmcrypt-dev
+      - run: sudo apt-get install -y libpng-dev
+      - run: sudo docker-php-ext-install -j$(nproc) zip
+      - run: sudo docker-php-ext-install -j$(nproc) iconv mcrypt
+      - run: sudo docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
+      - run: sudo docker-php-ext-install -j$(nproc) gd
       - run: sudo apt-get -y install mysql-client
       # Grab WP CLI and make it executable
       - run: curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
@@ -24,7 +33,7 @@ jobs:
       # Download WordPress into `wordpress` directory
       - run: ./wp-cli.phar core download --allow-root --path=wordpress
       # Generate `wp-config.php` file
-      - run: ./wp-cli.phar core config --allow-root --dbname=wordpress --dbuser=admin --dbpass=password --dbhost=localhost --path=wordpress
+      - run: ./wp-cli.phar core config --allow-root --dbname=wordpress --dbuser=admin --dbpass=password --dbhost=127.0.0.1 --path=wordpress
       # Install WordPress
       - run: ./wp-cli.phar core install --allow-root --admin_name=admin --admin_password=admin --admin_email=admin@example.com --url=http://wp-php-console.test:8080 --title="WP PHP Console Tests" --path=wordpress
       # Clone WP PHP Console plugin from GitHub...
