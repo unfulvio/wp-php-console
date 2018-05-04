@@ -1,4 +1,5 @@
 version: 2
+
 jobs:
   build:
     docker:
@@ -8,7 +9,9 @@ jobs:
           - MYSQL_DATABASE: wordpress
           - MYSQL_USER: admin
           - MYSQL_PASSWORD: password
+
     working_directory: ~/wp-php-console
+
     steps:
       - checkout
       - run: echo 127.0.0.1 wp-php-console.test | sudo tee -a /etc/hosts
@@ -18,13 +21,13 @@ jobs:
       - run: cd ..
       - run: curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
       - run: chmod +x wp-cli.phar
-      - run: !./wp-cli.phar core download --allow-root --path=wordpress
-      - run: !./wp-cli.phar core config --allow-root --dbname=wordpress --dbuser=admin --dbpass=password --dbhost=127.0.0.1 --path=wordpress
-      - run: !./wp-cli.phar core install --allow-root --admin_name=admin --admin_password=password --admin_email=admin@example.com --url=http://wp-php-console.test:8080 --title="WP PHP Console Tests" --path=wordpress
+      - run: ./wp-cli.phar core download --allow-root --path=wordpress || true
+      - run: ./wp-cli.phar core config --allow-root --dbname=wordpress --dbuser=admin --dbpass=password --dbhost=127.0.0.1 --path=wordpress || true
+      - run: ./wp-cli.phar core install --allow-root --admin_name=admin --admin_password=password --admin_email=admin@example.com --url=http://wp-php-console.test:8080 --title="WP PHP Console Tests" --path=wordpress || true
       - run: cp wp-php-console wordpress/wp-content/plugins/wp-php-console
       - run: cd wordpress/wp-content/plugins/wp-php-console
       - run: composer install
       - run: cd ../../../..
-      - run: !./wp-cli.phar plugin activate wp-php-console --path=wordpress
+      - run: ./wp-cli.phar plugin activate wp-php-console --path=wordpress || true
       - run: sudo service apache2 restart
       - run: wordpress/wp-content/plugins/wp-php-console/vendor/bin/codecept run
