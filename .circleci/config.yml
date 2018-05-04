@@ -11,6 +11,7 @@ jobs:
     steps:
       - checkout
       - run: echo 127.0.0.1 wp-php-console.test | sudo tee -a /etc/hosts
+      - run: sudo apt install mysql-client
       # No password is required for the MySQL user `ubuntu`
       - run: mysql -u ubuntu -e "create database wordpress"
       # Use cURL to fetch WP-CLI
@@ -28,9 +29,9 @@ jobs:
       # And use WP-CLI to activate it
       - run: ./wp-cli.phar plugin activate wp-php-console --path=wordpress
       # Install dependencies
-      - run: cd wordpress/wp-content/plugins/wp-php-console
+      - run: cd ~/wp-php-console/wordpress/wp-content/plugins/wp-php-console
       - run: composer install
-      - run: cd ../../../..
+      - run: cd ~/wp-php-console
       # Copy Apache conf into `site-available`
       - run: cp ~/wp-php-console/apache-ci.conf /etc/apache2/sites-available
       # Use `a2ensite` to create a symlink for the config
