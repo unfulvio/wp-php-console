@@ -1,54 +1,38 @@
-machine:
-  timezone:
-    UTC
+version: 2
 
-  php:
-    version: 5.3.3
-
-  # This will be added to the `/etc/hosts` file
-  hosts:
-    wp-php-console.test: 127.0.0.1
-
-dependencies:
-  pre:
-    # No password is required for the MySQL user `ubuntu`
-    - mysql -u ubuntu -e "create database wordpress"
-
-    # Use cURL to fetch WP-CLI
-    - curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-
-    # Make sure WP-CLI is executable
-    - chmod +x wp-cli.phar
-
-    # Download WordPress into `wordpress` directory
-    - ./wp-cli.phar core download --allow-root --path=wordpress
-
-    # Generate `wp-config.php` file
-    - ./wp-cli.phar core config --allow-root --dbname=wordpress --dbuser=ubuntu --dbhost=localhost --path=wordpress
-
-    # Install WordPress
-    - ./wp-cli.phar core install --allow-root --admin_name=admin --admin_password=admin --admin_email=admin@example.com --url=http://wppusher-plugin.dev:8080 --title=WordPress --path=wordpress
-
-    # Clonse WP Pusher plugin from GitHub
-    - git clone git@github.com:unfulvio/wp-php-console.git wordpress/wp-content/plugins/wp-php-console
-
-    # And use WP-CLI to activate it
-    - ./wp-cli.phar plugin activate wp-php-console --path=wordpress
-
-  post:
-    # Copy Apache conf into `site-available`
-    - cp ~/wp-php-console/apache-ci.conf /etc/apache2/sites-available
-
-    # Use `a2ensite` to create a symlink for the config
-    - a2ensite apache-ci.conf
-
-    # Restart the Apache server
-    - sudo service apache2 restart
-
-test:
-  override:
-    # This is just for us to see that the WP Pusher plugin was actually installed and is active
-    - ./wp-cli.phar plugin list --path=wordpress
-
-    # Finally, run our Behat features
-    - vendor/bin/codecept run
+jobs:
+  build:
+    docker:
+      - image: circleci/php:7.2.5-apache-node
+     steps:
+      - checkout
+      # No password is required for the MySQL user `ubuntu`
+      - run: mysql -u ubuntu -e "create database wordpress"
+      # Use cURL to fetch WP-CLI
+      - run: curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+      # Make sure WP-CLI is executable
+      - run: chmod +x wp-cli.phar
+      # Download WordPress into `wordpress` directory
+      - run: ./wp-cli.phar core download --allow-root --path=wordpress
+      # Generate `wp-config.php` file
+      - run: ./wp-cli.phar core config --allow-root --dbname=wordpress --dbuser=ubuntu --dbhost=localhost --path=wordpress
+      # Install WordPress
+      - run: ./wp-cli.phar core install --allow-root --admin_name=admin --admin_password=admin --admin_email=admin@example.com --url=http://wppusher-plugin.dev:8080 --title=WordPress --path=wordpress
+      # Clone WP PHP Console plugin from GitHub
+      - run: git clone git@github.com:unfulvio/wp-php-console.git wordpress/wp-content/plugins/wp-php-console
+      # And use WP-CLI to activate it
+      - run: ./wp-cli.phar plugin activate wp-php-console --path=wordpress
+      # Install dependencies
+      - run: cd wordpress/wp-content/plugins/wp-php-console
+      - run: composer install
+      - run: cd ../../../..
+      # Copy Apache conf into `site-available`
+      - run: cp ~/wp-php-console/apache-ci.conf /etc/apache2/sites-available
+      # Use `a2ensite` to create a symlink for the config
+      - run: a2ensite apache-ci.conf
+      # Restart the Apache server
+      - run: sudo service apache2 restart
+      # This is just for us to see that the WP PHP Console plugin was actually installed and is active
+      - run: ./wp-cli.phar plugin list --path=wordpress
+      # Finally, run tests
+      - run: vendor/bin/codecept run
