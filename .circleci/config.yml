@@ -24,9 +24,9 @@ jobs:
       # Download WordPress into `wordpress` directory
       - run: ./wp-cli.phar core download --allow-root --path=wordpress
       # Generate `wp-config.php` file
-      - run: ./wp-cli.phar core config --allow-root --dbname=wordpress --dbuser=ubuntu --dbhost=localhost --path=wordpress
+      - run: ./wp-cli.phar core config --allow-root --dbname=wordpress --dbuser=admin --dbpass=password --dbhost=localhost --path=wordpress
       # Install WordPress
-      - run: ./wp-cli.phar core install --allow-root --admin_name=admin --admin_password=admin --admin_email=admin@example.com --url=http://wppusher-plugin.dev:8080 --title=WordPress --path=wordpress
+      - run: ./wp-cli.phar core install --allow-root --admin_name=admin --admin_password=admin --admin_email=admin@example.com --url=http://wp-php-console.test:8080 --title="WP PHP Console Tests" --path=wordpress
       # Clone WP PHP Console plugin from GitHub...
       - run: git clone git@github.com:unfulvio/wp-php-console.git wordpress/wp-content/plugins/wp-php-console
       # ...and use WP-CLI to activate it
