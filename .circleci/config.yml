@@ -4,19 +4,22 @@ jobs:
   build:
     docker:
       - image: circleci/php:7.2.5-apache-node
-      - image: circleci/mysql:5.7.22
+      - image: circleci/mariadb:10.3.4-ram
+        environment:
+          - MYSQL_DATABASE: wordpress
+          - MYSQL_USER: admin
+          - MYSQL_PASSWORD: password
 
     working_directory: ~/wp-php-console
 
     steps:
       - checkout
+      # Set up hosts
       - run: echo 127.0.0.1 wp-php-console.test | sudo tee -a /etc/hosts
-      - run: sudo apt install mysql-client
-      # No password is required for the MySQL user `ubuntu`
-      - run: mysql -u ubuntu -e "create database wordpress"
-      # Use cURL to fetch WP-CLI
+      # Ensure we have a MySQL client
+      - run: sudo apt-get -y install mysql-client
+      # Grab WP CLI and make it executable
       - run: curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-      # Make sure WP-CLI is executable
       - run: chmod +x wp-cli.phar
       # Download WordPress into `wordpress` directory
       - run: ./wp-cli.phar core download --allow-root --path=wordpress
@@ -24,21 +27,13 @@ jobs:
       - run: ./wp-cli.phar core config --allow-root --dbname=wordpress --dbuser=ubuntu --dbhost=localhost --path=wordpress
       # Install WordPress
       - run: ./wp-cli.phar core install --allow-root --admin_name=admin --admin_password=admin --admin_email=admin@example.com --url=http://wppusher-plugin.dev:8080 --title=WordPress --path=wordpress
-      # Clone WP PHP Console plugin from GitHub
+      # Clone WP PHP Console plugin from GitHub...
       - run: git clone git@github.com:unfulvio/wp-php-console.git wordpress/wp-content/plugins/wp-php-console
-      # And use WP-CLI to activate it
+      # ...and use WP-CLI to activate it
       - run: ./wp-cli.phar plugin activate wp-php-console --path=wordpress
-      # Install dependencies
-      - run: cd ~/wp-php-console/wordpress/wp-content/plugins/wp-php-console
+      # Install plugin's Composer dependencies
+      - run: cd wordpress/wp-content/plugins/wp-php-console
       - run: composer install
-      - run: cd ~/wp-php-console
-      # Copy Apache conf into `site-available`
-      - run: cp ~/wp-php-console/apache-ci.conf /etc/apache2/sites-available
-      # Use `a2ensite` to create a symlink for the config
-      - run: a2ensite apache-ci.conf
-      # Restart the Apache server
+      # Restart Apache and run tests
       - run: sudo service apache2 restart
-      # This is just for us to see that the WP PHP Console plugin was actually installed and is active
-      - run: ./wp-cli.phar plugin list --path=wordpress
-      # Finally, run tests
       - run: vendor/bin/codecept run
