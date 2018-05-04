@@ -1,7 +1,9 @@
 version: 2
 
 jobs:
+
   build:
+
     docker:
       - image: circleci/php:7.2.5-apache-node
       - image: circleci/mariadb:10.3.6-ram
