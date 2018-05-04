@@ -22,10 +22,8 @@ jobs:
       - run: sudo apt-get install -y libjpeg62-turbo-dev
       - run: sudo apt-get install -y libmcrypt-dev
       - run: sudo apt-get install -y libpng-dev
-      - run: sudo docker-php-ext-install -j$(nproc) zip
-      - run: sudo docker-php-ext-install -j$(nproc) iconv mcrypt
+      - run: sudo docker-php-ext-install -j$(nproc) zip mbstring mysqli pdo pdo_mysql gd
       - run: sudo docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
-      - run: sudo docker-php-ext-install -j$(nproc) gd
       - run: sudo apt-get -y install mysql-client
       # Grab WP CLI and make it executable
       - run: curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
