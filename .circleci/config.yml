@@ -10,26 +10,24 @@ jobs:
           - MYSQL_USER: admin
           - MYSQL_PASSWORD: password
 
+    working_directory: ~/wp-php-console
+
     steps:
       - checkout
       # Set up hosts
       - run: echo 127.0.0.1 wp-php-console.test | sudo tee -a /etc/hosts
       # Install PHP extensions and a MySQL client
-      - run: sudo apt-get install -y libzip-dev
-      - run: sudo apt-get install -y libfreetype6-dev
-      - run: sudo apt-get install -y libjpeg62-turbo-dev
-      - run: sudo apt-get install -y libmcrypt-dev
-      - run: sudo apt-get install -y libpng-dev
-      - run: sudo apt-get install -y mysql-client
+      - run: sudo apt-get install libzip-dev libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev mysql-client -y
       - run: sudo docker-php-ext-install -j$(nproc) mbstring zip gd
       - run: sudo docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
       # Grab WP CLI and make it executable
+      - run: cd ..
       - run: curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
       - run: chmod +x wp-cli.phar
       # Download and install WordPress
-      - run: ./wp-cli.phar core download --allow-root --path=wordpress
-      - run: ./wp-cli.phar core config --allow-root --dbname=wordpress --dbuser=admin --dbpass=password --dbhost=127.0.0.1 --path=wordpress
-      - run: ./wp-cli.phar core install --allow-root --admin_name=admin --admin_password=password --admin_email=admin@example.com --url=http://wp-php-console.test:8080 --title="WP PHP Console Tests" --path=wordpress
+      - run: ! ./wp-cli.phar core download --allow-root --path=wordpress
+      - run: ! ./wp-cli.phar core config --allow-root --dbname=wordpress --dbuser=admin --dbpass=password --dbhost=127.0.0.1 --path=wordpress
+      - run: ! ./wp-cli.phar core install --allow-root --admin_name=admin --admin_password=password --admin_email=admin@example.com --url=http://wp-php-console.test:8080 --title="WP PHP Console Tests" --path=wordpress
       # Copy plugin into WordPress plugins directory
       - run: cp wp-php-console wordpress/wp-content/plugins/wp-php-console
       # Install plugin's Composer dependencies
@@ -37,7 +35,7 @@ jobs:
       - run: composer install
       - run: cd ../../../..
       # Activate the plugin
-      - run: ./wp-cli.phar plugin activate wp-php-console --path=wordpress
+      - run: ! ./wp-cli.phar plugin activate wp-php-console --path=wordpress
       # Restart Apache and run tests
       - run: sudo service apache2 restart
       - run: wordpress/wp-content/plugins/wp-php-console/vendor/bin/codecept run
