@@ -3,7 +3,6 @@
 [![GitHub version](https://badge.fury.io/gh/unfulvio%2Fwp-php-console.svg)](https://badge.fury.io/gh/unfulvio%2Fwp-php-console)
 [![Dependency Status](https://gemnasium.com/nekojira/wp-php-console.svg)](https://gemnasium.com/nekojira/wp-php-console)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/unfulvio/wp-php-console/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/unfulvio/wp-php-console/?branch=master)
-[![Join the chat at https://gitter.im/unfulvio/wp-php-console](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/unfulvio/wp-php-console?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 An implementation of [PHP Console](https://github.com/barbushin/php-console "PHP Console") as a [WordPress](http://www.wordpress.org) plugin. Use Chrome Dev Tools to debug your WordPress installation!
 
@@ -28,6 +27,8 @@ Make sure the PHP Console Chrome extension is enabled through [chrome://extensio
   - Installing it as any other WordPress plugin from your WordPress admin Plugins page (`Add New`).
 
   - Downloading a copy from [WordPress.org]((https://wordpress.org/plugins/wp-php-console/)) and uploading it in `wp-php-console` directory into your `wp-content/plugins/` directory or corresponding plugins directory in your installation. You can also do this from the WordPress plugins installation admim dashboard pages.
+  
+  - **Note:** If you decide to `git clone` this repository instead, you will need `composer install` to install its dependencies first, or it won't work in WordPress as it is.
 
 3. Activate the plugin through the `Plugins` admin page in WordPress
 
