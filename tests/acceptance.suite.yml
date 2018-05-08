@@ -4,7 +4,6 @@
 # Perform tests in browser using the WPWebDriver or WPBrowser.
 # Use WPDb to set up your initial database fixture.
 # If you need both WPWebDriver and WPBrowser tests - create a separate suite.
-
 actor: AcceptanceTester
 modules:
     enabled:
@@ -13,13 +12,13 @@ modules:
         - \Helper\Acceptance
     config:
         WPDb:
-            dsn: 'mysql:host=%DB_HOST%;dbname=%DB_NAME%'
-            user: '%DB_USER%'
-            password: '%DB_PASSWORD%'
-            url: '%WP_URL%'
-            tablePrefix: '%TABLE_PREFIX%'
+            dsn: 'mysql:host=127.0.0.1;dbname=wordpress'
+            user: 'admin'
+            password: 'password'
+            url: 'http://wp-php-console.test'
+            tablePrefix: 'wp_'
         WPBrowser:
-            url: '%WP_URL%'
-            adminUsername: '%ADMIN_USERNAME%'
-            adminPassword: '%ADMIN_PASSWORD%'
-            adminPath: '%WP_ADMIN_PATH%'
+            url: 'http://wp-php-console.test'
+            adminUsername: 'admin'
+            adminPassword: 'password'
+            adminPath: '/wordpress'
