@@ -18,6 +18,9 @@ jobs:
       - run: sudo apt-get install libzip-dev libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev mysql-client -y
       - run: sudo docker-php-ext-install -j$(nproc) mbstring zip gd
       - run: sudo docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
+      - run: curl https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+      - run: sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+      - run: sudo apt-get install -y google-chrome-stable build-essential jq git openssh-server
       - run: composer install
       - run: mkdir plugin
       - run: cp -r -a . plugin || true
@@ -30,4 +33,4 @@ jobs:
       - run: ./wp-cli.phar plugin activate wp-php-console --path=wordpress || true
       - run: sudo service apache2 restart
       - run: cd wordpress/wp-content/plugins/wp-php-console
-      - run: vendor/bin/codecept run
+      - run: vendor/bin/codecept run acceptance
