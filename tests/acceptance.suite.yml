@@ -8,4 +8,3 @@ modules:
             url: 'http://wp-php-console.test'
             adminUsername: 'admin'
             adminPassword: 'password'
-            adminPath: '/wordpress'
