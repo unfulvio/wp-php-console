@@ -39,7 +39,9 @@ jobs:
       # Move plugin into WordPress and activate
       - run: mv plugin wordpress/wp-content/plugins/wp-php-console
       - run: ./wp-cli.phar plugin activate wp-php-console --path=wordpress || true
-      # Restart Apache and run tests
+      # Configure and restart Apache, then run tests
+      - run: sudo cp .circleci/apache_ci.conf /etc/apache2/sites-available
+      - run: sudo a2ensite apache_ci.conf
       - run: sudo service apache2 restart
       - run: cd wordpress/wp-content/plugins/wp-php-console
       - run: vendor/bin/codecept run acceptance
