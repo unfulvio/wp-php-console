@@ -9,11 +9,13 @@ class AdminTestCest  {
 
 		$I->amOnPluginsPage();
 
-		$I->seePluginActivated( 'wp-php-console' );
+		$I->seePluginActivated( 'hello-dolly' );
+
+		$I->seePluginDeactivated( 'wp-php-console' );
 
 		$I->wantTo( 'Deactivate and reactivate WP PHP Console.' );
 
-		$I->deactivatePlugin( 'wp-php-console' );
+		//$I->deactivatePlugin( 'wp-php-console' );
 		$I->activatePlugin( 'wp-php-console' );
 	}
 
