@@ -20,10 +20,11 @@ jobs:
       - run: sudo apt-get install libzip-dev libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev mysql-client -y
       - run: sudo docker-php-ext-install -j$(nproc) mbstring zip gd
       - run: sudo docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
-      # Install Chrome headless
-      # - run: sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-      # - run: sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-      # - run: sudo apt-get update
+      # Configure and restart Apache
+      - run: sudo cp .circleci/apache_ci.conf /etc/apache2/sites-available
+      - run: sudo a2ensite apache_ci.conf
+      - run: sudo a2enmod rewrite
+      - run: sudo systemctl restart apache2
       # Install plugin dependencies via Composer
       - run: composer install
       - run: mkdir plugin
@@ -39,10 +40,6 @@ jobs:
       # Move plugin into WordPress and activate
       - run: mv plugin wordpress/wp-content/plugins/wp-php-console
       - run: ./wp-cli.phar plugin activate wp-php-console --path=wordpress || true
-      # Configure and restart Apache, then run tests
-      - run: sudo cp .circleci/apache_ci.conf /etc/apache2/sites-available
-      - run: sudo a2ensite apache_ci.conf
-      - run: sudo service apache2 restart
-      - run: sudo service apache2 reload
+      # Run tests
       - run: cd wordpress/wp-content/plugins/wp-php-console
       - run: vendor/bin/codecept run acceptance
