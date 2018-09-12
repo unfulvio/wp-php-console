@@ -1,5 +1,8 @@
 # Changelog
 
+### 1.5.2 (12 Sep 2018)
+ * Misc: Updates PHP Console core library to v3.1.7
+
 ### 1.5.1 (19 Feb 2018)
  * Misc: Bump WordPress compatibility to mark support for the latest versions
 

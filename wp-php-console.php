@@ -4,7 +4,7 @@
  * Plugin URI:   https://github.com/unfulvio/wp-php-console/
  * Description:  An implementation of PHP Console for WordPress. Easily debug and trace PHP errors and warnings from your Chrome dev tools console using a Google Chrome extension.
  *
- * Version:      1.5.1
+ * Version:      1.5.2
  *
  * Author:       Fulvio Notarstefano
  * Author URI:   https://github.com/unfulvio/
@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) or exit;
 
 /**
  * WP PHP Console
- * Copyright (c) 2014-2016 Fulvio Notarstefano <fulvio.notarstefano@gmail.com>
+ * Copyright (c) 2014-2018 Fulvio Notarstefano <fulvio.notarstefano@gmail.com>
  * and contributors https://github.com/unfulvio/wp-php-console/graphs/contributors
  *
  * PhpConsole server library

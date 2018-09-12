@@ -1,10 +1,10 @@
 {
-	"name": "unfulvio/wp-php-console",
-	"description": "A WordPress implementation of PHP Console.",
+  "name": "unfulvio/wp-php-console",
+  "description": "A WordPress implementation of PHP Console.",
   "type": "wordpress-plugin",
-	"version": "1.5.1",
-	"keywords": ["wordpress", "debug", "debugging", "development", "php-console", "console", "terminal", "command-line", "cli" ],
-	"homepage": "https://github.com/unfulvio/wp-php-console",
+  "version": "1.5.2",
+  "keywords": ["wordpress", "debug", "debugging", "development", "php-console", "console", "terminal", "command-line", "cli" ],
+  "homepage": "https://github.com/unfulvio/wp-php-console",
   "license": "GPLv2.0+",
   "authors": [
     {
@@ -14,13 +14,13 @@
       "role": "Developer"
     }
   ],
-	"require": {
-		"php": ">=5.4.0",
-		"composer/installers": "^1.0",
+  "require": {
+    "php": ">=5.4.0",
+    "composer/installers": "^1.0",
     "nekojira/wp-requirements": "^1.4",
-		"php-console/php-console": "^3.1",
+    "php-console/php-console": "^3.1",
     "xrstf/composer-php52": "1.*"
-	},
+  },
   "require-dev": {
     "wp-cli/wp-cli": "^1.5.0",
     "lucatume/wp-browser": "^2.0.0"

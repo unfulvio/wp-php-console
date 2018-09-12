@@ -3,8 +3,8 @@ Contributors: nekojira
 Donate link: http://iheu.org/support/make-a-donation/
 Tags: dev, development, bug, debug, debugging, stacktrace, php, console, terminal, browser
 Requires at least: 3.6.0
-Tested up to: 4.9
-Stable tag: 1.5.1
+Tested up to: 4.9.8
+Stable tag: 1.5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -126,6 +126,9 @@ None.
 
 
 == Changelog ==
+
+= 1.5.2 =
+* Misc: Updates PHP Console core library to v3.1.7
 
 = 1.5.1 =
 * Misc: Bump WordPress compatibility to mark support for the latest versions
