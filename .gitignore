@@ -25,7 +25,9 @@ sftp-config.json
 /includes/tmp/*.*
 !/includes/tmp/index.php
 /node_modules
+package-lock.json
 /vendor
+composer.lock
 /includes/tmp
 tmp
 .tmp
