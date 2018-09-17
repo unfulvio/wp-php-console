@@ -6,6 +6,9 @@ module.exports = function( grunt ) {
 			'!assets/**',
 			'!node_modules/**',
 			'!svn/**',
+			'!vendor/php-console/php-console/examples/**',
+			'!vendor/php-console/php-console/test/**',
+			'!test/**',
 			'!tests/**',
 			'!**/.*',
 			'!bootstrap.php',
@@ -51,8 +54,8 @@ module.exports = function( grunt ) {
 					'_nc:1,2,4c,5d'
 				]
 			},
-			files  : {
-				src   : [
+			files: {
+				src: [
 					'includes/**/*.php',
 					'wp-php-console.php',
 					'uninstall.php'
@@ -128,7 +131,8 @@ module.exports = function( grunt ) {
 					plugin_slug: 'wp-php-console',
 					build_dir: 'build/wp-php-console',
 					assets_dir: 'assets',
-					svn_url: 'https://plugins.svn.wordpress.org/wp-php-console'
+					svn_url: 'https://plugins.svn.wordpress.org/wp-php-console',
+					max_buffer: 512*1024
 				}
 			}
 		}
