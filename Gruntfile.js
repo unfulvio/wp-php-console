@@ -10,6 +10,7 @@ module.exports = function( grunt ) {
 			'!**/.*',
 			'!bootstrap.php',
 			'!ChangeLog.md',
+			'!codeception.yml',
 			'!composer.json',
 			'!composer.lock',
 			'!Gruntfile.js',
