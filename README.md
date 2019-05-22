@@ -16,7 +16,7 @@ This implementation of PHP Console is a handy tool to make it easier to test on 
 
 ## Installation
 
-Note: you will at least PHP 5.4.0 or above installed on your machine or server to run this plugin.
+Note: you will at least PHP 5.6.0 or above installed on your machine or server to run this plugin.
 
 1. First, install [Google Chrome extension PHP Console](https://chrome.google.com/webstore/detail/php-console/nfhmhhlpfleoednkpnnnkolmclajemef) from the [Chrome WebStore](https://chrome.google.com/webstore/search/php%20console?_category=extensions).
 Make sure the PHP Console Chrome extension is enabled through [chrome://extensions/](chrome://extensions/ "chrome://extensions/").

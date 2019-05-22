@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP PHP Console 1.5.3\n"
 "Report-Msgid-Bugs-To: https://github.com/unfulvio/wp-php-console\n"
-"POT-Creation-Date: 2019-05-22 04:41:37+00:00\n"
+"POT-Creation-Date: 2019-05-22 04:56:12+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -162,7 +162,7 @@ msgstr ""
 msgid "Paths like %1$s will be displayed as %2$s"
 msgstr ""
 
-#: includes/class-wp-php-console.php:322
+#: includes/class-wp-php-console.php:321
 #. translators: Placeholders: %1$s - WP Php Console name, %2$s - opening HTML
 #. <a> link tag; %3$s closing HTML </a> link tag
 msgid ""
