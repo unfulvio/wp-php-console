@@ -99,25 +99,24 @@ class Plugin {
 	/**
 	 * Connects to PHP Console.
 	 *
+	 * PHP Console needs to hook in session, in WordPress we need to be in 'init':
+	 * @link http://silvermapleweb.com/using-the-php-session-in-wordpress/
 	 * @internal action hook callback
 	 *
 	 * @since 1.4.0
 	 */
 	public function connect() {
 
-		/**
-		 * PhpConsole needs to hook in session, in WordPress we need to be in 'init':
-		 * @link http://silvermapleweb.com/using-the-php-session-in-wordpress/
-		 */
 		if ( ! @session_id() ) {
 			@session_start();
 		}
 
-
 		if ( ! $this->connector instanceof PhpConsole\Connector ) {
 			try {
 				$this->connector = PhpConsole\Connector::getInstance();
-			} catch ( \Exception $e ) {}
+			} catch ( \Exception $e ) {
+				return;
+			}
 		}
 
 		// apply PHP Console options
@@ -195,7 +194,7 @@ class Plugin {
 	public function init() {
 
 		// get PHP Console extension password
-		$password = isset( $this->options['password'] ) ? trim( $this->options['password'] ) : null;
+		$password = trim( $this->options['password'] );
 
 		if ( empty( $password ) ) {
 
