@@ -47,7 +47,7 @@ if ( -1 === version_compare( PHP_VERSION, '5.3.0' ) ) {
 }
 
 /**
- * WP PHP Console requires PHP 5.4.0 minimum.
+ * WP PHP Console requires PHP 5.6.0 minimum.
  *
  * @link https://make.wordpress.org/plugins/2015/06/05/policy-on-php-versions/
  * @link https://github.com/unfulvio/wp-requirements
@@ -58,7 +58,7 @@ $this_plugin_checks = new WP_Requirements(
 	'WP PHP Console',
 	plugin_basename( __FILE__ ),
 	array(
-		'PHP' => '5.4.0',
+		'PHP' => '5.6.0',
 	)
 );
 
