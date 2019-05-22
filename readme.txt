@@ -1,6 +1,6 @@
 === WP PHP Console ===
 Contributors: nekojira
-Donate link: http://iheu.org/support/make-a-donation/
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=XSFHY4Y9AEH58&source=url
 Tags: dev, development, bug, debug, debugging, stacktrace, php, console, terminal, browser
 Requires at least: 3.6.0
 Requires PHP: 5.6
