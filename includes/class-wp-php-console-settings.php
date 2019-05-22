@@ -1,57 +1,33 @@
 <?php
-/**
- * WP PHP Console Plugin Settings Class
- *
- * @link    https://github.com/unfulvio/wp-php-console
- * @since   1.5.0
- * @package WP_PHP_Console
- */
+
 namespace WP_PHP_Console;
 
 defined( 'ABSPATH' ) or exit;
 
 /**
- * WP PHP Console settings class.
+ * WP PHP Console settings handler.
  *
- * @since   1.5.0
- * @package WP_PHP_Console
+ * @since 1.5.0
  */
 class Settings {
 
 
-	/**
-	 * This plugin's settings page slug.
-	 *
-	 * @since  1.5.0
-	 * @access private
-	 * @var    string
-	 */
-	private $page = '';
+	/** @var string the plugin's settings page slug */
+	private $page;
 
-	/**
-	 * This plugin's option name.
-	 *
-	 * @since  1.5.0
-	 * @access private
-	 * @var    string
-	 */
-	private $option = '';
+	/** @var string the plugin's settings option key name */
+	private $option;
 
-	/**
-	 * This plugin's settings options.
-	 *
-	 * @since  1.5.0
-	 * @access private
-	 * @var    array $options Array of this plugin settings options.
-	 */
-	private $options = array();
+	/** @var array settings options */
+	private $options;
 
 
 	/**
-	 * Register settings and admin menu.
+	 * Registers settings and admin menu.
 	 *
 	 * @since 1.5.0
-	 * @param array $options Plugin settings options.
+	 *
+	 * @param array $options plugin settings options
 	 */
 	public function __construct( array $options ) {
 
@@ -59,13 +35,14 @@ class Settings {
 		$this->option  = str_replace( '-', '_', $this->page );
 		$this->options = $options;
 
-		add_action( 'admin_menu', array( $this, 'register_settings_page' ) );
-
+		add_action( 'admin_menu', [ $this, 'register_settings_page' ] );
 	}
 
 
 	/**
-	 * Plugin Settings menu.
+	 * Adds a plugin Settings menu.
+	 *
+	 * @internal action hook callback
 	 *
 	 * @since 1.5.0
 	 */
@@ -76,16 +53,17 @@ class Settings {
 			__( 'WP PHP Console', 'wp-php-console' ),
 			'manage_options',
 			$this->page,
-			array( $this, 'settings_page' )
+			[ $this, 'settings_page' ]
 		);
 
-		add_action( 'admin_init', array( $this, 'register_settings'  ) );
-
+		add_action( 'admin_init', [ $this, 'register_settings'  ] );
 	}
 
 
 	/**
-	 * Register plugin settings.
+	 * Registers the plugin settings.
+	 *
+	 * @internal action hook callback
 	 *
 	 * @since 1.5.0
 	 */
@@ -94,42 +72,42 @@ class Settings {
 		register_setting(
 			$this->option,
 			$this->option,
-			array( $this, 'sanitize_field' )
+			[ $this, 'sanitize_field' ]
 		);
 
 		add_settings_section(
 			$this->option,
 			__( 'Settings', 'wp-php-console' ),
-			array( $this, 'settings_info' ),
+			[ $this, 'settings_info' ],
 			$this->page
 		);
 
-		$settings_fields = array(
-			'password' => array(
+		$settings_fields = [
+			'password' => [
 				 'label'    => esc_html__( 'Password',           'wp-php-console' ),
-				 'callback' => array( $this, 'password_field' ),
-			),
-			'ssl'      => array(
+				 'callback' => [ $this, 'password_field' ],
+			],
+			'ssl'      => [
 				 'label'    => esc_html__( 'Allow only on SSL',  'wp-php-console' ),
-				 'callback' => array( $this, 'ssl_field' ),
-			),
-			'ip' => array(
+				 'callback' => [ $this, 'ssl_field' ],
+			],
+			'ip' => [
 				 'label'    => esc_html__( 'Allowed IP Masks',   'wp-php-console' ),
-				 'callback' => array( $this, 'ip_field' ),
-			),
-			'register' => array(
+				 'callback' => [ $this, 'ip_field' ],
+			],
+			'register' => [
 				 'label'    => esc_html__( 'Register PC Class',  'wp-php-console' ),
-				 'callback' => array( $this, 'register_field' ),
-			),
-			'stack'    => array(
+				 'callback' => [ $this, 'register_field' ],
+			],
+			'stack'    => [
 				 'label'    => esc_html__( 'Show Call Stack',    'wp-php-console' ),
-				 'callback' => array( $this, 'stack_field' ),
-			),
-			'short'    => array(
+				 'callback' => [ $this, 'stack_field' ],
+			],
+			'short'    => [
 				 'label'    => esc_html__( 'Short Path Names',   'wp-php-console' ),
-				 'callback' => array( $this, 'short_field' ),
-			),
-		);
+				 'callback' => [ $this, 'short_field' ],
+			],
+		];
 
 		foreach ( $settings_fields as $key => $field ) {
 			add_settings_field(
@@ -140,58 +118,62 @@ class Settings {
 				$this->option
 			);
 		}
-
 	}
 
 
 	/**
-	 * Settings page additional info.
+	 * Outputs settings page additional info.
+	 *
 	 * Prints more details on the plugin settings page.
+	 *
+	 * @internal callback method
 	 *
 	 * @since 1.5.0
 	 */
 	public function settings_info() {
 
 		?>
-		<p><?php
-			/* translators: Placeholder: %s refers to the PHP Console library, pointing to its GitHub repository */
-			printf( _x( 'This plugin allows you to use %s within your WordPress installation for testing, debugging and development purposes.', 'PHP Console, the PHP Library', 'wp-php-console' ),
+		<p><?php printf(
+				/* translators: Placeholder: %s refers to the PHP Console library, pointing to its GitHub repository */
+				_x( 'This plugin allows you to use %s within your WordPress installation for testing, debugging and development purposes.', 'PHP Console, the PHP Library', 'wp-php-console' ),
 				'<a href="https://github.com/barbushin/php-console" target="_blank">PHP Console</a>'
-			); ?><br>
-			<?php esc_html_e( 'Usage instructions:', 'wp-php-console' ); ?>
-		</p>
+			);
+		?><br><?php esc_html_e( 'Usage instructions:', 'wp-php-console' ); ?></p>
 		<ol>
 			<?php
 
-			$instructions = array(
-				/* translators: Placeholder: %s represents the Google Chrome PHP Console extension download link */
-				sprintf( _x( 'Make sure you have downloaded and installed %s.', 'PHP Console, the Chrome Extension', 'wp-php-console' ),
+			$instructions = [
+				sprintf(
+					/* translators: Placeholder: %s represents the Google Chrome PHP Console extension download link */
+					_x( 'Make sure you have downloaded and installed %s.', 'PHP Console, the Chrome Extension', 'wp-php-console' ),
 					'<a target="_blank" href="https://chrome.google.com/webstore/detail/php-console/nfhmhhlpfleoednkpnnnkolmclajemef">PHP Console extension for Google Chrome</a>'
 				),
 				esc_html__( 'Set a password for the eval terminal in the options below and hit "Save Changes".', 'wp-php-console' ),
 				esc_html__( 'Reload any page of your installation and click on the key icon in your Chrome browser address bar, enter your password and access the terminal.', 'wp-php-console' ),
 				esc_html__( 'From the eval terminal you can execute any PHP or WordPress specific function, including functions from your plugins and active theme.', 'wp-php-console' ),
-				/* translators: Placeholders: %1$s - PHP code snippet example, %2$s - Chrome javascript console shortcut */
-				sprintf( __( 'In your PHP code, you can call PHP Console debug statements like %1$s to display PHP variables in the browser\'s JavaScript-console (e.g. %2$s) and optionally filter selected tags through the browser\'s Remote PHP Eval Terminal screen\'s "Ignore Debug options".', 'wp-php-console' ),
+				sprintf(
+					/* translators: Placeholders: %1$s - PHP code snippet example, %2$s - Chrome javascript console shortcut */
+					__( 'In your PHP code, you can call PHP Console debug statements like %1$s to display PHP variables in the browser\'s JavaScript-console (e.g. %2$s) and optionally filter selected tags through the browser\'s Remote PHP Eval Terminal screen\'s "Ignore Debug options".', 'wp-php-console' ),
 					'<code>debug(&#36;var, &#36;tag)</code>',
 					'<code>CTRL+SHIFT+J</code>'
 				),
-			);
+			];
 
-			foreach ( $instructions as $list_item ) {
-				echo '<li>' . $list_item  . '</li>';
-			}
+			foreach ( $instructions as $list_item ) :
+				?><li><?php echo $list_item; ?></li><?php
+			endforeach;
 
 			?>
 		</ol>
 		<hr>
 		<?php
-
 	}
 
 
 	/**
-	 * Settings Page Password field.
+	 * Outputs the settings page "Password" field.
+	 *
+	 * @internal callback method
 	 *
 	 * @since 1.5.0
 	 */
@@ -202,12 +184,13 @@ class Settings {
 		<label for="wp-php-console-password"><?php esc_html_e( 'Required', 'wp-php-console' ); ?></label><br>
 		<p class="description"><?php esc_html_e( 'The password for the eval terminal. If empty, the plugin will not work.', 'wp-php-console' ); ?></p>
 		<?php
-
 	}
 
 
 	/**
-	 * Settings Page SSL option field.
+	 * Outputs the settings page "SSL option" field.
+	 *
+	 * @internal callback method
 	 *
 	 * @since 1.5.0
 	 */
@@ -218,12 +201,13 @@ class Settings {
 		<label for="wp-php-console-ssl"><?php esc_html_e( 'Yes', 'wp-php-console' ); ?></label><br>
 		<p class="description"><?php esc_html_e( 'Tick this option if you want the eval terminal to work only on a SSL connection.', 'wp-php-console' ); ?></p>
 		<?php
-
 	}
 
 
 	/**
-	 * Settings page IP Range field.
+	 * Outputs the settings page "IP Range" field.
+	 *
+	 * @internal callback method
 	 *
 	 * @since 1.5.0
 	 */
@@ -234,27 +218,28 @@ class Settings {
 		<label for="wp-php-console-ip"><?php esc_html_e( 'IP addresses (optional)', 'wp-php-console' ); ?></label><br>
 		<p class="description"><?php esc_html_e( 'You may specify any of the following, to give access to specific IPs to the eval terminal:', 'wp-php-console' ); ?><br>
 			<ol>
-				<li><small><?php
-					/* translators: Placeholders: %1$s - a single IP address, %2$s link to Varying Vagrant Vagrants project repository */
-					printf( __( 'An IP address (for example %1$s, %2$s default IP address).', 'wp-php-console' ),
+				<li><small><?php printf(
+						/* translators: Placeholders: %1$s - a single IP address, %2$s link to Varying Vagrant Vagrants project repository */
+						__( 'An IP address (for example %1$s, %2$s default IP address).', 'wp-php-console' ),
 						'<code>192.168.50.4</code>',
 						'<a href="https://github.com/Varying-Vagrant-Vagrants/VVV">Varying Vagrant Vagrants</a>'
 					); ?></small></li>
-				<li><small><?php
-					/* translators: Placeholders: %1$s a range of IP addresses, %2$s - comma separated IP addresses */
-					printf( __( 'A range of addresses (%1$s) or multiple addresses, comma separated (%2$s).', 'wp-php-console' ),
+				<li><small><?php printf(
+						/* translators: Placeholders: %1$s a range of IP addresses, %2$s - comma separated IP addresses */
+						__( 'A range of addresses (%1$s) or multiple addresses, comma separated (%2$s).', 'wp-php-console' ),
 						'<code>192.168.*.*</code>',
 						'<code>192.168.10.25,192.168.10.28</code>'
 					); ?></small></li>
 			</ol>
 		</p>
 		<?php
-
 	}
 
 
 	/**
-	 * Settings page Register PC Class field.
+	 * Outputs the settings page "Register PC Class" field.
+	 *
+	 * @internal callback method
 	 *
 	 * @since 1.5.0
 	 */
@@ -266,19 +251,21 @@ class Settings {
 		<p class="description"><?php
 			esc_html_e( 'Tick to register PC class in the global namespace.', 'wp-php-console' );
 			echo '<br>';
-			/* translators: Placeholders: %1$s, %2$s and %3$s are PHP code snippets examples */
-			printf( __( 'Allows to write %1$s or %2$s instructions in PHP to inspect %3$s in the JavaScript console.', 'wp-php-console' ),
+			printf(
+				/* translators: Placeholders: %1$s, %2$s and %3$s are PHP code snippets examples */
+				__( 'Allows to write %1$s or %2$s instructions in PHP to inspect %3$s in the JavaScript console.', 'wp-php-console' ),
 				'<code>PC::debug(&#36;var, &#36;tag)</code>',
 				'<code>PC::magic_tag(&#36;var)</code>',
 				'<code>&#36;var</code>'
 			); ?></p>
 		<?php
-
 	}
 
 
 	/**
-	 * Settings page Show Call Stack field.
+	 * Outputs the settings page "Show Call Stack" field.
+	 *
+	 * @internal callback method
 	 *
 	 * @since 1.5.0
 	 */
@@ -289,12 +276,13 @@ class Settings {
 		<label for="wp-php-console-stack"><?php esc_html_e( 'Yes', 'wp-php-console' ); ?></label><br />
 		<p class="description"><?php esc_html_e( 'Tick to see the full call stack when PHP Console writes to the browser JavaScript console.', 'wp-php-console' ); ?></p>
 		<?php
-
 	}
 
 
 	/**
-	 * Settings page Show Short Paths field.
+	 * Outputs the settings page "Show Short Paths" field.
+	 *
+	 * @internal callback method
 	 *
 	 * @since 1.5.0
 	 */
@@ -306,49 +294,54 @@ class Settings {
 		<p class="description"><?php
 			esc_html_e( 'Tick to shorten the length of PHP Console error sources and traces paths in browser JavaScript console for better readability.', 'wp-php-console' );
 			echo '<br>';
-			/* translators: Placeholders: %1$s - long server path, %2$s - shortened server path */
-			printf( __( 'Paths like %1$s will be displayed as %2$s', 'wp-php-console' ),
+			printf(
+				/* translators: Placeholders: %1$s - long server path, %2$s - shortened server path */
+				__( 'Paths like %1$s will be displayed as %2$s', 'wp-php-console' ),
 				'<code>/server/path/to/document/root/WP/wp-admin/admin.php:31</code>',
 				'<code>/WP/wp-admin/admin.php:31</code>'
 			); ?></p>
 		<?php
-
 	}
 
 
 	/**
 	 * Sanitize user input in settings page.
 	 *
-	 * @since  1.5.0
-	 * @param  array $option user input
+	 * @internal callback method
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param array $option user input
 	 * @return array sanitized input
 	 */
 	public function sanitize_field( $option ) {
 
-		$input = wp_parse_args( $option, array(
+		$input = wp_parse_args( $option, [
 			'ip'       => '',
 			'password' => '',
 			'register' => false,
 			'short'    => false,
 			'ssl'      => false,
 			'stack'    => false,
-		) );
+		] );
 
-		$sanitized_input = array(
+		$sanitized_input = [
 			'ip'       => sanitize_text_field( $input['ip'] ),
 			'password' => sanitize_text_field( $input['password'] ),
 			'register' => ! empty( $input['register'] ),
 			'short'    => ! empty( $input['short'] ),
 			'ssl'      => ! empty( $input['ssl'] ),
 			'stack'    => ! empty( $input['stack'] ),
-		);
+		];
 
 		return $sanitized_input;
 	}
 
 
 	/**
-	 * Settings page.
+	 * Outputs the settings page.
+	 *
+	 * @internal callback method
 	 *
 	 * @since 1.5.0
 	 */
@@ -371,7 +364,6 @@ class Settings {
 			</form>
 		</div>
 		<?php
-
 	}
 
 

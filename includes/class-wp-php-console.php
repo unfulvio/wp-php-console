@@ -1,11 +1,5 @@
 <?php
-/**
- * WP PHP Console Plugin Core Class
- *
- * @link    https://github.com/unfulvio/wp-php-console
- * @since   1.0.0
- * @package WP_PHP_Console
- */
+
 namespace WP_PHP_Console;
 
 use PhpConsole;
@@ -15,80 +9,55 @@ defined( 'ABSPATH' ) or exit;
 /**
  * WP PHP Console main class.
  *
- * @since   1.0.0
- * @package WP_PHP_Console
+ * @since 1.0.0
  */
 class Plugin {
 
 
-	/**
-	 * The plugin version.
-	 *
-	 * @since 1.5.0
-	 * @const string
-	 */
-	CONST VERSION = '1.5.2';
+	/** @var string plugin version */
+	CONST VERSION = '1.5.3';
 
-	/**
-	 * The plugin name.
-	 *
-	 * @since 1.5.0
-	 * @const string
-	 */
+	/** @var string plugin name */
 	CONST NAME = 'WP PHP Console';
 
-	/**
-	 * This plugin's settings options.
-	 *
-	 * @since  1.0.0
-	 * @access protected
-	 * @var    array $options Array of this plugin settings options.
-	 */
-	protected $options = array();
 
-	/**
-	 * Instance of PHP Console connector object.
-	 *
-	 * @since  1.4.0
-	 * @access public
-	 * @var    PhpConsole\Connector $connector Instance.
-	 */
+	/** @var array settings options */
+	protected $options = [];
+
+	/** @var PhpConsole\Connector instance */
 	public $connector;
 
 
 	/**
-	 * Load plugin and connect to PHP Console.
+	 * Loads plugin and connects to PHP Console.
 	 *
 	 * @since 1.0.0
 	 */
 	public function __construct() {
 
-		// Handle translations.
-		add_action( 'plugins_loaded', array( $this, 'set_locale' ) );
+		// handle translations
+		add_action( 'plugins_loaded', [ $this, 'set_locale' ] );
 
-		// Set options.
+		// set options
 		$this->options = $this->get_options();
 
-		// Load admin.
+		// load admin
 		$this->set_admin();
 
-		// Bail out if PHP Console can't be found.
+		// bail out if PHP Console can't be found
 		if ( ! class_exists( 'PhpConsole\Connector' ) ) {
 			return;
 		}
 
-		// Connect to PHP Console.
-		add_action( 'init', array( $this, 'connect' ), -100 );
-
-		// Delay further PHP Console initialisation
-		// to have more context during Remote PHP execution.
-		add_action( 'wp_loaded', array( $this, 'init' ), -100 );
-
+		// connect to PHP Console
+		add_action( 'init',      [ $this, 'connect' ], -1000 );
+		// delay further PHP Console initialisation to have more context during Remote PHP execution
+		add_action( 'wp_loaded', [ $this, 'init' ], -1000 );
 	}
 
 
 	/**
-	 * Set plugin text domain.
+	 * Sets plugin text domain.
 	 *
 	 * @since 1.0.0
 	 */
@@ -99,12 +68,11 @@ class Plugin {
 			false,
 			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 		);
-
 	}
 
 
 	/**
-	 * Load admin.
+	 * Loads admin.
 	 *
 	 * @since 1.5.0
 	 */
@@ -112,42 +80,48 @@ class Plugin {
 
 		if ( ! defined( 'DOING_AJAX' ) && is_admin() ) {
 
-			// Add a settings link to the plugins admin screen.
+			// add a settings link to the plugins admin screen
 			$plugin_name = str_replace( 'includes/class-', '', plugin_basename( __FILE__ ) );
-			add_filter( "plugin_action_links_{$plugin_name}", function( $actions ) {
+			add_filter( "plugin_action_links_{$plugin_name}", static function( $actions ) {
 				return array_merge( array(
 					'<a href="' . esc_url( admin_url( 'options-general.php?page=wp-php-console' ) ) . '">' . __( 'Settings', 'wp-php-console' ) . '</a>',
 				), $actions );
 			} );
 
-			// Init settings.
+			// init settings
 			require_once __DIR__ . '/class-wp-php-console-settings.php';
+
 			new Settings( $this->options );
 		}
-
 	}
 
 
 	/**
-	 * Connect to PHP Console.
+	 * Connects to PHP Console.
+	 *
+	 * @internal action hook callback
 	 *
 	 * @since 1.4.0
 	 */
 	public function connect() {
 
-		// PhpConsole needs to hook in session, in WordPress we need to be in 'init'
-		// @link http://silvermapleweb.com/using-the-php-session-in-wordpress/
-		if ( ! session_id() ) {
-			session_start();
+		/**
+		 * PhpConsole needs to hook in session, in WordPress we need to be in 'init':
+		 * @link http://silvermapleweb.com/using-the-php-session-in-wordpress/
+		 */
+		if ( ! @session_id() ) {
+			@session_start();
 		}
+
 
 		if ( ! $this->connector instanceof PhpConsole\Connector ) {
-			$this->connector = PhpConsole\Connector::getInstance();
+			try {
+				$this->connector = PhpConsole\Connector::getInstance();
+			} catch ( \Exception $e ) {}
 		}
 
-		// Apply PHP Console options.
+		// apply PHP Console options
 		$this->apply_options();
-
 	}
 
 
@@ -173,20 +147,20 @@ class Plugin {
 
 
 	/**
-	 * Apply options.
+	 * Applies options.
 	 *
 	 * @since 1.4.0
 	 */
 	private function apply_options() {
 
-		// Bail out if not connected yet to PHP Console.
+		// bail out if not connected yet to PHP Console
 		if ( ! $this->connector instanceof PhpConsole\Connector ) {
 			return;
 		}
 
-		// Apply 'register' option to PHP Console...
+		// apply 'register' option to PHP Console...
 		if ( true === $this->options['register'] && ! class_exists( 'PC', false ) ) {
-			// ...only if PC not registered yet.
+			// ...only if PC not registered yet
 			try {
 				PhpConsole\Helper::register();
 			} catch( \Exception $e ) {
@@ -194,12 +168,12 @@ class Plugin {
 			}
 		}
 
-		// Apply 'stack' option to PHP Console.
+		// apply 'stack' option to PHP Console
 		if ( true === $this->options['stack'] ) {
 			$this->connector->getDebugDispatcher()->detectTraceAndSource = true;
 		}
 
-		// Apply 'short' option to PHP Console.
+		// apply 'short' option to PHP Console
 		if ( true === $this->options['short'] ) {
 			try {
 				$this->connector->setSourcesBasePath( $_SERVER['DOCUMENT_ROOT'] );
@@ -207,44 +181,51 @@ class Plugin {
 				$this->print_notice_exception( $e );
 			}
 		}
-
 	}
 
 
 	/**
-	 * Initialize PHP Console.
+	 * Initializes PHP Console.
+	 *
+	 * @internal action hook callback
 	 *
 	 * @since 1.0.0
 	 */
 	public function init() {
 
-		// Get PHP Console extension password.
-		$password = $this->options['password'];
+		// get PHP Console extension password
+		$password = isset( $this->options['password'] ) ? trim( $this->options['password'] ) : null;
 
-		if ( ! $password ) {
-			// Display admin notice and abort if no password has been set.
+		if ( empty( $password ) ) {
+
+			// display admin notice and abort if no password has been set
 			add_action( 'admin_notices', array( $this, 'password_notice' ) );
 			return;
 		}
 
-		// Selectively remove slashes added by WordPress as expected by PhpConsole.
+		// selectively remove slashes added by WordPress as expected by PHP Console
 		if ( array_key_exists( PhpConsole\Connector::POST_VAR_NAME, $_POST ) ) {
 			$_POST[ PhpConsole\Connector::POST_VAR_NAME ] = stripslashes_deep( $_POST[ PhpConsole\Connector::POST_VAR_NAME ] );
 		}
 
-		// Get PHP Console instance if wasn't set yet.
+		// get PHP Console instance if wasn't set yet
 		if ( ! $this->connector instanceof PhpConsole\Connector ) {
-			$this->connector = PhpConsole\Connector::getInstance();
+
+			try {
+				$this->connector = PhpConsole\Connector::getInstance();
+			} catch ( \Exception $e ) {
+				return;
+			}
 		}
 
-		// Set PHP Console password.
+		// set PHP Console password
 		try {
 			$this->connector->setPassword( $password );
 		} catch ( \Exception $e ) {
 			$this->print_notice_exception( $e );
 		}
 
-		// Get PHP Console handler instance.
+		// get PHP Console handler instance
 		$handler = PhpConsole\Handler::getInstance();
 
 		if ( true !== PhpConsole\Handler::getInstance()->isStarted() ) {
@@ -252,15 +233,16 @@ class Plugin {
 				$handler->start();
 			} catch( \Exception $e ) {
 				$this->print_notice_exception( $e );
+				return;
 			}
 		}
 
-		// Enable SSL-only mode.
+		// enable SSL-only mode
 		if ( true === $this->options['ssl'] ) {
 			$this->connector->enableSslOnlyMode();
 		}
 
-		// Restrict IP addresses.
+		// restrict IP addresses
 		$allowedIpMasks = ! empty( $this->options['ip'] ) ? explode( ',', $this->options['ip'] ) : '';
 
 		if ( is_array( $allowedIpMasks ) && count( $allowedIpMasks ) > 0 ) {
@@ -296,7 +278,6 @@ class Plugin {
 		} catch ( \Exception $e ) {
 			$this->print_notice_exception( $e );
 		}
-
 	}
 
 
@@ -304,11 +285,12 @@ class Plugin {
 	 * Prints an exception message as WordPress admin notice.
 	 *
 	 * @since 1.4.0
+	 *
 	 * @param \Exception $e Exception object
 	 */
 	public function print_notice_exception( \Exception $e ) {
 
-		add_action( 'admin_notices', function() use ( $e ) {
+		add_action( 'admin_notices', static function() use ( $e ) {
 
 			?>
 			<div class="error">
@@ -323,7 +305,10 @@ class Plugin {
 
 	/**
 	 * Admin password notice.
+	 *
 	 * Prompts user to set a password for PHP Console upon plugin activation.
+	 *
+	 * @internal action hook callback
 	 *
 	 * @since 1.3.2
 	 */
@@ -331,17 +316,15 @@ class Plugin {
 
 		?>
 		<div class="update-nag">
-			<p><?php
-			/* translators: Placeholders: %1$s - WP Php Console name, %2$s - opening HTML <a> link tag; %3$s closing HTML </a> link tag */
-			printf( __( '%1$s: Please remember to %2$sset a password%3$s if you want to enable the terminal.', 'wp-php-console' ),
+			<p><?php printf(
+				/* translators: Placeholders: %1$s - WP Php Console name, %2$s - opening HTML <a> link tag; %3$s closing HTML </a> link tag */
+				__( '%1$s: Please remember to %2$sset a password%3$s if you want to enable the terminal.', 'wp-php-console' ),
 				'<strong>' . self::NAME . '</strong>',
 				'<a href="' . esc_url( admin_url( 'options-general.php?page=wp-php-console' ) ) .'">',
 				'</a>'
-			); ?>
-			</p>
+			); ?></p>
 		</div>
 		<?php
-
 	}
 
 

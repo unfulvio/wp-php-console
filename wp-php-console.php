@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) or exit;
 
 /**
  * WP PHP Console
- * Copyright (c) 2014-2018 Fulvio Notarstefano <fulvio.notarstefano@gmail.com>
+ * Copyright (c) 2014-2019 Fulvio Notarstefano <fulvio.notarstefano@gmail.com>
  * and contributors https://github.com/unfulvio/wp-php-console/graphs/contributors
  *
  * PhpConsole server library
