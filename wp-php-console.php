@@ -14,11 +14,7 @@
  *
  * Text Domain:  wp-php-console
  * Domain Path:  /languages
- */
-
-defined( 'ABSPATH' ) or exit;
-
-/**
+ *
  * WP PHP Console
  * Copyright (c) 2014-2019 Fulvio Notarstefano <fulvio.notarstefano@gmail.com>
  * and contributors https://github.com/unfulvio/wp-php-console/graphs/contributors
@@ -41,7 +37,9 @@ defined( 'ABSPATH' ) or exit;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-// Composer fallback for PHP < 5.3.0.
+defined( 'ABSPATH' ) or exit;
+
+// composer fallback for PHP < 5.3.0
 if ( -1 === version_compare( PHP_VERSION, '5.3.0' ) ) {
 	require_once dirname( __FILE__ ) . '/vendor/autoload_52.php';
 } else {
@@ -50,8 +48,11 @@ if ( -1 === version_compare( PHP_VERSION, '5.3.0' ) ) {
 
 /**
  * WP PHP Console requires PHP 5.4.0 minimum.
+ *
  * @link https://make.wordpress.org/plugins/2015/06/05/policy-on-php-versions/
  * @link https://github.com/unfulvio/wp-requirements
+ *
+ * TODO: remove WP_Requirements as a way of handling this
  */
 $this_plugin_checks = new WP_Requirements(
 	'WP PHP Console',

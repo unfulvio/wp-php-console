@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.5.3 (22 May 2019)
+ * Fix: Try to get rid of PHP errors related to "Unable to set PHP Console server cookie" and "Cannot modify header information - headers already sent"
+ * Misc: Require PHP 5.6
+
 ### 1.5.2 (12 Sep 2018)
  * Misc: Updates PHP Console core library to v3.1.7
 

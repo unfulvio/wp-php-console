@@ -83,9 +83,9 @@ class Plugin {
 			// add a settings link to the plugins admin screen
 			$plugin_name = str_replace( 'includes/class-', '', plugin_basename( __FILE__ ) );
 			add_filter( "plugin_action_links_{$plugin_name}", static function( $actions ) {
-				return array_merge( array(
+				return array_merge( [
 					'<a href="' . esc_url( admin_url( 'options-general.php?page=wp-php-console' ) ) . '">' . __( 'Settings', 'wp-php-console' ) . '</a>',
-				), $actions );
+				], $actions );
 			} );
 
 			// init settings
@@ -129,20 +129,21 @@ class Plugin {
 	 * Get WP PHP Console settings options.
 	 *
 	 * @since  1.4.0
+	 *
 	 * @return array
 	 */
 	protected function get_options() {
 
-		$options = get_option( 'wp_php_console', array() );
+		$options = get_option( 'wp_php_console', [] );
 
-		return wp_parse_args( $options, array(
+		return wp_parse_args( $options, [
 			'ip'       => '',
 			'password' => '',
 			'register' => false,
 			'short'    => false,
 			'ssl'      => false,
 			'stack'    => false,
-		) );
+		] );
 	}
 
 
@@ -199,7 +200,7 @@ class Plugin {
 		if ( empty( $password ) ) {
 
 			// display admin notice and abort if no password has been set
-			add_action( 'admin_notices', array( $this, 'password_notice' ) );
+			add_action( 'admin_notices', [ $this, 'password_notice' ] );
 			return;
 		}
 
@@ -263,7 +264,7 @@ class Plugin {
 			$this->print_notice_exception( $e );
 		}
 
-		$openBaseDirs = array( ABSPATH, get_template_directory() );
+		$openBaseDirs = [ ABSPATH, get_template_directory() ];
 
 		try {
 			$evalProvider->addSharedVarReference( 'dirs', $openBaseDirs );
