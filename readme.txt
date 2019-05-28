@@ -5,7 +5,7 @@ Tags: dev, development, bug, debug, debugging, stacktrace, php, console, termina
 Requires at least: 3.6.0
 Requires PHP: 5.6
 Tested up to: 5.2.1
-Stable tag: 1.5.3
+Stable tag: 1.5.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -127,6 +127,9 @@ None.
 
 
 == Changelog ==
+
+= 1.5.4 =
+* Fix: Temporarily suppress PHP warnings while connecting with PhpConsole to avoid headers already sent warnings, then restore all errors reporting
 
 = 1.5.3 =
 * Fix: Try to get rid of PHP errors related to "Unable to set PHP Console server cookie" and "Cannot modify header information - headers already sent"

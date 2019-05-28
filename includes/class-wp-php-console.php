@@ -15,7 +15,7 @@ class Plugin {
 
 
 	/** @var string plugin version */
-	CONST VERSION = '1.5.3';
+	CONST VERSION = '1.5.4';
 
 	/** @var string plugin name */
 	CONST NAME = 'WP PHP Console';
@@ -107,7 +107,10 @@ class Plugin {
 	 */
 	public function connect() {
 
-		if ( ! @session_id() ) {
+		// workaround for avoiding headers already sent warnings
+		@error_reporting( E_ALL & ~E_WARNING );
+
+		if ( empty( @session_id() ) ) {
 			@session_start();
 		}
 
@@ -118,6 +121,9 @@ class Plugin {
 				return;
 			}
 		}
+
+		// restore error reporting
+		@error_reporting( E_ALL );
 
 		// apply PHP Console options
 		$this->apply_options();
