@@ -117,9 +117,7 @@ class Plugin {
 		if ( ! $this->connector instanceof PhpConsole\Connector ) {
 			try {
 				$this->connector = PhpConsole\Connector::getInstance();
-			} catch ( \Exception $e ) {
-				return;
-			}
+			} catch ( \Exception $e ) {}
 		}
 
 		// restore error reporting
