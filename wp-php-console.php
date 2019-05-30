@@ -119,12 +119,12 @@ class WP_PHP_Console_Loader {
 	private function init_plugin() {
 
 		// autoload plugin and vendor files
-		$loader = require_once( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' );
+		$loader = require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 
 		// register plugin namespace with autoloader
-		$loader->addPsr4( 'WP_PHP_Console\\', __DIR__ . '/includes' );
+		$loader->addPsr4( 'WP_PHP_Console\\', __DIR__ . '/src' );
 
-		require_once plugin_dir_path( __FILE__ ) . 'includes/Functions.php';
+		require_once plugin_dir_path( __FILE__ ) . 'src/Functions.php';
 
 		wp_php_console();
 	}
