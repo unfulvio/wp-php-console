@@ -5,7 +5,7 @@
   "version": "1.5.4",
   "keywords": ["wordpress", "debug", "debugging", "development", "php-console", "console", "terminal", "command-line", "cli" ],
   "homepage": "https://github.com/unfulvio/wp-php-console",
-  "license": "GPLv2.0+",
+  "license": "GPLv3.0+",
   "authors": [
     {
       "name": "Fulvio Notarstefano",
