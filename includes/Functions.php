@@ -12,8 +12,17 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
  */
 
-if ( ! defined( 'ABSPATH' ) || ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) or exit;
 
-delete_option( 'wp_php_console' );
+
+/**
+ * Gets the WP PHP Console instance.
+ *
+ * @since 1.5.4
+ *
+ * @return WP_PHP_Console\Plugin
+ */
+function wp_php_console() {
+
+	return new \WP_PHP_Console\Plugin();
+}

@@ -130,6 +130,7 @@ None.
 
 = 1.5.4 =
 * Fix: Temporarily suppress PHP warnings while connecting with PhpConsole to avoid headers already sent warnings, then restore all errors reporting
+* Misc: Improved PHP and WordPress compatibility loader
 
 = 1.5.3 =
 * Fix: Try to get rid of PHP errors related to "Unable to set PHP Console server cookie" and "Cannot modify header information - headers already sent"

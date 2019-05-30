@@ -1,7 +1,8 @@
 # Changelog
 
-### 1.5.4 (28 May 2019)
+### 1.5.4 (30 May 2019)
  * Fix: Temporarily suppress PHP warnings while connecting with PHP Console to avoid headers already sent warnings, then restore all errors reporting
+ * Misc: Improved PHP and WordPress compatibility loader
 
 ### 1.5.3 (22 May 2019)
  * Fix: Try to get rid of PHP errors related to "Unable to set PHP Console server cookie" and "Cannot modify header information - headers already sent"

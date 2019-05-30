@@ -1,4 +1,16 @@
 <?php
+/**
+ * WP PHP Console
+ *
+ * This source file is subject to the GNU General Public License v3.0
+ * that is bundled with this package in the file license.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * @author    Fulvio Notarstefano <fulvio.notarstefano@gmail.com>
+ * @copyright Copyright (c) 2014-2019 Fulvio Notarstefano
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
+ */
 
 namespace WP_PHP_Console;
 
@@ -22,7 +34,7 @@ class Plugin {
 
 
 	/** @var array settings options */
-	protected $options = [];
+	private $options = [];
 
 	/** @var PhpConsole\Connector instance */
 	public $connector;
@@ -35,24 +47,38 @@ class Plugin {
 	 */
 	public function __construct() {
 
-		// handle translations
-		add_action( 'plugins_loaded', [ $this, 'set_locale' ] );
-
-		// set options
-		$this->options = $this->get_options();
-
-		// load admin
+		$this->set_debug_mode();
+		$this->set_options();
 		$this->set_admin();
+		$this->set_hooks();
+	}
 
-		// bail out if PHP Console can't be found
-		if ( ! class_exists( 'PhpConsole\Connector' ) ) {
-			return;
+
+	/**
+	 * Sets constants and elevates PHP error reporting.
+	 *
+	 * @since 1.5.4
+	 */
+	private function set_debug_mode() {
+
+		@error_reporting( E_ALL );
+
+		foreach ( [ 'WP_DEBUG',	'WP_DEBUG_LOG', 'WP_DEBUG_DISPLAY', ] as $wp_debug_constant ) {
+			if ( ! defined( $wp_debug_constant ) ) {
+				define ( $wp_debug_constant, true );
+			}
 		}
+	}
 
-		// connect to PHP Console
-		add_action( 'init',      [ $this, 'connect' ], -1000 );
-		// delay further PHP Console initialisation to have more context during Remote PHP execution
-		add_action( 'wp_loaded', [ $this, 'init' ], -1000 );
+
+	/**
+	 * Sets the plugin options.
+	 *
+	 * @since 1.5.4
+	 */
+	private function set_options() {
+
+		$this->options = $this->get_options();
 	}
 
 
@@ -88,11 +114,29 @@ class Plugin {
 				], $actions );
 			} );
 
-			// init settings
-			require_once __DIR__ . '/class-wp-php-console-settings.php';
-
 			new Settings( $this->options );
 		}
+	}
+
+
+	/**
+	 * Sets plugin hooks.
+	 *
+	 * @since 1.5.4
+	 */
+	private function set_hooks() {
+
+		// bail out if PHP Console can't be found
+		if ( ! class_exists( 'PhpConsole\Connector' ) ) {
+			return;
+		}
+
+		// handle translations
+		add_action( 'plugins_loaded', [ $this, 'set_locale' ] );
+		// connect to PHP Console
+		add_action( 'init',           [ $this, 'connect' ], -1000 );
+		// delay further PHP Console initialisation to have more context during Remote PHP execution
+		add_action( 'wp_loaded',      [ $this, 'init' ], -1000 );
 	}
 
 
@@ -110,21 +154,27 @@ class Plugin {
 		// workaround for avoiding headers already sent warnings
 		@error_reporting( E_ALL & ~E_WARNING );
 
-		if ( empty( @session_id() ) ) {
+		if ( ! @session_id() ) {
 			@session_start();
 		}
+
+		$connected = true;
 
 		if ( ! $this->connector instanceof PhpConsole\Connector ) {
 			try {
 				$this->connector = PhpConsole\Connector::getInstance();
-			} catch ( \Exception $e ) {}
+			} catch ( \Exception $e ) {
+				$connected = false;
+			}
 		}
 
 		// restore error reporting
 		@error_reporting( E_ALL );
 
 		// apply PHP Console options
-		$this->apply_options();
+		if ( $connected ) {
+			$this->apply_options();
+		}
 	}
 
 
@@ -215,9 +265,20 @@ class Plugin {
 		// get PHP Console instance if wasn't set yet
 		if ( ! $this->connector instanceof PhpConsole\Connector ) {
 
+			// workaround for avoiding headers already sent warnings
+			@error_reporting( E_ALL & ~E_WARNING );
+
 			try {
 				$this->connector = PhpConsole\Connector::getInstance();
+				$connected       = true;
 			} catch ( \Exception $e ) {
+				$connected       = false;
+			}
+
+			// restore error reporting
+			@error_reporting( E_ALL );
+
+			if ( ! $connected ) {
 				return;
 			}
 		}
@@ -321,7 +382,7 @@ class Plugin {
 		?>
 		<div class="update-nag">
 			<p><?php printf(
-				/* translators: Placeholders: %1$s - WP Php Console name, %2$s - opening HTML <a> link tag; %3$s closing HTML </a> link tag */
+				/* translators: Placeholders: %1$s - WP PHP Console name, %2$s - opening HTML <a> link tag; %3$s closing HTML </a> link tag */
 				__( '%1$s: Please remember to %2$sset a password%3$s if you want to enable the terminal.', 'wp-php-console' ),
 				'<strong>' . self::NAME . '</strong>',
 				'<a href="' . esc_url( admin_url( 'options-general.php?page=wp-php-console' ) ) .'">',
