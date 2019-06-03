@@ -1,5 +1,8 @@
 # Changelog
 
+### 1.5.5 (unreleased)
+ * Misc: Add plugin admin action links
+
 ### 1.5.4 (30 May 2019)
  * Fix: Temporarily suppress PHP warnings while connecting with PHP Console to avoid headers already sent warnings, then restore all errors reporting
  * Misc: Improved PHP and WordPress compatibility loader
