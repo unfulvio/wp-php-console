@@ -27,7 +27,7 @@ class Plugin {
 
 
 	/** @var string plugin version */
-	CONST VERSION = '1.5.4';
+	CONST VERSION = '1.5.5';
 
 	/** @var string plugin name */
 	CONST NAME = 'WP PHP Console';
@@ -85,6 +85,8 @@ class Plugin {
 	/**
 	 * Sets plugin text domain.
 	 *
+	 * @internal action hook callback
+	 *
 	 * @since 1.0.0
 	 */
 	public function set_locale() {
@@ -104,17 +106,20 @@ class Plugin {
 	 */
 	private function set_admin() {
 
-		if ( ! defined( 'DOING_AJAX' ) && is_admin() ) {
+		if ( is_admin() ) {
 
-			// add a settings link to the plugins admin screen
-			$plugin_name = str_replace( 'includes/class-', '', plugin_basename( __FILE__ ) );
-			add_filter( "plugin_action_links_{$plugin_name}", static function( $actions ) {
+			add_filter( 'plugin_action_links_wp-php-console/wp-php-console.php', static function( $actions ) {
 				return array_merge( [
-					'<a href="' . esc_url( admin_url( 'options-general.php?page=wp-php-console' ) ) . '">' . __( 'Settings', 'wp-php-console' ) . '</a>',
+					'<a href="' . esc_url( self::get_settings_page_url() ) . '">' . esc_html__( 'Settings', 'wp-php-console' ) . '</a>',
+					'<a href="' . esc_url( self::get_project_page_url() ) . '">' . esc_html__( 'GitHub', 'wp-php-console' ) . '</a>',
+					'<a href="' . esc_url( self::get_support_page_url() ) . '">' . esc_html__( 'Support', 'wp-php-console' ) . '</a>',
+					'<a href="' . esc_url( self::get_reviews_page_url() ) . '">' . esc_html__( 'Review', 'wp-php-console' ) . '</a>',
 				], $actions );
 			} );
 
-			new Settings( $this->options );
+			if ( ! defined( 'DOING_AJAX' ) ) {
+				new Settings( $this->options );
+			}
 		}
 	}
 
@@ -145,6 +150,7 @@ class Plugin {
 	 *
 	 * PHP Console needs to hook in session, in WordPress we need to be in 'init':
 	 * @link http://silvermapleweb.com/using-the-php-session-in-wordpress/
+	 *
 	 * @internal action hook callback
 	 *
 	 * @since 1.4.0
@@ -185,7 +191,7 @@ class Plugin {
 	 *
 	 * @return array
 	 */
-	protected function get_options() {
+	private function get_options() {
 
 		$options = get_option( 'wp_php_console', [] );
 
@@ -367,7 +373,6 @@ class Plugin {
 	}
 
 
-
 	/**
 	 * Admin password notice.
 	 *
@@ -390,6 +395,108 @@ class Plugin {
 			); ?></p>
 		</div>
 		<?php
+	}
+
+
+	/**
+	 * Gets the plugin path.
+	 *
+	 * @since 1.5.5
+	 *
+	 * @return string
+	 */
+	public static function get_plugin_path() {
+
+		return untrailingslashit( dirname( __DIR__ ) );
+	}
+
+
+	/**
+	 * Gets the plugin vendor path.
+	 *
+	 * @since 1.5.5
+	 */
+	public static function get_plugin_vendor_path() {
+
+		return self::get_plugin_path() . '/vendor';
+	}
+
+
+	/**
+	 * Gets the plugin page URL.
+	 *
+	 * @since 1.5.5
+	 *
+	 * @return string
+	 */
+	public static function get_plugin_page_url() {
+
+		return 'https://wordpress.org/support/plugin/wp-php-console/';
+	}
+
+
+	/**
+	 * Gets the GitHub repository page URL.
+	 *
+	 * @since 1.5.5
+	 *
+	 * @return string
+	 */
+	public static function get_project_page_url() {
+
+		return 'https://github.com/unfulvio/wp-php-console';
+	}
+
+
+	/**
+	 * Gets the plugin reviews page URL.
+	 *
+	 * @since 1.5.5
+	 *
+	 * @return string
+	 */
+	public static function get_reviews_page_url() {
+
+		return 'https://wordpress.org/support/plugin/wp-php-console/reviews/';
+	}
+
+
+	/**
+	 * Gets the plugin support page URL.
+	 *
+	 * @since 1.5.5
+	 *
+	 * @return string
+	 */
+	public static function get_support_page_url() {
+
+		return 'https://wordpress.org/support/plugin/wp-php-console/';
+	}
+
+
+	/**
+	 * Gets the admin settings page URL.
+	 *
+	 * @since 1.5.5
+	 *
+	 * @return string
+	 */
+	public static function get_settings_page_url() {
+
+		return admin_url( 'options-general.php?page=wp-php-console' );
+	}
+
+
+	/**
+	 * Determines if the current page is the settings page.
+	 *
+	 * @since 1.5.5
+	 *
+	 * @return bool
+	 */
+	public static function is_settings_page() {
+
+		return is_admin() && isset( $_GET['page'] ) && 'page' === 'wp-php-console';
 	}
 
 
