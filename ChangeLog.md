@@ -1,7 +1,8 @@
 # Changelog
 
-### 1.5.5 (unreleased)
+### 1.6.0 (unreleased)
  * Misc: Add plugin admin action links
+ * Misc: Improved settings handler
 
 ### 1.5.4 (30 May 2019)
  * Fix: Temporarily suppress PHP warnings while connecting with PHP Console to avoid headers already sent warnings, then restore all errors reporting

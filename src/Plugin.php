@@ -27,14 +27,14 @@ class Plugin {
 
 
 	/** @var string plugin version */
-	CONST VERSION = '1.5.5';
+	CONST VERSION = '1.6.0';
+
+	/** @var string plugin ID */
+	CONST ID = 'wp-php-console';
 
 	/** @var string plugin name */
 	CONST NAME = 'WP PHP Console';
 
-
-	/** @var array settings options */
-	private $options = [];
 
 	/** @var PhpConsole\Connector instance */
 	public $connector;
@@ -47,20 +47,6 @@ class Plugin {
 	 */
 	public function __construct() {
 
-		$this->set_debug_mode();
-		$this->set_options();
-		$this->set_admin();
-		$this->set_hooks();
-	}
-
-
-	/**
-	 * Sets constants and elevates PHP error reporting.
-	 *
-	 * @since 1.5.4
-	 */
-	private function set_debug_mode() {
-
 		@error_reporting( E_ALL );
 
 		foreach ( [ 'WP_DEBUG',	'WP_DEBUG_LOG', 'WP_DEBUG_DISPLAY', ] as $wp_debug_constant ) {
@@ -68,80 +54,27 @@ class Plugin {
 				define ( $wp_debug_constant, true );
 			}
 		}
-	}
-
-
-	/**
-	 * Sets the plugin options.
-	 *
-	 * @since 1.5.4
-	 */
-	private function set_options() {
-
-		$this->options = $this->get_options();
-	}
-
-
-	/**
-	 * Sets plugin text domain.
-	 *
-	 * @internal action hook callback
-	 *
-	 * @since 1.0.0
-	 */
-	public function set_locale() {
-
-		load_plugin_textdomain(
-			'wp-php-console',
-			false,
-			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
-		);
-	}
-
-
-	/**
-	 * Loads admin.
-	 *
-	 * @since 1.5.0
-	 */
-	private function set_admin() {
-
-		if ( is_admin() ) {
-
-			add_filter( 'plugin_action_links_wp-php-console/wp-php-console.php', static function( $actions ) {
-				return array_merge( [
-					'<a href="' . esc_url( self::get_settings_page_url() ) . '">' . esc_html__( 'Settings', 'wp-php-console' ) . '</a>',
-					'<a href="' . esc_url( self::get_project_page_url() ) . '">' . esc_html__( 'GitHub', 'wp-php-console' ) . '</a>',
-					'<a href="' . esc_url( self::get_support_page_url() ) . '">' . esc_html__( 'Support', 'wp-php-console' ) . '</a>',
-					'<a href="' . esc_url( self::get_reviews_page_url() ) . '">' . esc_html__( 'Review', 'wp-php-console' ) . '</a>',
-				], $actions );
-			} );
-
-			if ( ! defined( 'DOING_AJAX' ) ) {
-				new Settings( $this->options );
-			}
-		}
-	}
-
-
-	/**
-	 * Sets plugin hooks.
-	 *
-	 * @since 1.5.4
-	 */
-	private function set_hooks() {
-
-		// bail out if PHP Console can't be found
-		if ( ! class_exists( 'PhpConsole\Connector' ) ) {
-			return;
-		}
 
 		// handle translations
-		add_action( 'plugins_loaded', [ $this, 'set_locale' ] );
-		// connect to PHP Console
-		add_action( 'init',           [ $this, 'connect' ], -1000 );
-		// delay further PHP Console initialisation to have more context during Remote PHP execution
-		add_action( 'wp_loaded',      [ $this, 'init' ], -1000 );
+		add_action( 'plugins_loaded', static function() {
+			load_plugin_textdomain(
+				'wp-php-console',
+				false,
+				dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
+			);
+		} );
+
+		if ( class_exists( 'PhpConsole\Connector' ) ) {
+			// connect to PHP Console
+			add_action( 'init',      [ $this, 'connect' ], -1000 );
+			// delay further PHP Console initialisation to have more context during Remote PHP execution
+			add_action( 'wp_loaded', [ $this, 'init' ], -1000 );
+		}
+
+		// load admin
+		if ( is_admin() ) {
+			new Admin();
+		}
 	}
 
 
@@ -185,28 +118,6 @@ class Plugin {
 
 
 	/**
-	 * Get WP PHP Console settings options.
-	 *
-	 * @since  1.4.0
-	 *
-	 * @return array
-	 */
-	private function get_options() {
-
-		$options = get_option( 'wp_php_console', [] );
-
-		return wp_parse_args( $options, [
-			'ip'       => '',
-			'password' => '',
-			'register' => false,
-			'short'    => false,
-			'ssl'      => false,
-			'stack'    => false,
-		] );
-	}
-
-
-	/**
 	 * Applies options.
 	 *
 	 * @since 1.4.0
@@ -219,7 +130,7 @@ class Plugin {
 		}
 
 		// apply 'register' option to PHP Console...
-		if ( true === $this->options['register'] && ! class_exists( 'PC', false ) ) {
+		if ( Settings::should_register_pc_class() && ! class_exists( 'PC', false ) ) {
 			// ...only if PC not registered yet
 			try {
 				PhpConsole\Helper::register();
@@ -229,12 +140,12 @@ class Plugin {
 		}
 
 		// apply 'stack' option to PHP Console
-		if ( true === $this->options['stack'] ) {
+		if ( Settings::should_show_call_stack() ) {
 			$this->connector->getDebugDispatcher()->detectTraceAndSource = true;
 		}
 
 		// apply 'short' option to PHP Console
-		if ( true === $this->options['short'] ) {
+		if ( Settings::should_use_short_path_names() ) {
 			try {
 				$this->connector->setSourcesBasePath( $_SERVER['DOCUMENT_ROOT'] );
 			} catch ( \Exception $e ) {
@@ -253,13 +164,8 @@ class Plugin {
 	 */
 	public function init() {
 
-		// get PHP Console extension password
-		$password = trim( $this->options['password'] );
-
-		if ( empty( $password ) ) {
-
-			// display admin notice and abort if no password has been set
-			add_action( 'admin_notices', [ $this, 'password_notice' ] );
+		// bail if no password is set to connect with PHP Console
+		if ( ! Settings::has_eval_terminal_password() ) {
 			return;
 		}
 
@@ -291,7 +197,7 @@ class Plugin {
 
 		// set PHP Console password
 		try {
-			$this->connector->setPassword( $password );
+			$this->connector->setPassword( Settings::get_eval_terminal_password() );
 		} catch ( \Exception $e ) {
 			$this->print_notice_exception( $e );
 		}
@@ -309,14 +215,14 @@ class Plugin {
 		}
 
 		// enable SSL-only mode
-		if ( true === $this->options['ssl'] ) {
+		if ( Settings::should_use_ssl_only() ) {
 			$this->connector->enableSslOnlyMode();
 		}
 
 		// restrict IP addresses
-		$allowedIpMasks = ! empty( $this->options['ip'] ) ? explode( ',', $this->options['ip'] ) : '';
+		$allowedIpMasks = Settings::get_allowed_ip_masks();
 
-		if ( is_array( $allowedIpMasks ) && count( $allowedIpMasks ) > 0 ) {
+		if ( count( $allowedIpMasks ) > 0 ) {
 			$this->connector->setAllowedIpMasks( $allowedIpMasks );
 		}
 
@@ -359,49 +265,22 @@ class Plugin {
 	 *
 	 * @param \Exception $e Exception object
 	 */
-	public function print_notice_exception( \Exception $e ) {
+	private function print_notice_exception( \Exception $e ) {
 
 		add_action( 'admin_notices', static function() use ( $e ) {
-
 			?>
 			<div class="error">
 				<p><?php printf( '%1$s: %2$s', self::NAME, $e->getMessage() ); ?></p>
 			</div>
 			<?php
-
 		} );
-	}
-
-
-	/**
-	 * Admin password notice.
-	 *
-	 * Prompts user to set a password for PHP Console upon plugin activation.
-	 *
-	 * @internal action hook callback
-	 *
-	 * @since 1.3.2
-	 */
-	public function password_notice() {
-
-		?>
-		<div class="update-nag">
-			<p><?php printf(
-				/* translators: Placeholders: %1$s - WP PHP Console name, %2$s - opening HTML <a> link tag; %3$s closing HTML </a> link tag */
-				__( '%1$s: Please remember to %2$sset a password%3$s if you want to enable the terminal.', 'wp-php-console' ),
-				'<strong>' . self::NAME . '</strong>',
-				'<a href="' . esc_url( admin_url( 'options-general.php?page=wp-php-console' ) ) .'">',
-				'</a>'
-			); ?></p>
-		</div>
-		<?php
 	}
 
 
 	/**
 	 * Gets the plugin path.
 	 *
-	 * @since 1.5.5
+	 * @since 1.6.0
 	 *
 	 * @return string
 	 */
@@ -414,7 +293,7 @@ class Plugin {
 	/**
 	 * Gets the plugin vendor path.
 	 *
-	 * @since 1.5.5
+	 * @since 1.6.0
 	 */
 	public static function get_plugin_vendor_path() {
 
@@ -425,7 +304,7 @@ class Plugin {
 	/**
 	 * Gets the plugin page URL.
 	 *
-	 * @since 1.5.5
+	 * @since 1.6.0
 	 *
 	 * @return string
 	 */
@@ -438,7 +317,7 @@ class Plugin {
 	/**
 	 * Gets the GitHub repository page URL.
 	 *
-	 * @since 1.5.5
+	 * @since 1.6.0
 	 *
 	 * @return string
 	 */
@@ -449,9 +328,35 @@ class Plugin {
 
 
 	/**
+	 * Gets the PHP Console project page URL.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @return string
+	 */
+	public static function get_php_console_project_page_url() {
+
+		return 'https://github.com/barbushin/php-console';
+	}
+
+
+	/**
+	 * Gets the PHP Console Google Chrome extension URL.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @return string;
+	 */
+	public static function get_php_console_chrome_extension_url() {
+
+		return 'https://chrome.google.com/webstore/detail/php-console/nfhmhhlpfleoednkpnnnkolmclajemef';
+	}
+
+
+	/**
 	 * Gets the plugin reviews page URL.
 	 *
-	 * @since 1.5.5
+	 * @since 1.6.0
 	 *
 	 * @return string
 	 */
@@ -464,39 +369,13 @@ class Plugin {
 	/**
 	 * Gets the plugin support page URL.
 	 *
-	 * @since 1.5.5
+	 * @since 1.6.0
 	 *
 	 * @return string
 	 */
 	public static function get_support_page_url() {
 
 		return 'https://wordpress.org/support/plugin/wp-php-console/';
-	}
-
-
-	/**
-	 * Gets the admin settings page URL.
-	 *
-	 * @since 1.5.5
-	 *
-	 * @return string
-	 */
-	public static function get_settings_page_url() {
-
-		return admin_url( 'options-general.php?page=wp-php-console' );
-	}
-
-
-	/**
-	 * Determines if the current page is the settings page.
-	 *
-	 * @since 1.5.5
-	 *
-	 * @return bool
-	 */
-	public static function is_settings_page() {
-
-		return is_admin() && isset( $_GET['page'] ) && 'page' === 'wp-php-console';
 	}
 
 
