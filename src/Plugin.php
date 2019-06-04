@@ -345,7 +345,7 @@ class Plugin {
 	 *
 	 * @since 1.6.0
 	 *
-	 * @return string;
+	 * @return string
 	 */
 	public static function get_php_console_chrome_extension_url() {
 

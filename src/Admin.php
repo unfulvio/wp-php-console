@@ -31,15 +31,8 @@ class Admin {
 	 */
 	public function __construct() {
 
-		// add plugin page row action links
-		add_filter( 'plugin_action_links_wp-php-console/wp-php-console.php', static function( $actions ) {
-			return array_merge( [
-				'<a href="' . esc_url( admin_url() ) . '">' . esc_html__( 'Settings', 'wp-php-console' ) . '</a>',
-				'<a href="' . esc_url( Plugin::get_project_page_url() ) . '">' . esc_html__( 'GitHub', 'wp-php-console' ) . '</a>',
-				'<a href="' . esc_url( Plugin::get_support_page_url() ) . '">' . esc_html__( 'Support', 'wp-php-console' ) . '</a>',
-				'<a href="' . esc_url( Plugin::get_reviews_page_url() ) . '">' . esc_html__( 'Review', 'wp-php-console' ) . '</a>',
-			], $actions );
-		} );
+		self::add_plugin_page_row_action_links();
+		self::output_admin_notices();
 
 		// init settings page
 		if ( ! defined( 'DOING_AJAX' ) ) {
@@ -71,6 +64,24 @@ class Admin {
 			<?php
 			endif;
 		}, -1000 );
+	}
+
+
+	/**
+	 * Adds plugin page row action links.
+	 *
+	 * @since 1.6.0
+	 */
+	private static function add_plugin_page_row_action_links() {
+
+		add_filter( 'plugin_action_links_wp-php-console/wp-php-console.php', static function( $actions ) {
+			return array_merge( [
+				'<a href="' . esc_url( admin_url() ) . '">' . esc_html__( 'Settings', 'wp-php-console' ) . '</a>',
+				'<a href="' . esc_url( Plugin::get_project_page_url() ) . '">' . esc_html__( 'GitHub', 'wp-php-console' ) . '</a>',
+				'<a href="' . esc_url( Plugin::get_support_page_url() ) . '">' . esc_html__( 'Support', 'wp-php-console' ) . '</a>',
+				'<a href="' . esc_url( Plugin::get_reviews_page_url() ) . '">' . esc_html__( 'Review', 'wp-php-console' ) . '</a>',
+			], $actions );
+		} );
 	}
 
 
