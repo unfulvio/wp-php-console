@@ -20,7 +20,7 @@ use WP_PHP_Console\Settings;
 defined( 'ABSPATH' ) or exit;
 
 /**
- * WP PHP Console settings page.
+ * WP PHP Console settings page handler.
  *
  * @since 1.6.0
  */

@@ -50,7 +50,9 @@ class Admin {
 
 		// display admin notice and abort if no password has been set
 		add_action( 'admin_notices', static function() {
+
 			if ( ! Settings::has_eval_terminal_password() ) :
+
 				?>
 				<div class="update-nag">
 					<p><?php printf(
@@ -61,8 +63,10 @@ class Admin {
 							'</a>'
 						); ?></p>
 				</div>
-			<?php
+				<?php
+
 			endif;
+
 		}, -1000 );
 	}
 
@@ -75,12 +79,14 @@ class Admin {
 	private static function add_plugin_page_row_action_links() {
 
 		add_filter( 'plugin_action_links_wp-php-console/wp-php-console.php', static function( $actions ) {
+
 			return array_merge( [
 				'<a href="' . esc_url( admin_url() ) . '">' . esc_html__( 'Settings', 'wp-php-console' ) . '</a>',
 				'<a href="' . esc_url( Plugin::get_project_page_url() ) . '">' . esc_html__( 'GitHub', 'wp-php-console' ) . '</a>',
 				'<a href="' . esc_url( Plugin::get_support_page_url() ) . '">' . esc_html__( 'Support', 'wp-php-console' ) . '</a>',
 				'<a href="' . esc_url( Plugin::get_reviews_page_url() ) . '">' . esc_html__( 'Review', 'wp-php-console' ) . '</a>',
 			], $actions );
+
 		} );
 	}
 
