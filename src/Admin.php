@@ -49,19 +49,21 @@ class Admin {
 	private static function output_admin_notices() {
 
 		// display admin notice and abort if no password has been set
-		add_action( 'admin_notices', static function() {
+		add_action( 'all_admin_notices', static function() {
 
 			if ( ! Settings::has_eval_terminal_password() ) :
 
 				?>
-				<div class="update-nag">
-					<p><?php printf(
-						/* translators: Placeholders: %1$s - WP PHP Console name, %2$s - opening HTML <a> link tag; %3$s closing HTML </a> link tag */
+				<div class="notice notice-warning">
+					<p>
+						<?php printf(
+							/* translators: Placeholders: %1$s - WP PHP Console name, %2$s - opening HTML <a> link tag; %3$s closing HTML </a> link tag */
 							__( '%1$s: Please remember to %2$sset a password%3$s if you want to enable the terminal.', 'wp-php-console' ),
 							'<strong>' . Plugin::NAME . '</strong>',
-							'<a href="' . esc_url( admin_url( 'options-general.php?page=wp-php-console' ) ) .'">',
+							'<a href="' . esc_url( admin_url( 'options-general.php?page=wp_php_console' ) ) .'">',
 							'</a>'
-						); ?></p>
+						); ?>
+					</p>
 				</div>
 				<?php
 
