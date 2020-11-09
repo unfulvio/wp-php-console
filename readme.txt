@@ -28,6 +28,10 @@ For support and pull requests, please refer to [WP PHP Console GitHub repo](http
 1. First, install [Google Chrome extension PHP Console](https://chrome.google.com/webstore/detail/php-console/nfhmhhlpfleoednkpnnnkolmclajemef) from the [Chrome WebStore](https://chrome.google.com/webstore/search/php%20console?_category=extensions).
 Make sure the PHP Console Chrome extension is enabled through [chrome://extensions/](chrome://extensions/ "chrome://extensions/").
 
+**Important Note**
+
+If the Google Chrome extension is not available on the Chrome Web Store, you can manually install it [from source](https://github.com/barbushin/php-console-extension).
+
 2. Then, add this plugin to your WordPress installation either by:
 
   - Installing it as any other WordPress plugin from your WordPress admin Plugins page (`Add New`)
