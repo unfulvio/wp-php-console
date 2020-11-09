@@ -21,12 +21,16 @@ Note: you will at least PHP 5.6.0 or above installed on your machine or server t
 1. First, install [Google Chrome extension PHP Console](https://chrome.google.com/webstore/detail/php-console/nfhmhhlpfleoednkpnnnkolmclajemef) from the [Chrome WebStore](https://chrome.google.com/webstore/search/php%20console?_category=extensions).
 Make sure the PHP Console Chrome extension is enabled through [chrome://extensions/](chrome://extensions/ "chrome://extensions/").
 
+    **Important Note**
+
+    If the Google Chrome extension is not available on the Chrome Web Store, you can manually install it [from source](https://github.com/barbushin/php-console-extension).
+
 2. Then, add this plugin to your WordPress installation either by:
 
   - Installing it as any other WordPress plugin from your WordPress admin Plugins page (`Add New`).
 
   - Downloading a copy from [WordPress.org]((https://wordpress.org/plugins/wp-php-console/)) and uploading it in `wp-php-console` directory into your `wp-content/plugins/` directory or corresponding plugins directory in your installation. You can also do this from the WordPress plugins installation admim dashboard pages.
-  
+
   - **Note:** If you decide to `git clone` this repository instead, you will need `composer install` to install its dependencies first, or it won't work in WordPress as it is.
 
 3. Activate the plugin through the `Plugins` admin page in WordPress
@@ -39,7 +43,7 @@ Make sure the PHP Console Chrome extension is enabled through [chrome://extensio
 
 ## Options
 
-##### Allow only on SSL	
+##### Allow only on SSL
 > Forces PHP Console to connect on a SSL connection only (of course then if you don't actually have SSL (https), PHP Console simply won't work).
 
 ##### Allowed IP Masks
@@ -48,7 +52,7 @@ Make sure the PHP Console Chrome extension is enabled through [chrome://extensio
 ##### Register PC Class
 > Tick this option to register `PC` in the global PHP namespace. This allows to write `PC::debug($var, $tag)` or `PC::magic_tag($var)` instructions in PHP to inspect `$var` in the JavaScript console.
 
-##### Show Call Stack	
+##### Show Call Stack
 > Tick this option to see the call stack when PHP Console server writes to the JavaScript console.
 
 ##### Short Path Names
