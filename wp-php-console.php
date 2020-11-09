@@ -16,11 +16,11 @@
  * Domain Path:  /languages
  *
  * WP PHP Console
- * Copyright (c) 2014-2019 Fulvio Notarstefano <fulvio.notarstefano@gmail.com>
+ * Copyright (c) 2014-2020 Fulvio Notarstefano <fulvio.notarstefano@gmail.com>
  * and contributors https://github.com/unfulvio/wp-php-console/graphs/contributors
  *
  * PHP Console server library
- * Copyright (c) 2011-2019 by Barbushin Sergey <barbushin@gmail.com>
+ * Copyright (c) 2011-2020 by Barbushin Sergey <barbushin@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 3 or, at

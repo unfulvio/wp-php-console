@@ -8,7 +8,7 @@
  * http://www.gnu.org/licenses/gpl-3.0.html
  *
  * @author    Fulvio Notarstefano <fulvio.notarstefano@gmail.com>
- * @copyright Copyright (c) 2014-2019 Fulvio Notarstefano
+ * @copyright Copyright (c) 2014-2020 Fulvio Notarstefano
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
  */
 
