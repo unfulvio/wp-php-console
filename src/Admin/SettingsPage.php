@@ -487,7 +487,7 @@ class SettingsPage {
 			'stack'    => false,
 		] );
 
-		$sanitized_input = [
+		return [
 			'ip'       => sanitize_text_field( $input['ip'] ),
 			'password' => sanitize_text_field( $input['password'] ),
 			'register' => ! empty( $input['register'] ),
@@ -495,8 +495,6 @@ class SettingsPage {
 			'ssl'      => ! empty( $input['ssl'] ),
 			'stack'    => ! empty( $input['stack'] ),
 		];
-
-		return $sanitized_input;
 	}
 
 
