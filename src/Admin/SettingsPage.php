@@ -164,7 +164,7 @@ class SettingsPage {
 		<p><?php printf(
 				/* translators: Placeholder: %s refers to the PHP Console library, pointing to its GitHub repository */
 				_x( 'This plugin allows you to use %s within your WordPress installation for testing, debugging and development purposes.', 'PHP Console, the PHP Library', 'wp-php-console' ),
-				'<a href="' . esc_url( Plugin::get_php_console_project_page_url() ) . '" target="_blank">PHP Console</a>'
+				'<a href="' . esc_url( Plugin::get_php_console_repository_url() ) . '" target="_blank">PHP Console</a>'
 			);
 		?></p>
 		<h4><?php esc_html_e( 'Usage instructions:', 'wp-php-console' ); ?></h4>
@@ -173,9 +173,16 @@ class SettingsPage {
 
 			$instructions = [
 				sprintf(
-					/* translators: Placeholder: %s represents the Google Chrome PHP Console extension download link */
-					_x( 'Make sure you have downloaded and installed %s.', 'PHP Console, the Chrome Extension', 'wp-php-console' ),
-					'<a target="_blank" href="' . esc_url( Plugin::get_php_console_chrome_extension_url() ) .'">PHP Console extension for Google Chrome</a>'
+					/* translators: Placeholder: %s - the Google Chrome PHP Console extension download link */
+					_x( 'Make sure you have downloaded and installed the %s.', 'PHP Console, the Chrome Extension', 'wp-php-console' ),
+					/* translators: Placeholder: %s - PHP Console extension name */
+					'<a href="' . esc_url( Plugin::get_php_console_chrome_extension_web_store_url() ) . '" target="_blank">' . sprintf( __( '%s extension for Google Chrome', 'wp-php-console' ), 'PHP Console' ) . '</a>'
+				),
+				sprintf(
+					/* translators: Placeholders: %1$s - opening PHP <a> link tag, %2$s - closing PHP </a> link tag */
+					__( 'If the Chrome extension is unavailable from the web store, you may %1$sdownload and install it from the source%2$s.', 'wp-php-console' ),
+					'<a href="' . esc_url( Plugin::get_php_console_chrome_extension_repository_url() ) . '" target="_blank">',
+					'</a>'
 				),
 				esc_html__( 'Set a password for the eval terminal in the options below and hit "Save Changes".', 'wp-php-console' ),
 				esc_html__( 'Reload any page of your installation and click on the key icon in your Chrome browser address bar, enter your password and access the terminal.', 'wp-php-console' ),
@@ -329,17 +336,17 @@ class SettingsPage {
 		<p class="description"><?php esc_html_e( 'You may specify any of the following, to give access to specific IPs to the eval terminal:', 'wp-php-console' ); ?></p>
 		<ol>
 			<li><span class="description"><?php printf(
-						/* translators: Placeholders: %1$s - a single IP address, %2$s link to Varying Vagrant Vagrants project repository */
-						__( 'An IP address (for example %1$s, %2$s default IP address).', 'wp-php-console' ),
-						'<code>192.168.50.4</code>',
-						'<a href="https://github.com/Varying-Vagrant-Vagrants/VVV">Varying Vagrant Vagrants</a>'
-					); ?></span></li>
+					/* translators: Placeholders: %1$s - a single IP address, %2$s link to Varying Vagrant Vagrants project repository */
+					__( 'An IP address (for example %1$s, %2$s default IP address).', 'wp-php-console' ),
+					'<code>192.168.50.4</code>',
+					'<a href="https://github.com/Varying-Vagrant-Vagrants/VVV">Varying Vagrant Vagrants</a>'
+				); ?></span></li>
 			<li><span class="description"><?php printf(
-						/* translators: Placeholders: %1$s a range of IP addresses, %2$s - comma separated IP addresses */
-						__( 'A range of addresses (%1$s) or multiple addresses, comma separated (%2$s).', 'wp-php-console' ),
-						'<code>192.168.*.*</code>',
-						'<code>192.168.10.25,192.168.10.28</code>'
-					); ?></span></li>
+					/* translators: Placeholders: %1$s a range of IP addresses, %2$s - comma separated IP addresses */
+					__( 'A range of addresses (%1$s) or multiple addresses, comma separated (%2$s).', 'wp-php-console' ),
+					'<code>192.168.*.*</code>',
+					'<code>192.168.10.25,192.168.10.28</code>'
+				); ?></span></li>
 		</ol>
 		<?php
 	}

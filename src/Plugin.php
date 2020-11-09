@@ -334,7 +334,7 @@ class Plugin {
 	 *
 	 * @return string
 	 */
-	public static function get_php_console_project_page_url() {
+	public static function get_php_console_repository_url() {
 
 		return 'https://github.com/barbushin/php-console';
 	}
@@ -347,9 +347,22 @@ class Plugin {
 	 *
 	 * @return string
 	 */
-	public static function get_php_console_chrome_extension_url() {
+	public static function get_php_console_chrome_extension_web_store_url() {
 
 		return 'https://chrome.google.com/webstore/detail/php-console/nfhmhhlpfleoednkpnnnkolmclajemef';
+	}
+
+
+	/**
+	 * Gets the PHP Console Google Chrome extension repository URL.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @return string
+	 */
+	public static function get_php_console_chrome_extension_repository_url() {
+
+		return 'https://github.com/barbushin/php-console-extension';
 	}
 
 
