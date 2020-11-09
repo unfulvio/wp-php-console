@@ -84,7 +84,7 @@ class Admin {
 
 			return array_merge( [
 				'<a href="' . esc_url( admin_url( 'options-general.php?page=' . str_replace( '-', '_', Plugin::ID ) ) ) . '">' . esc_html__( 'Settings', 'wp-php-console' ) . '</a>',
-				'<a href="' . esc_url( Plugin::get_project_page_url() ) . '">' . esc_html__( 'GitHub', 'wp-php-console' ) . '</a>',
+				'<a href="' . esc_url( Plugin::get_wp_php_console_repository_url() ) . '">' . esc_html__( 'GitHub', 'wp-php-console' ) . '</a>',
 				'<a href="' . esc_url( Plugin::get_support_page_url() ) . '">' . esc_html__( 'Support', 'wp-php-console' ) . '</a>',
 				'<a href="' . esc_url( Plugin::get_reviews_page_url() ) . '">' . esc_html__( 'Review', 'wp-php-console' ) . '</a>',
 			], $actions );

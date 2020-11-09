@@ -315,13 +315,39 @@ class Plugin {
 
 
 	/**
+	 * Gets the plugin reviews page URL.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @return string
+	 */
+	public static function get_reviews_page_url() {
+
+		return 'https://wordpress.org/support/plugin/wp-php-console/reviews/';
+	}
+
+
+	/**
+	 * Gets the plugin support page URL.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @return string
+	 */
+	public static function get_support_page_url() {
+
+		return 'https://wordpress.org/support/plugin/wp-php-console/';
+	}
+
+
+	/**
 	 * Gets the GitHub repository page URL.
 	 *
 	 * @since 1.6.0
 	 *
 	 * @return string
 	 */
-	public static function get_project_page_url() {
+	public static function get_wp_php_console_repository_url() {
 
 		return 'https://github.com/unfulvio/wp-php-console';
 	}
@@ -363,32 +389,6 @@ class Plugin {
 	public static function get_php_console_chrome_extension_repository_url() {
 
 		return 'https://github.com/barbushin/php-console-extension';
-	}
-
-
-	/**
-	 * Gets the plugin reviews page URL.
-	 *
-	 * @since 1.6.0
-	 *
-	 * @return string
-	 */
-	public static function get_reviews_page_url() {
-
-		return 'https://wordpress.org/support/plugin/wp-php-console/reviews/';
-	}
-
-
-	/**
-	 * Gets the plugin support page URL.
-	 *
-	 * @since 1.6.0
-	 *
-	 * @return string
-	 */
-	public static function get_support_page_url() {
-
-		return 'https://wordpress.org/support/plugin/wp-php-console/';
 	}
 
 
