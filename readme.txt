@@ -134,11 +134,7 @@ None.
  * Misc: Add note about Chrome extension unavailability in web store
  * Misc: Add plugin admin action links
  * Misc: Improved settings handler
- * Misc: Updates PHP Console core library to v3.1.8
-
-= 1.5.5 =
-* Misc: Add plugin admin action links
-* Misc: Improved settings handler
+ * Misc: Updates PHP Console core library to v3.1.8git
 
 = 1.5.4 =
 * Fix: Temporarily suppress PHP warnings while connecting with PhpConsole to avoid headers already sent warnings, then restore all errors reporting
