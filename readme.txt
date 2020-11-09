@@ -136,6 +136,7 @@ None.
  * Misc: Add note about Chrome extension unavailability in web store
  * Misc: Add plugin admin action links
  * Misc: Improved settings handler
+ * Misc: Updates PHP Console core library to v3.1.8
 
 = 1.5.5 =
 * Misc: Add plugin admin action links
