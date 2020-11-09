@@ -1,6 +1,6 @@
 # Changelog
 
-### 1.6.0 (9 Nov 2020)
+### 1.6.0 (09 Nov 2020)
  * Misc: Add note about Chrome extension unavailability in web store
  * Misc: Add plugin admin action links
  * Misc: Improved settings handler
