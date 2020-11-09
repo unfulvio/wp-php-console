@@ -1,6 +1,7 @@
 # Changelog
 
-### 1.6.0 (unreleased)
+### 1.6.0 (9 Nov 2020)
+ * Misc: Add note about Chrome extension unavailability in web store
  * Misc: Add plugin admin action links
  * Misc: Improved settings handler
 
@@ -68,15 +69,15 @@
  * Fix: Bugfixes
  * Misc: Submission to WordPress.org plugins repository.
 
-### 1.2.1 (12 dec 2014) 
+### 1.2.1 (12 dec 2014)
  * Fix: Fixed allowed IPs bug.
 
-### 1.2.0 (11 dec 2014) 
+### 1.2.0 (11 dec 2014)
  * Misc: Updated dependencies and got rid of git submodules.
 
-### 1.1.0 (07 nov 2014) 
+### 1.1.0 (07 nov 2014)
  * Fix: PHP Console server is now instantiated later, allowing to catch all your theme functions too.
  * Misc: Included PHP Console server library as git submodule rather than a composer dependency.
 
-### 1.0.0 (06 nov 2014) 
+### 1.0.0 (06 nov 2014)
  * First public release.
